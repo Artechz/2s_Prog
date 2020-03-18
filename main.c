@@ -29,13 +29,6 @@ int main(void){
 
     printf("\nDriver Name? ");
 
-    //this is a comment comeme los cojones
-    //segundo comment para test
-    //bibbgyh
-    //d ncniodsnfiier fdnc
-    //hola prova de compat
-    //linea37 fallo de compat
-
     /*int nSortir = 0;
 
     //Inicialitzem Allegro
