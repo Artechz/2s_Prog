@@ -34,6 +34,7 @@ int main(void){
     //bibbgyh
     //d ncniodsnfiier fdnc
     //hola prova de compat
+    //linea37 fallo de compat
 
     /*int nSortir = 0;
 
