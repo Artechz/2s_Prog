@@ -35,8 +35,6 @@ int main(void){
     //d ncniodsnfiier fdnc
     //hola prova de compat
 
-    //kjbb hb hjb
-
     /*int nSortir = 0;
 
     //Inicialitzem Allegro
