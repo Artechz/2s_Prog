@@ -28,7 +28,6 @@ int main(void){
     }
 
     printf("\nDriver Name? ");
-    scanf
 
 
 
