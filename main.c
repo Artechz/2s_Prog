@@ -31,9 +31,7 @@ int main(void){
 
     //this is a comment comeme los cojones
     //segundo comment para test
-
-
-
+    //bibbgyh
 
     /*int nSortir = 0;
 
