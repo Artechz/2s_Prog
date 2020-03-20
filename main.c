@@ -57,10 +57,11 @@ int main (void) {
         driver.driverNumber[strlen(driver.driverNumber) - 1] = '\0';
         if (strlen(driver.driverNumber) > 2){
             check = 0;
+            printf("strlenDNum > 2");                                                                                   //DEBUG
         }
         else {
             for (i = 0; i < strlen(driver.driverNumber); i++) {
-                if (driver.driverNumber[i] < '0' || driver.driverNumber[i] < '9') {
+                if (driver.driverNumber[i] < '0' || driver.driverNumber[i] > '9') {
                     check = 0;
                 }
             }
@@ -76,7 +77,7 @@ int main (void) {
     } while (0 == check);
 
     do {
-        //check = 1;
+        //check = 1;                                                                                                    //DEBUG
         printf("Reflexes? ");
         fgets(driver.reflexes, MAXSTRING, stdin);
         driver.reflexes[strlen(driver.reflexes) - 1] = '\0';
