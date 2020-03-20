@@ -52,12 +52,12 @@ int main (void) {
     driver.teamName[strlen(driver.teamName) - 1] = '\0';
 
      do {
+        check = 1;
         printf("Drivers Number? ");
         fgets(driver.driverNumber, MAXSTRING, stdin);
         driver.driverNumber[strlen(driver.driverNumber) - 1] = '\0';
         if (strlen(driver.driverNumber) > 2){
             check = 0;
-            printf("strlenDNum > 2");                                                                                   //DEBUG
         }
         else {
             for (i = 0; i < strlen(driver.driverNumber); i++) {
@@ -77,7 +77,7 @@ int main (void) {
     } while (0 == check);
 
     do {
-        //check = 1;                                                                                                    //DEBUG
+        check = 1;                                                                                                    //DEBUG
         printf("Reflexes? ");
         fgets(driver.reflexes, MAXSTRING, stdin);
         driver.reflexes[strlen(driver.reflexes) - 1] = '\0';
@@ -85,8 +85,15 @@ int main (void) {
             check = 0;
         }
         else {
-            if(!(atoi(driver.reflexes) <= 10)) {
+            for (i = 0; i < strlen(driver.reflexes); i++) {
+                if (driver.reflexes[i] < '0' || driver.reflexes[i] > '9') {
                     check = 0;
+                }
+            }
+            if (check) {
+                if(atoi(driver.reflexes) > 10) {
+                    check = 0;
+                }
             }
         }
         if (0 == check) {
@@ -94,10 +101,6 @@ int main (void) {
         }
     } while (0 == check);
 
-    check = 0;
-
-
-    printf("\nDriver Name? ");
 
     /*int nSortir = 0;
 
