@@ -1,9 +1,22 @@
 #include <stdio.h>
 #include "LS_allegro.h"
-#define MAX 100
+#define MAXSTRING 26
+
+typedef struct {
+    char driverName[MAXSTRING];
+    char teamName[MAXSTRING];
+    char driverNumber[MAXSTRING];
+    char reflexes[MAXSTRING];
+    char physicalCondition[MAXSTRING];
+    char temperament[MAXSTRING];
+    char tireManagement[MAXSTRING];
+} Driver;
+
 int main(void){
-    char OptionSelected[MAX];
+    Driver driver;
+    char OptionSelected[MAXSTRING];
     int check = 0;
+    char aux;
 
 
     printf("Welcome to LS Racing\n\n");
@@ -14,8 +27,9 @@ int main(void){
     while(check == 0){
         printf("Which option do you want to execute? ");
         scanf("%s", OptionSelected);
+        scanf("%c", &aux);
         if (strlen(OptionSelected) != 1){
-            printf("Error, the number should be between 1 and 4, inclusive.");
+            printf("Error, the number should be between 1 and 4, inclusive.\n");
         }
         else {
             if (OptionSelected[0] < '1' || OptionSelected[0] > '4') {
@@ -26,6 +40,61 @@ int main(void){
             }
         }
     }
+    check = 0;
+
+    printf("Driver Name? ");
+    fgets(driver.driverName, MAXSTRING, stdin);
+    driver.driverName[strlen(driver.driverName) -1] = '\0';
+
+    printf("Team Name? ");
+    fgets(driver.teamName, MAXSTRING, stdin);
+    driver.teamName[strlen(driver.teamName) -1] = '\0';
+
+    while(check == 0){
+        printf("Drivers Number? ");
+        fgets(driver.driverNumber, MAXSTRING, stdin);
+        driver.driverNumber[strlen(driver.driverNumber) -1] = '\0';
+        if (strlen(driver.driverNumber) > 2){
+            printf("Error, the number should be between 0 and 99, inclusive.\n");
+        }
+        else {
+            if(){
+                check = 1;
+            }
+            else {
+                printf("Error, the number should be between 0 and 99, inclusive.\n");
+            }
+        }
+    }
+
+    check = 0;
+
+    while(check == 0){
+        printf("Reflexes? ");
+        fgets(driver.reflexes, MAXSTRING, stdin);
+        driver.reflexes[strlen(driver.reflexes) -1] = '\0';
+        if (strlen(driver.reflexes) > 2){
+            printf("Error, the number should be between 0 and 10, inclusive.\n");
+        }
+        else {
+            if(){
+                check = 1;
+            }
+            else {
+                printf("Error, the number should be between 0 and 10, inclusive.\n");
+            }
+        }
+    }
+
+    check = 0;
+
+
+
+
+
+
+
+
 
     printf("\nDriver Name? ");
 
