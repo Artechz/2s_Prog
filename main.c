@@ -7,8 +7,8 @@
 typedef struct {
     char driverName[MAXSTRING];
     char teamName[MAXSTRING];
-    char driverNumber[MAXSTRING];
-    char reflexes[MAXSTRING];
+    int driverNumber;
+    int reflexes;
     char physicalCondition[MAXSTRING];
     char temperament[MAXSTRING];
     char tireManagement[MAXSTRING];
@@ -17,6 +17,7 @@ typedef struct {
 int main (void) {
     Driver driver;
     char OptionSelected[MAXSTRING];
+    char input[MAXSTRING];
     int check = 1, i;
     char aux;
 
@@ -35,7 +36,7 @@ int main (void) {
         }
         else {
             if (OptionSelected[0] < '1' || OptionSelected[0] > '4') {
-                printf("Error, the number should be between 1 and 4, inclusive.");
+                printf("Error, the number should be between 1 and 4, inclusive.\n");
             }
             else {
                 check = 1;
@@ -54,19 +55,19 @@ int main (void) {
      do {
         check = 1;
         printf("Drivers Number? ");
-        fgets(driver.driverNumber, MAXSTRING, stdin);
-        driver.driverNumber[strlen(driver.driverNumber) - 1] = '\0';
-        if (strlen(driver.driverNumber) > 2){
+        fgets(input, MAXSTRING, stdin);
+         input[strlen(input) - 1] = '\0';
+        if (strlen(input) > 2){
             check = 0;
         }
         else {
-            for (i = 0; i < strlen(driver.driverNumber); i++) {
-                if (driver.driverNumber[i] < '0' || driver.driverNumber[i] > '9') {
+            for (i = 0; i < strlen(input); i++) {
+                if (input[i] < '0' || input[i] > '9') {
                     check = 0;
                 }
             }
             if (check) {
-                if (atoi(driver.driverNumber) > 99) {
+                if (atoi(input) > 99) {
                     check = 0;
                 }
             }
@@ -76,22 +77,24 @@ int main (void) {
         }
     } while (0 == check);
 
+     driver.driverNumber = atoi(input);
+
     do {
         check = 1;                                                                                                    //DEBUG
         printf("Reflexes? ");
-        fgets(driver.reflexes, MAXSTRING, stdin);
-        driver.reflexes[strlen(driver.reflexes) - 1] = '\0';
-        if (strlen(driver.reflexes) > 2) {
+        fgets(input, MAXSTRING, stdin);
+        input[strlen(input) - 1] = '\0';
+        if (strlen(input) > 2) {
             check = 0;
         }
         else {
-            for (i = 0; i < strlen(driver.reflexes); i++) {
-                if (driver.reflexes[i] < '0' || driver.reflexes[i] > '9') {
+            for (i = 0; i < strlen(input); i++) {
+                if (input[i] < '0' || input[i] > '9') {
                     check = 0;
                 }
             }
             if (check) {
-                if(atoi(driver.reflexes) > 10) {
+                if(atoi(input) > 10) {
                     check = 0;
                 }
             }
@@ -100,6 +103,10 @@ int main (void) {
             printf("Error, the number should be between 0 and 10, inclusive.\n");
         }
     } while (0 == check);
+
+    driver.reflexes = atoi(input);
+
+    //printf("%d - %d", driver.driverNumber, driver.reflexes);
 
 
     /*int nSortir = 0;
