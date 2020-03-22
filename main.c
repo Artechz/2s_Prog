@@ -20,7 +20,7 @@ int menuAsk (char question[MAXSTRING], int min, int max) {
     int check, i;
 
     do {
-        check = 1;                                                                                              //DEBUG
+        check = 1;                                                                                                      //DEBUG
         printf("%s", question);
         fgets(input, MAXSTRING, stdin);
         input[strlen(input) - 1] = '\0';
@@ -50,11 +50,11 @@ int menuAsk (char question[MAXSTRING], int min, int max) {
 int main (void) {
     Driver driver;
     int optionSelected;
-    char input[MAXSTRING];
-    int check = 1, i, optionRunned = 0;
-    char aux;
+    //char input[MAXSTRING];
+    int i, optionDone = 0;
+    //char aux;
 
-    printf("Welcome to LS Racing\n\n");
+    printf("\nWelcome to LS Racing\n\n");
     printf("\t 1. Configure Car\n");
     printf("\t 2. Race\n");
     printf("\t 3. See Standings\n");
@@ -67,7 +67,7 @@ int main (void) {
         //OPTION 1
         case 1:
 
-            if(optionRunned == 0){
+            if(0 == optionDone){
 
                 printf("Driver Name? ");
                 fgets(driver.driverName, MAXSTRING, stdin);
@@ -87,24 +87,24 @@ int main (void) {
 
                 driver.tireManagement = menuAsk("Tire management? ", 0, 10);
 
-                optionRunned = 1;
+                optionDone = 1;
             }
 
             break;
 
         //OPTION 2
         case 2:
-            printf("Not done yet");
+            printf("\nNot done yet\n");
             break;
 
         //OPTION 3
         case 3:
-            printf("Not done yet");
+            printf("\nNot done yet\n");
             break;
 
         //OPTION 4
         case 4:
-            printf("Not done yet");
+            printf("\nNot done yet\n");
             break;
 
         default:
