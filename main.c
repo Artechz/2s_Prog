@@ -51,7 +51,7 @@ int main (void) {
     Driver driver;
     int optionSelected;
     char input[MAXSTRING];
-    int check = 1, i;
+    int check = 1, i, optionRunned = 0;
     char aux;
 
     printf("Welcome to LS Racing\n\n");
@@ -67,36 +67,44 @@ int main (void) {
         //OPTION 1
         case 1:
 
-            printf("Driver Name? ");
-            fgets(driver.driverName, MAXSTRING, stdin);
-            driver.driverName[strlen(driver.driverName) - 1] = '\0';
+            if(optionRunned == 0){
 
-            printf("Team Name? ");
-            fgets(driver.teamName, MAXSTRING, stdin);
-            driver.teamName[strlen(driver.teamName) - 1] = '\0';
+                printf("Driver Name? ");
+                fgets(driver.driverName, MAXSTRING, stdin);
+                driver.driverName[strlen(driver.driverName) - 1] = '\0';
 
-            driver.driverNumber = menuAsk("Drivers Number? ", 0, 99);
+                printf("Team Name? ");
+                fgets(driver.teamName, MAXSTRING, stdin);
+                driver.teamName[strlen(driver.teamName) - 1] = '\0';
 
-            driver.reflexes = menuAsk("Reflexes? ", 0, 10);
+                driver.driverNumber = menuAsk("Drivers Number? ", 0, 99);
 
-            driver.physicalCondition = menuAsk("Physical Condition? ", 0, 10);
+                driver.reflexes = menuAsk("Reflexes? ", 0, 10);
 
-            driver.temperament = menuAsk("Temperament? ", 0, 10);
+                driver.physicalCondition = menuAsk("Physical Condition? ", 0, 10);
 
-            driver.tireManagement = menuAsk("Tire management? ", 0, 10);
+                driver.temperament = menuAsk("Temperament? ", 0, 10);
+
+                driver.tireManagement = menuAsk("Tire management? ", 0, 10);
+
+                optionRunned = 1;
+            }
 
             break;
 
         //OPTION 2
         case 2:
+            printf("Not done yet");
             break;
 
         //OPTION 3
         case 3:
+            printf("Not done yet");
             break;
 
         //OPTION 4
         case 4:
+            printf("Not done yet");
             break;
 
         default:
