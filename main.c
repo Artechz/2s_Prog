@@ -14,182 +14,95 @@ typedef struct {
     int tireManagement;
 } Driver;
 
+int menuAsk (char question[MAXSTRING], int min, int max) {
+
+    char input[MAXSTRING];
+    int check, i;
+
+    do {
+        check = 1;                                                                                              //DEBUG
+        printf("%s", question);
+        fgets(input, MAXSTRING, stdin);
+        input[strlen(input) - 1] = '\0';
+        if (strlen(input) > 2) {
+            check = 0;
+        }
+        else {
+            for (i = 0; i < strlen(input); i++) {
+                if (input[i] < '0' || input[i] > '9') {
+                    check = 0;
+                }
+            }
+            if (check) {
+                if (atoi(input) > max || atoi(input) < min) {
+                    check = 0;
+                }
+            }
+        }
+        if (0 == check) {
+            printf("Error, the number should be between %d and %d, inclusive.\n", min, max);
+        }
+    } while (0 == check);
+
+    return atoi(input);
+}
+
 int main (void) {
     Driver driver;
-    char OptionSelected[MAXSTRING];
+    int optionSelected;
     char input[MAXSTRING];
     int check = 1, i;
     char aux;
-
 
     printf("Welcome to LS Racing\n\n");
     printf("\t 1. Configure Car\n");
     printf("\t 2. Race\n");
     printf("\t 3. See Standings\n");
     printf("\t 4. Save Season\n\n");
-    do {
-        printf("Which option do you want to execute? ");
-        scanf("%s", OptionSelected);
-        scanf("%c", &aux);
-        if (strlen(OptionSelected) != 1){
-            printf("Error, the number should be between 1 and 4, inclusive.\n");
-        }
-        else {
-            if (OptionSelected[0] < '1' || OptionSelected[0] > '4') {
-                printf("Error, the number should be between 1 and 4, inclusive.\n");
-            }
-            else {
-                check = 1;
-            }
-        }
-    } while (0 == check);
 
-    printf("Driver Name? ");
-    fgets(driver.driverName, MAXSTRING, stdin);
-    driver.driverName[strlen(driver.driverName) - 1] = '\0';
+    optionSelected = menuAsk("Which option do you want to execute? ", 1, 4);
 
-    printf("Team Name? ");
-    fgets(driver.teamName, MAXSTRING, stdin);
-    driver.teamName[strlen(driver.teamName) - 1] = '\0';
+    switch (optionSelected) {
 
-     do {
-        check = 1;
-        printf("Drivers Number? ");
-        fgets(input, MAXSTRING, stdin);
-         input[strlen(input) - 1] = '\0';
-        if (strlen(input) > 2){
-            check = 0;
-        }
-        else {
-            for (i = 0; i < strlen(input); i++) {
-                if (input[i] < '0' || input[i] > '9') {
-                    check = 0;
-                }
-            }
-            if (check) {
-                if (atoi(input) > 99) {
-                    check = 0;
-                }
-            }
-        }
-        if (0 == check) {
-            printf("Error, the number should be between 0 and 99, inclusive.\n");
-        }
-    } while (0 == check);
+        //OPTION 1
+        case 1:
 
-     driver.driverNumber = atoi(input);
+            printf("Driver Name? ");
+            fgets(driver.driverName, MAXSTRING, stdin);
+            driver.driverName[strlen(driver.driverName) - 1] = '\0';
 
-    do {
-        check = 1;                                                                                                    //DEBUG
-        printf("Reflexes? ");
-        fgets(input, MAXSTRING, stdin);
-        input[strlen(input) - 1] = '\0';
-        if (strlen(input) > 2) {
-            check = 0;
-        }
-        else {
-            for (i = 0; i < strlen(input); i++) {
-                if (input[i] < '0' || input[i] > '9') {
-                    check = 0;
-                }
-            }
-            if (check) {
-                if(atoi(input) > 10) {
-                    check = 0;
-                }
-            }
-        }
-        if (0 == check) {
-            printf("Error, the number should be between 0 and 10, inclusive.\n");
-        }
-    } while (0 == check);
+            printf("Team Name? ");
+            fgets(driver.teamName, MAXSTRING, stdin);
+            driver.teamName[strlen(driver.teamName) - 1] = '\0';
 
-    driver.reflexes = atoi(input);
+            driver.driverNumber = menuAsk("Drivers Number? ", 0, 99);
 
-    do {
-        check = 1;                                                                                                    //DEBUG
-        printf("Physical condition? ");
-        fgets(input, MAXSTRING, stdin);
-        input[strlen(input) - 1] = '\0';
-        if (strlen(input) > 2) {
-            check = 0;
-        }
-        else {
-            for (i = 0; i < strlen(input); i++) {
-                if (input[i] < '0' || input[i] > '9') {
-                    check = 0;
-                }
-            }
-            if (check) {
-                if(atoi(input) > 10) {
-                    check = 0;
-                }
-            }
-        }
-        if (0 == check) {
-            printf("Error, the number should be between 0 and 10, inclusive.\n");
-        }
-    } while (0 == check);
+            driver.reflexes = menuAsk("Reflexes? ", 0, 10);
 
-    driver.physicalCondition = atoi(input);
+            driver.physicalCondition = menuAsk("Physical Condition? ", 0, 10);
 
-    do {
-        check = 1;                                                                                                    //DEBUG
-        printf("Temperament? ");
-        fgets(input, MAXSTRING, stdin);
-        input[strlen(input) - 1] = '\0';
-        if (strlen(input) > 2) {
-            check = 0;
-        }
-        else {
-            for (i = 0; i < strlen(input); i++) {
-                if (input[i] < '0' || input[i] > '9') {
-                    check = 0;
-                }
-            }
-            if (check) {
-                if(atoi(input) > 10) {
-                    check = 0;
-                }
-            }
-        }
-        if (0 == check) {
-            printf("Error, the number should be between 0 and 10, inclusive.\n");
-        }
-    } while (0 == check);
+            driver.temperament = menuAsk("Temperament? ", 0, 10);
 
-    driver.temperament = atoi(input);
+            driver.tireManagement = menuAsk("Tire management? ", 0, 10);
 
-    do {
-        check = 1;                                                                                                    //DEBUG
-        printf("Tire management? ");
-        fgets(input, MAXSTRING, stdin);
-        input[strlen(input) - 1] = '\0';
-        if (strlen(input) > 2) {
-            check = 0;
-        }
-        else {
-            for (i = 0; i < strlen(input); i++) {
-                if (input[i] < '0' || input[i] > '9') {
-                    check = 0;
-                }
-            }
-            if (check) {
-                if(atoi(input) > 10) {
-                    check = 0;
-                }
-            }
-        }
-        if (0 == check) {
-            printf("Error, the number should be between 0 and 10, inclusive.\n");
-        }
-    } while (0 == check);
+            break;
 
-    driver.tireManagement = atoi(input);
+        //OPTION 2
+        case 2:
+            break;
 
+        //OPTION 3
+        case 3:
+            break;
 
+        //OPTION 4
+        case 4:
+            break;
 
-    //printf("%d - %d", driver.driverNumber, driver.reflexes);
+        default:
+            printf("\nALGO HEM FET MALAMENT PERQUE AIXO NO HAURA DE SORTIR MAI\n");
+            break;
+    }
 
 
     /*int nSortir = 0;
