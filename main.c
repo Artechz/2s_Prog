@@ -3,7 +3,7 @@
  * @Purpose: //TODO
  * @Author: Arnau Sanz and Josep Segarra.
  * @Creation date: 18/03/2020 (DD/MM/YYYY)
- * @Date of last modification: 22/03/2020
+ * @Date of last modification: 28/03/2020
  *
 ***********************************************/
 
@@ -12,76 +12,38 @@
 #include <string.h>
 #include <stdlib.h>
 #include "LS_allegro.h"
-#define MAXSTRING 26
-#define WIN_TITLE "LS Racing by Arnau Sanz & Josep Segarra"
+#include "my_race_basic.h"
+#include "my_allegro_ui.h"
+#include "my_files.h"
+
+
+//SHOULD BE IN UI TODO
+#define WIN_TITLE_CONFIGURATOR "LS Racing - Configurator"
 #define WIN_WIDTH 1000
 #define WIN_HEIGHT 600
 #define BACKGROUND_IMAGE "files/boxes.png"
 #define TIRES_IMAGE "files/neumaticos.png"
+#define ENGINE_IMAGE "files/motor.png"
+#define GAS_IMAGE "files/gasolina.png"
 
-typedef struct {
-    char driverName[MAXSTRING];
-    char teamName[MAXSTRING];
-    int driverNumber;
-    int reflexes;
-    int physicalCondition;
-    int temperament;
-    int tireManagement;
-} Driver;
-
-/***********************************************
- *
- * @Purpose: Asks the user a question, checks the answers for errors within a valid
- *           range of numbers and converts it to an int.
- * @Parameters:     in: question = text to print as a question.
- *                  in: min = minimum value for valid input range.
- *                  in: max = maximum value for valid input range.
- * @Return: Returns the atoi of the input.
- *
-************************************************/
-int menuAsk (char question[MAXSTRING], int min, int max) {
-
-    char input[MAXSTRING];
-    int check, i;
-
-    do {
-        check = 1;                                                                                                      //DEBUG
-        printf("%s", question);
-        fgets(input, MAXSTRING, stdin);
-        input[strlen(input) - 1] = '\0';
-        if (strlen(input) > 2) {
-            check = 0;
-        }
-        else {
-            for (i = 0; i < strlen(input); i++) {
-                if (input[i] < '0' || input[i] > '9') {
-                    check = 0;
-                }
-            }
-            if (check) {
-                if (atoi(input) > max || atoi(input) < min) {
-                    check = 0;
-                }
-            }
-        }
-        if (0 == check) {
-            printf("Error, the number should be between %d and %d, inclusive.\n", min, max);
-        }
-    } while (0 == check);
-
-    return atoi(input);
-}
 
 int main (void) {
+
     Driver driver;
+    GroupPart * partGroup;
+    //partGroup = (GroupPart *) malloc(sizeof(GroupPart));
+
     int optionSelected;
     //char input[MAXSTRING];
     int i, optionDone = 0, exit = 0, allegroExit = 0;
     //char aux;
     ALLEGRO_BITMAP * background = NULL;
     ALLEGRO_BITMAP * tires = NULL;
+    ALLEGRO_BITMAP * engine = NULL;
+    ALLEGRO_BITMAP * gas = NULL;
 
-    int background_color = BLACK;    //TODO
+    //DARK MODE TODO
+    int background_color = BLACK;
     int text_color = WHITE;
 
     do {
@@ -124,14 +86,16 @@ int main (void) {
                 }
                 printf("\nLoading Configurator ...");
 
-                LS_allegro_init(WIN_WIDTH, WIN_HEIGHT, WIN_TITLE);
+                readParts (partGroup);                                                                                 //READING PARTS INFO
+
+                LS_allegro_init(WIN_WIDTH, WIN_HEIGHT, WIN_TITLE_CONFIGURATOR);
 
                 printf("\nPath: %s", al_get_current_directory());                                                       //DEBUG
 
                 //Loading the image as a bitmap, checking it loaded properly and saving its size for future scaling.
                 background = al_load_bitmap(BACKGROUND_IMAGE);
                 if (!background) {
-                    printf("Failed to load background bitmap!\n");
+                    printf("Failed to load background bitmap.\n");
                 }
 
                 const int background_width = al_get_bitmap_width(background);
@@ -139,8 +103,24 @@ int main (void) {
 
                 tires = al_load_bitmap(TIRES_IMAGE);
                 if (!tires) {
-                    printf("Failed to load tires bitmap!\n");
+                    printf("Failed to load tires bitmap.\n");
                 }
+                engine = al_load_bitmap(ENGINE_IMAGE);
+                if (!tires) {
+                    printf("Failed to load engine bitmap.\n");
+                }
+                gas = al_load_bitmap(GAS_IMAGE);
+                if (!tires) {
+                    printf("Failed to load gas bitmap.\n");
+                }
+                /*tires = al_load_bitmap(TIRES_IMAGE);
+                if (!tires) {
+                    printf("Failed to load tires bitmap.\n");
+                }
+                tires = al_load_bitmap(TIRES_IMAGE);
+                if (!tires) {
+                    printf("Failed to load tires bitmap.\n");
+                }*/
 
                 const int tires_width = al_get_bitmap_width(tires);
                 const int tires_height = al_get_bitmap_height(tires);
@@ -236,33 +216,6 @@ int main (void) {
         }
 
     } while (!exit);
-
-    /*int nSortir = 0;
-
-    //Inicialitzem Allegro
-    LS_allegro_init(800,600,"Projecte 2");
-
-
-    //Bucle infinit del joc
-    while(!nSortir){
-
-        //Escoltem el teclat esperant la tecla ESC
-        if(LS_allegro_key_pressed(ALLEGRO_KEY_ESCAPE)){
-            nSortir = 1;
-        }
-
-        //Donem l'ordre d'escriure el text de benvinguda
-        al_draw_textf(LS_allegro_get_font(NORMAL),LS_allegro_get_color(WHITE),140,100,0,"%s","Heyy! Prem ESC per sortir...");
-
-        //Pintem la pantalla de la finestra gràfica
-        LS_allegro_clear_and_paint(BLACK);
-    }
-
-
-    //Tanquem la finestra gràfica
-    LS_allegro_exit();*/
-
-
 
     return 0;
 }
