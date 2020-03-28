@@ -86,7 +86,7 @@ int main (void) {
                 }
                 printf("\nLoading Configurator ...");
 
-                readParts (partGroup);                                                                                 //READING PARTS INFO
+                readParts (partGroup);                                                                                  //READING PARTS INFO
 
                 LS_allegro_init(WIN_WIDTH, WIN_HEIGHT, WIN_TITLE_CONFIGURATOR);
 

@@ -22,6 +22,17 @@
 // ?? fiterBase.bin
 // ?? fitxer Corredors.bin
 
+
+/*********************************************** TODO
+ *
+ * @Purpose: Asks the user a question, checks the answers for errors within a valid
+ *           range of numbers and converts it to an int.
+ * @Parameters:     in: question = text to print as a question.
+ *                  in: min = minimum value for valid input range.
+ *                  in: max = maximum value for valid input range.
+ * @Return: Returns the atoi of the input if answer is valid.
+ *
+************************************************/
 int readParts (GroupPart * partGroup);
 
 
