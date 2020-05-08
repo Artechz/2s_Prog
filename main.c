@@ -17,34 +17,18 @@
 #include "my_files.h"
 
 
-//SHOULD BE IN UI TODO
-#define WIN_TITLE_CONFIGURATOR "LS Racing - Configurator"
-#define WIN_WIDTH 1000
-#define WIN_HEIGHT 600
-#define BACKGROUND_IMAGE "files/boxes.png"
-#define TIRES_IMAGE "files/neumaticos.png"
-#define ENGINE_IMAGE "files/motor.png"
-#define GAS_IMAGE "files/gasolina.png"
-
-
 int main (void) {
 
     Driver driver;
     GroupPart * partGroup;
+
     //partGroup = (GroupPart *) malloc(sizeof(GroupPart));
 
     int optionSelected;
-    //char input[MAXSTRING];
-    int i, optionDone = 0, exit = 0, allegroExit = 0;
-    //char aux;
-    ALLEGRO_BITMAP * background = NULL;
-    ALLEGRO_BITMAP * tires = NULL;
-    ALLEGRO_BITMAP * engine = NULL;
-    ALLEGRO_BITMAP * gas = NULL;
+    int i, optionDone = 0, exit = 0, allegroExit = 0, partCategory = 0, partModel = 0, darkMode = 0;
 
-    //DARK MODE TODO
-    int background_color = BLACK;
-    int text_color = WHITE;
+    ALLEGRO_BITMAP * background = NULL;
+    ALLEGRO_BITMAP * parts[6];
 
     do {
 
@@ -86,11 +70,11 @@ int main (void) {
                 }
                 printf("\nLoading Configurator ...");
 
-                readParts (partGroup);                                                                                  //READING PARTS INFO
+                partGroup = readParts(partGroup);                                                                                  //READING PARTS INFO
 
                 LS_allegro_init(WIN_WIDTH, WIN_HEIGHT, WIN_TITLE_CONFIGURATOR);
 
-                printf("\nPath: %s", al_get_current_directory());                                                       //DEBUG
+                printf("\nPath: %s\n", al_get_current_directory());                                                       //DEBUG
 
                 //Loading the image as a bitmap, checking it loaded properly and saving its size for future scaling.
                 background = al_load_bitmap(BACKGROUND_IMAGE);
@@ -98,92 +82,130 @@ int main (void) {
                     printf("Failed to load background bitmap.\n");
                 }
 
-                const int background_width = al_get_bitmap_width(background);
-                const int background_height = al_get_bitmap_height(background);
-
-                tires = al_load_bitmap(TIRES_IMAGE);
-                if (!tires) {
+                parts[0] = al_load_bitmap(TIRES_IMAGE);
+                if (!parts[0]) {
                     printf("Failed to load tires bitmap.\n");
                 }
-                engine = al_load_bitmap(ENGINE_IMAGE);
-                if (!tires) {
+                //parts[1] = al_load_bitmap(//TODO);
+                if (!parts[1]) {
+                    printf("Failed to load aero front bitmap.\n");
+                }
+                //parts[2] = al_load_bitmap(//TODO);
+                if (!parts[2]) {
+                    printf("Failed to load aero mid bitmap.\n");
+                }
+                //parts[3] = al_load_bitmap(//TODO);
+                if (!parts[3]) {
+                    printf("Failed to load aero rear bitmap.\n");
+                }
+                parts[4] = al_load_bitmap(FUEL_IMAGE);
+                if (!parts[4]) {
+                    printf("Failed to load fuel bitmap.\n");
+                }
+                parts[5] = al_load_bitmap(ENGINE_IMAGE);
+                if (!parts[5]) {
                     printf("Failed to load engine bitmap.\n");
-                }
-                gas = al_load_bitmap(GAS_IMAGE);
-                if (!tires) {
-                    printf("Failed to load gas bitmap.\n");
-                }
-                /*tires = al_load_bitmap(TIRES_IMAGE);
-                if (!tires) {
-                    printf("Failed to load tires bitmap.\n");
-                }
-                tires = al_load_bitmap(TIRES_IMAGE);
-                if (!tires) {
-                    printf("Failed to load tires bitmap.\n");
-                }*/
+                }//TODO put images
 
-                const int tires_width = al_get_bitmap_width(tires);
-                const int tires_height = al_get_bitmap_height(tires);
-                const int tires_width_scaled =  al_get_bitmap_width(tires)/(WIN_WIDTH/200);
-                const int tires_height_scaled =  al_get_bitmap_height(tires)/(WIN_WIDTH/200);
-                const int tires_margin = tires_height_scaled/5;
 
                 //Infinite loop until ESC is pressed.
                 while (!allegroExit) {
 
-                    //Checking if ESC is pressed.
+                    //Checking if ESC or any arrow is being pressed.
                     if (LS_allegro_key_pressed(ALLEGRO_KEY_ESCAPE)) {
                         allegroExit = 1;
                     }
+                    else {
+                        if (LS_allegro_key_pressed(ALLEGRO_KEY_D)) {
+                            switchDarkMode(&darkMode);
+                        }
+                        else {
+                            if (LS_allegro_key_pressed(ALLEGRO_KEY_LEFT)) {
+                                printf("<- ");
+                                //going left
+                                printf("sub%d ", partModel);
 
-                    //Scales the boxes image to a size that fits the actual window.
-                    al_draw_scaled_bitmap (background, 0, 0, background_width, background_height, 0, 0, (WIN_WIDTH/5)*3, WIN_HEIGHT, 0);
-                    //Scaled the tires image so it's not too big for the arrows to have space.
-                    al_draw_scaled_bitmap (tires, 0, 0, tires_width, tires_height, WIN_WIDTH/5*3.4, WIN_HEIGHT/5, tires_width_scaled, tires_height_scaled, 0);
+                                if (partModel != 0) {
+                                    partModel--;
+                                } else {
+                                    partModel = partGroup->parts[partCategory].numParts-1;
+                                }
 
+                                printf("sub%d ", partModel);
+                                partGroup->parts[partCategory].selected = partModel;
 
-                    //Printing arrows
-                    //LEFT ARROW
-                    al_draw_line ( WIN_WIDTH/5*3.4 - tires_margin, WIN_HEIGHT/5 + tires_height_scaled/2, WIN_WIDTH/5*3.4 - 20 - tires_margin,
-                            WIN_HEIGHT/5 + tires_height_scaled/2, LS_allegro_get_color(text_color), WIN_HEIGHT/50);
-                    al_draw_filled_triangle ( WIN_WIDTH/5*3.4 - 40 - tires_margin, WIN_HEIGHT/5 + tires_height_scaled/2, WIN_WIDTH/5*3.4 - 20 - tires_margin,
-                            WIN_HEIGHT/5 + 15 + tires_height_scaled/2, WIN_WIDTH/5*3.4 - 20 - tires_margin, WIN_HEIGHT/5-15 + tires_height_scaled/2, LS_allegro_get_color(text_color));
-                    //RIGHT ARROW
-                    al_draw_line ( WIN_WIDTH/5*3.4 + tires_margin + tires_width_scaled, WIN_HEIGHT/5 + tires_height_scaled/2, WIN_WIDTH/5*3.4 + 20 + tires_width_scaled + tires_margin,
-                                   WIN_HEIGHT/5 + tires_height_scaled/2, LS_allegro_get_color(text_color), WIN_HEIGHT/50);
-                    al_draw_filled_triangle ( WIN_WIDTH/5*3.4 + 40 + tires_width_scaled + tires_margin, WIN_HEIGHT/5 + tires_height_scaled/2, WIN_WIDTH/5*3.4 + 20 + tires_width_scaled + tires_margin,
-                                              WIN_HEIGHT/5 + 15 + tires_height_scaled/2, WIN_WIDTH/5*3.4 + 20 + tires_width_scaled + tires_margin, WIN_HEIGHT/5 - 15 + tires_height_scaled/2, LS_allegro_get_color(text_color));
-                    //UP ARROW
-                    al_draw_line ( WIN_WIDTH/5*3.4 + tires_width_scaled/2, WIN_HEIGHT/5 - tires_margin, WIN_WIDTH/5*3.4 + tires_width_scaled/2,
-                                   WIN_HEIGHT/5 - 20 - tires_margin, LS_allegro_get_color(text_color), WIN_HEIGHT/50);
-                    al_draw_filled_triangle ( WIN_WIDTH/5*3.4 + tires_width_scaled/2, WIN_HEIGHT/5 - 40 - tires_margin, WIN_WIDTH/5*3.4 - 15 + tires_width_scaled/2,
-                                              WIN_HEIGHT/5 - 20 - tires_margin, WIN_WIDTH/5*3.4 + 15 + tires_width_scaled/2, WIN_HEIGHT/5 - 20 - tires_margin, LS_allegro_get_color(text_color));
-                    //DOWN ARROW
-                    al_draw_line ( WIN_WIDTH/5*3.4 + tires_width_scaled/2, WIN_HEIGHT/5 + tires_margin + tires_height_scaled, WIN_WIDTH/5*3.4 + tires_width_scaled/2,
-                                   WIN_HEIGHT/5 + 20 + tires_margin + tires_height_scaled, LS_allegro_get_color(text_color), WIN_HEIGHT/50);
-                    al_draw_filled_triangle ( WIN_WIDTH/5*3.4 + tires_width_scaled/2, WIN_HEIGHT/5 + 40 + tires_margin + tires_height_scaled, WIN_WIDTH/5*3.4 - 15 + tires_width_scaled/2,
-                                              WIN_HEIGHT/5 + 20 + tires_margin + tires_height_scaled, WIN_WIDTH/5*3.4 + 15 + tires_width_scaled/2, WIN_HEIGHT/5 + 20 + tires_margin + tires_height_scaled, LS_allegro_get_color(text_color));
+                            } else {
+                                if (LS_allegro_key_pressed(ALLEGRO_KEY_RIGHT)) {
+                                    printf("-> ");
+                                    //going right
+                                    printf("sub%d ", partModel);
+
+                                    if (partModel != partGroup->parts[partCategory].numParts-1) {
+                                        partModel++;
+                                        printf("add%d ", partModel);
+                                    } else {
+                                        partModel = 0;
+                                        printf("0%d ", partModel);
+                                    }
+
+                                    partGroup->parts[partCategory].selected = partModel;
+                                } else {
+                                    if (LS_allegro_key_pressed(ALLEGRO_KEY_UP)) {
+                                        printf("^ ");
+                                        //going up
+                                        if (partCategory != partGroup->numParts-1) {
+                                            printf("sub%d ", partCategory);
+                                            partCategory++;
+                                            printf("add%d ", partCategory);
+                                        } else {
+                                            printf("sub%d ", partCategory);
+                                            partCategory = 0;
+                                            printf("add%d ", partCategory);
+                                        }
+                                    } else {
+                                        if (LS_allegro_key_pressed(ALLEGRO_KEY_DOWN)) {
+                                            printf("v ");
+                                            //going down
+                                            if (partCategory != 0) {
+                                                printf("sub%d ", partCategory);
+                                                partCategory--;
+                                                printf("sub%d ", partCategory);
+                                            } else {
+                                                printf("sub%d ", partCategory);
+                                                partCategory = partGroup->numParts-1;
+                                                printf("sub%d ", partCategory);
+                                            }
+                                        }
+                                    }
+                                    partModel =  partGroup->parts[partCategory].selected;
+                                }
+                            }
+                        }
+                    }
+
+                    printConfig(background, parts, partCategory, darkMode);
 
                     //Printing text
-                    al_draw_textf (LS_allegro_get_font(LARGE), LS_allegro_get_color(text_color), (WIN_WIDTH/4)*3,WIN_HEIGHT/5 - 80,0,"%s","TIRES");
-                    al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(text_color), (WIN_WIDTH/6)*5,WIN_HEIGHT/5 - 20,0,"%s","C5");
-                    al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(text_color), (WIN_WIDTH/6)*5,WIN_HEIGHT/5,0,"%s%d","SPEED: ", 5);
-                    al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(text_color), (WIN_WIDTH/6)*5,WIN_HEIGHT/5 + 20,0,"%s%d","ACCELERATION: ", 5);
-                    al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(text_color), (WIN_WIDTH/6)*5,WIN_HEIGHT/5 + 40,0,"%s%d","CONSUMPTION: ", -2);
-                    al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(text_color), (WIN_WIDTH/6)*5,WIN_HEIGHT/5 + 60,0,"%s%d","RELIABILITY: ", 2);
+                    printText(TITLE, darkMode, (WIN_WIDTH / 4) * 3, WIN_HEIGHT / 5 - 80, "%s", partGroup->parts[partCategory].name);
+                    printText(SMALL, darkMode, (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5 - 20, "%s", partGroup->parts[partCategory].type[partModel].name);
+                    //al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5 - 20, 0, "%s", partGroup->parts[partCategory].type[partModel].name);
+                    al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5, 0, "%s%d", "SPEED: ", partGroup->parts[partCategory].type[partModel].speed);
+                    al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5 + 20, 0, "%s%d", "ACCELERATION: ", partGroup->parts[partCategory].type[partModel].acceleration);
+                    al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5 + 40, 0, "%s%d", "CONSUMPTION: ", partGroup->parts[partCategory].type[partModel].consumption);
+                    al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5 + 60, 0, "%s%d", "RELIABILITY: ", partGroup->parts[partCategory].type[partModel].reliability);
 
-                    al_draw_textf(LS_allegro_get_font(NORMAL), LS_allegro_get_color(text_color), WIN_WIDTH/5*3.2, WIN_HEIGHT/5*3, 0, "%s", "CURRENT CONFIGURATION");
-                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(text_color), WIN_WIDTH/5*3.2, WIN_HEIGHT/5*3 + 40, 0, "%s%s", "TIRES: ", "C5");
-                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(text_color), WIN_WIDTH/5*3.2, WIN_HEIGHT/5*3 + 60, 0, "%s%s", "AERO FRONT: ", "LOW LOAD");
-                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(text_color), WIN_WIDTH/5*3.2, WIN_HEIGHT/5*3 + 80, 0, "%s%s", "AERO MID: ", "MID LOAD");
-                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(text_color), WIN_WIDTH/5*3.2, WIN_HEIGHT/5*3 + 100, 0, "%s%s", "AERO REAR: ", "HIGH LOAD");
-                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(text_color), WIN_WIDTH/5*3.2, WIN_HEIGHT/5*3 + 120, 0, "%s%s", "FUEL: ", "REGULAR");
-                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(text_color), WIN_WIDTH/5*3.2, WIN_HEIGHT/5*3 + 140, 0, "%s%s", "ENGINE: ", "SPEC C");
+                    al_draw_textf(LS_allegro_get_font(NORMAL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3, 0, "%s", "CURRENT CONFIGURATION");
+                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 40, 0, "%s%s", "TIRES: ", partGroup->parts[0].type[partGroup->parts[0].selected].name);
+                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 60, 0, "%s%s", "AERO FRONT: ", partGroup->parts[1].type[partGroup->parts[1].selected].name);
+                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 80, 0, "%s%s", "AERO MID: ", partGroup->parts[2].type[partGroup->parts[2].selected].name);
+                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 100, 0, "%s%s", "AERO REAR: ", partGroup->parts[3].type[partGroup->parts[3].selected].name);
+                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 120, 0, "%s%s", "FUEL: ", partGroup->parts[4].type[partGroup->parts[4].selected].name);
+                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 140, 0, "%s%s", "ENGINE: ", partGroup->parts[5].type[partGroup->parts[5].selected].name);
 
 
 
                     //'Painting' the graphic screen.
-                    LS_allegro_clear_and_paint(background_color);
+                    LS_allegro_clear_and_paint(getBackgroundColor(&darkMode));
                 }
 
                 //Tanquem la finestra gràfica
@@ -216,6 +238,8 @@ int main (void) {
         }
 
     } while (!exit);
+
+    free(partGroup);
 
     return 0;
 }

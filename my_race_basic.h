@@ -16,6 +16,17 @@
 
 #define MAXSTRING 26
 
+#define PARTS_FILE "files/fitxerPeces.txt"
+
+#define BACKGROUND_IMAGE "files/boxes.png"
+#define TIRES_IMAGE "files/neumaticos.png"
+#define AEROFRONT_IMAGE "files/aerofront.png"
+#define AEROMID_IMAGE "files/aeromid.png"
+#define AEROREAR_IMAGE "files/aerorear.png"
+#define FUEL_IMAGE "files/gasolina.png"
+#define ENGINE_IMAGE "files/motor.png"
+
+
 typedef struct {
     char driverName[MAXSTRING];
     char teamName[MAXSTRING];
@@ -37,6 +48,7 @@ typedef struct {
 typedef struct {
     char name[MAXSTRING];
     int numParts;
+    int selected;
     MiniPart * type;
 } Part;
 

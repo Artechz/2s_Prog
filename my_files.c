@@ -9,7 +9,7 @@
 
 #include "my_files.h"
 
-int readParts (GroupPart * partGroup) {
+GroupPart * readParts (GroupPart * partGroup) {
 
     FILE * partFile = fopen(PARTS_FILE, "r");
     char aux;
@@ -23,19 +23,22 @@ int readParts (GroupPart * partGroup) {
     partGroup = (GroupPart *) malloc(sizeof(GroupPart));
 
     fscanf(partFile, "%d%c", &(partGroup->numParts), &aux);
-    if (aux != '\n')
-        printf("Failed to read aux.\n");                                                                   //DEBUG
+    if (aux != '\n') {printf("Failed to read aux.\n");}      //DEBUG
 
+    printf("numParts = %d\n", partGroup->numParts);
     partGroup->parts = (Part *) malloc(sizeof(Part) * partGroup->numParts);
 
     for ( i = 0; i < partGroup->numParts; i++) {
 
         fgets(partGroup->parts[i].name, MAXSTRING, partFile);
         partGroup->parts[i].name[strlen(partGroup->parts[i].name)-1] = '\0';
+        //printf("%s!", partGroup->parts[i].name);
 
         fscanf(partFile, "%d%c", &(partGroup->parts[i].numParts), &aux);
-
+        //printf("\n!%d%c%d", partGroup->parts[i].numParts, aux, i);
         partGroup->parts[i].type = (MiniPart *) malloc(sizeof(MiniPart) * partGroup->parts[i].numParts);
+
+        partGroup->parts[i].selected = 0;
 
         for ( j = 0; j < partGroup->parts[i].numParts; j++) {
 
@@ -52,6 +55,8 @@ int readParts (GroupPart * partGroup) {
         }
     }
 
-    return error;
+    fclose(partFile);
+
+    return partGroup;
 
 }

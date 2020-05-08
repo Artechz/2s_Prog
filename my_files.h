@@ -15,8 +15,6 @@
 #include <string.h>
 #include "my_race_basic.h"
 
-#define PARTS_FILE "files/fitxerPeces.txt"
-
 //read fitxerPeces.txt
 //read / write fitxerGPs.txt
 // ?? fiterBase.bin
@@ -33,7 +31,7 @@
  * @Return: Returns the atoi of the input if answer is valid.
  *
 ************************************************/
-int readParts (GroupPart * partGroup);
+GroupPart * readParts (GroupPart * partGroup);
 
 
 #endif //PROGPRACTICE2_MY_FILES_H
