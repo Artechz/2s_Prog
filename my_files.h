@@ -21,17 +21,23 @@
 // ?? fitxer Corredors.bin
 
 
-/*********************************************** TODO
+/*********************************************** TODO comment readParts
  *
- * @Purpose: Asks the user a question, checks the answers for errors within a valid
- *           range of numbers and converts it to an int.
- * @Parameters:     in: question = text to print as a question.
- *                  in: min = minimum value for valid input range.
- *                  in: max = maximum value for valid input range.
- * @Return: Returns the atoi of the input if answer is valid.
+ * @Purpose:
+ * @Parameters:
+ * @Return:
  *
 ************************************************/
 GroupPart * readParts (GroupPart * partGroup);
+
+/*********************************************** TODO comment readSeason
+ *
+ * @Purpose:
+ * @Parameters:
+ * @Return:
+ *
+************************************************/
+Season * readSeason (Season * season);
 
 
 #endif //PROGPRACTICE2_MY_FILES_H

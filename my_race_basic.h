@@ -17,12 +17,13 @@
 #define MAXSTRING 26
 
 #define PARTS_FILE "files/fitxerPeces.txt"
+#define SEASON_FILE "files/fitxerGPs.txt"
 
 #define BACKGROUND_IMAGE "files/boxes.png"
 #define TIRES_IMAGE "files/neumaticos.png"
-#define AEROFRONT_IMAGE "files/aerofront.png"
-#define AEROMID_IMAGE "files/aeromid.png"
-#define AEROREAR_IMAGE "files/aerorear.png"
+#define AEROFRONT_IMAGE "files/aero_front.png"
+#define AEROMID_IMAGE "files/aero_mid.png"
+#define AEROREAR_IMAGE "files/aero_rear.png"
 #define FUEL_IMAGE "files/gasolina.png"
 #define ENGINE_IMAGE "files/motor.png"
 
@@ -57,7 +58,30 @@ typedef struct {
     Part * parts;
 } GroupPart;
 
-/***********************************************
+typedef struct {
+    int place;
+    char name[MAXSTRING];
+    int speed;
+    int acceleration;
+    int consumption;
+    int reliability;
+    float baseTime;
+    int pitstopTime;
+    int pitstopQty;
+    int completed;  //TODO probs sobra
+} Circuit;
+
+typedef struct {
+    int numGPs;
+    Circuit * circuits;
+} Season;
+
+typedef struct Node {
+    Circuit circuit;
+    struct Node * next;
+} Node;
+
+/***********************************************TODO
  *
  * @Purpose: Asks the user a question, checks the answers for errors within a valid
  *           range of numbers and converts it to an int.
@@ -68,5 +92,15 @@ typedef struct {
  *
 ************************************************/
 int menuAsk (char question[MAXSTRING], int min, int max);
+
+/***********************************************TODO
+ *
+ * @Purpose:
+ * @Parameters:
+ * @Return:
+ *
+************************************************/
+void infoAsk (Driver * driver);
+
 
 #endif //PROGPRACTICE2_MY_RACE_BASIC_H

@@ -60,3 +60,23 @@ GroupPart * readParts (GroupPart * partGroup) {
     return partGroup;
 
 }
+
+Season * readSeason (Season * season) {
+
+    FILE * seasonFile = fopen(SEASON_FILE, "r");
+
+}
+
+/*
+ *  quantity -> GPs INT
+ *  GP block:
+ *      place in season (to sort) INT
+ *      name of GP  STRING
+ *      appropriate speed INT
+ *      appropriate acceleration INT
+ *      appropriate consumption INT
+ *      appropriate reliability INT
+ *      base time FLOAT
+ *      pit-stop time INT
+ *      quantity pit-stops INT
+ */

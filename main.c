@@ -19,7 +19,7 @@
 
 int main (void) {
 
-    Driver driver;
+    Driver * driver;
     GroupPart * partGroup;
 
     //partGroup = (GroupPart *) malloc(sizeof(GroupPart));
@@ -28,7 +28,7 @@ int main (void) {
     int i, optionDone = 0, exit = 0, allegroExit = 0, partCategory = 0, partModel = 0, darkMode = 0;
 
     ALLEGRO_BITMAP * background = NULL;
-    ALLEGRO_BITMAP * parts[6];
+    ALLEGRO_BITMAP * partImages[6];
 
     do {
 
@@ -47,27 +47,10 @@ int main (void) {
             case 1:
 
                 if (0 == optionDone) {
-
-                    printf("Driver Name? ");
-                    fgets(driver.driverName, MAXSTRING, stdin);
-                    driver.driverName[strlen(driver.driverName) - 1] = '\0';
-
-                    printf("Team Name? ");
-                    fgets(driver.teamName, MAXSTRING, stdin);
-                    driver.teamName[strlen(driver.teamName) - 1] = '\0';
-
-                    driver.driverNumber = menuAsk("Drivers Number? ", 0, 99);
-
-                    driver.reflexes = menuAsk("Reflexes? ", 0, 10);
-
-                    driver.physicalCondition = menuAsk("Physical Condition? ", 0, 10);
-
-                    driver.temperament = menuAsk("Temperament? ", 0, 10);
-
-                    driver.tireManagement = menuAsk("Tire management? ", 0, 10);
-
+                    infoAsk(driver);
                     optionDone = 1;
                 }
+
                 printf("\nLoading Configurator ...");
 
                 partGroup = readParts(partGroup);                                                                                  //READING PARTS INFO
@@ -82,30 +65,30 @@ int main (void) {
                     printf("Failed to load background bitmap.\n");
                 }
 
-                parts[0] = al_load_bitmap(TIRES_IMAGE);
-                if (!parts[0]) {
+                partImages[0] = al_load_bitmap(TIRES_IMAGE);
+                if (!partImages[0]) {
                     printf("Failed to load tires bitmap.\n");
                 }
-                //parts[1] = al_load_bitmap(//TODO);
-                if (!parts[1]) {
+                partImages[1] = al_load_bitmap(AEROFRONT_IMAGE);
+                if (!partImages[1]) {
                     printf("Failed to load aero front bitmap.\n");
                 }
-                //parts[2] = al_load_bitmap(//TODO);
-                if (!parts[2]) {
+                partImages[2] = al_load_bitmap(AEROMID_IMAGE);
+                if (!partImages[2]) {
                     printf("Failed to load aero mid bitmap.\n");
                 }
-                //parts[3] = al_load_bitmap(//TODO);
-                if (!parts[3]) {
+                partImages[3] = al_load_bitmap(AEROREAR_IMAGE);
+                if (!partImages[3]) {
                     printf("Failed to load aero rear bitmap.\n");
                 }
-                parts[4] = al_load_bitmap(FUEL_IMAGE);
-                if (!parts[4]) {
+                partImages[4] = al_load_bitmap(FUEL_IMAGE);
+                if (!partImages[4]) {
                     printf("Failed to load fuel bitmap.\n");
                 }
-                parts[5] = al_load_bitmap(ENGINE_IMAGE);
-                if (!parts[5]) {
+                partImages[5] = al_load_bitmap(ENGINE_IMAGE);
+                if (!partImages[5]) {
                     printf("Failed to load engine bitmap.\n");
-                }//TODO put images
+                }
 
 
                 //Infinite loop until ESC is pressed.
@@ -119,7 +102,7 @@ int main (void) {
                         if (LS_allegro_key_pressed(ALLEGRO_KEY_D)) {
                             switchDarkMode(&darkMode);
                         }
-                        else {
+                        else {  //TODO put arrow thingy into my_race_basic
                             if (LS_allegro_key_pressed(ALLEGRO_KEY_LEFT)) {
                                 printf("<- ");
                                 //going left
@@ -183,52 +166,42 @@ int main (void) {
                         }
                     }
 
-                    printConfig(background, parts, partCategory, darkMode);
-
-                    //Printing text
-                    printText(TITLE, darkMode, (WIN_WIDTH / 4) * 3, WIN_HEIGHT / 5 - 80, "%s", partGroup->parts[partCategory].name);
-                    printText(SMALL, darkMode, (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5 - 20, "%s", partGroup->parts[partCategory].type[partModel].name);
-                    //al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5 - 20, 0, "%s", partGroup->parts[partCategory].type[partModel].name);
-                    al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5, 0, "%s%d", "SPEED: ", partGroup->parts[partCategory].type[partModel].speed);
-                    al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5 + 20, 0, "%s%d", "ACCELERATION: ", partGroup->parts[partCategory].type[partModel].acceleration);
-                    al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5 + 40, 0, "%s%d", "CONSUMPTION: ", partGroup->parts[partCategory].type[partModel].consumption);
-                    al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5 + 60, 0, "%s%d", "RELIABILITY: ", partGroup->parts[partCategory].type[partModel].reliability);
-
-                    al_draw_textf(LS_allegro_get_font(NORMAL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3, 0, "%s", "CURRENT CONFIGURATION");
-                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 40, 0, "%s%s", "TIRES: ", partGroup->parts[0].type[partGroup->parts[0].selected].name);
-                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 60, 0, "%s%s", "AERO FRONT: ", partGroup->parts[1].type[partGroup->parts[1].selected].name);
-                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 80, 0, "%s%s", "AERO MID: ", partGroup->parts[2].type[partGroup->parts[2].selected].name);
-                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 100, 0, "%s%s", "AERO REAR: ", partGroup->parts[3].type[partGroup->parts[3].selected].name);
-                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 120, 0, "%s%s", "FUEL: ", partGroup->parts[4].type[partGroup->parts[4].selected].name);
-                    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 140, 0, "%s%s", "ENGINE: ", partGroup->parts[5].type[partGroup->parts[5].selected].name);
-
-
+                    //Printing all the configuration screen elements.
+                    printConfig (background, darkMode, partImages, partCategory, partModel, partGroup);
 
                     //'Painting' the graphic screen.
                     LS_allegro_clear_and_paint(getBackgroundColor(&darkMode));
                 }
 
-                //Tanquem la finestra gràfica
+                //Closing the graphic window
                 LS_allegro_exit();
 
                 break;
 
                 //OPTION 2
             case 2:
-                printf("\nNot done yet\n");
-                //TODO
+                printf("\nNot completed yet\n");
+                //TODO option 2
+
+                if (!optionDone) {
+                    printf("ERROR: Car needs to be configured before racing.");
+                }
+                else {
+
+                }
+
                 break;
 
                 //OPTION 3
             case 3:
                 printf("\nNot done yet\n");
-                //TODO
+                //TODO option 3
                 break;
 
                 //OPTION 4
             case 4:
                 printf("\nNot done yet\n");
-                //TODO
+                //TODO option 4
                 break;
 
             default:
@@ -239,6 +212,7 @@ int main (void) {
 
     } while (!exit);
 
+    //TODO all frees
     free(partGroup);
 
     return 0;

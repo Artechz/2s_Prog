@@ -43,3 +43,24 @@ int menuAsk (char question[MAXSTRING], int min, int max) {
 
     return atoi(input);
 }
+
+void infoAsk (Driver * driver) {
+    printf("Driver Name? ");
+    fgets(driver->driverName, MAXSTRING, stdin);
+    driver->driverName[strlen(driver->driverName) - 1] = '\0';
+
+    printf("Team Name? ");
+    fgets(driver->teamName, MAXSTRING, stdin);
+    driver->teamName[strlen(driver->teamName) - 1] = '\0';
+
+    driver->driverNumber = menuAsk("Drivers Number? ", 0, 99);
+
+    driver->reflexes = menuAsk("Reflexes? ", 0, 10);
+
+    driver->physicalCondition = menuAsk("Physical Condition? ", 0, 10);
+
+    driver->temperament = menuAsk("Temperament? ", 0, 10);
+
+    driver->tireManagement = menuAsk("Tire management? ", 0, 10);
+}
+
