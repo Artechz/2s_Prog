@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "my_race_basic.h"
+#include "my_sortedlist.h"
 
 //read fitxerPeces.txt
 //read / write fitxerGPs.txt
@@ -21,23 +22,23 @@
 // ?? fitxer Corredors.bin
 
 
-/*********************************************** TODO comment readParts
+/***********************************************
  *
- * @Purpose:
- * @Parameters:
- * @Return:
+ * @Purpose:    Reading the Pat¡rts file and loading the info into a GroupPart structure.
+ * @Parameters: (in/out) partGroup = the struct where to load all the parts info.
+ * @Return:     false (0) if there's no error, true (!0) otherwise.
  *
 ************************************************/
 GroupPart * readParts (GroupPart * partGroup);
 
-/*********************************************** TODO comment readSeason
+/***********************************************
  *
- * @Purpose:
- * @Parameters:
- * @Return:
+ * @Purpose:    Reading the GPs file and loading the info into a SortedList.
+ * @Parameters: (in/out) season = the sorted list where to load all the GP info.
+ * @Return:     false (0) if there's no error, true (!0) otherwise.
  *
 ************************************************/
-Season * readSeason (Season * season);
+int readSeason (SortedList * season);
 
 
 #endif //PROGPRACTICE2_MY_FILES_H

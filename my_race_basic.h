@@ -76,10 +76,6 @@ typedef struct {
     Circuit * circuits;
 } Season;
 
-typedef struct Node {
-    Circuit circuit;
-    struct Node * next;
-} Node;
 
 /***********************************************TODO
  *

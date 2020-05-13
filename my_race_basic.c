@@ -47,8 +47,9 @@ int menuAsk (char question[MAXSTRING], int min, int max) {
 void infoAsk (Driver * driver) {
     printf("Driver Name? ");
     fgets(driver->driverName, MAXSTRING, stdin);
+    printf("as");
     driver->driverName[strlen(driver->driverName) - 1] = '\0';
-
+    printf("df");
     printf("Team Name? ");
     fgets(driver->teamName, MAXSTRING, stdin);
     driver->teamName[strlen(driver->teamName) - 1] = '\0';

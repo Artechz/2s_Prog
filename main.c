@@ -9,7 +9,6 @@
 
 
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include "LS_allegro.h"
 #include "my_race_basic.h"
@@ -21,6 +20,7 @@ int main (void) {
 
     Driver * driver;
     GroupPart * partGroup;
+    SortedList * season;
 
     //partGroup = (GroupPart *) malloc(sizeof(GroupPart));
 
@@ -31,7 +31,7 @@ int main (void) {
     ALLEGRO_BITMAP * partImages[6];
 
     do {
-
+        //readSeason(season);
         printf("\nWelcome to LS Racing\n\n");
         printf("\t 1. Configure Car\n");
         printf("\t 2. Race\n");
@@ -53,13 +53,14 @@ int main (void) {
 
                 printf("\nLoading Configurator ...");
 
-                partGroup = readParts(partGroup);                                                                                  //READING PARTS INFO
+                //Reading the parts file and putting all parts info into partGroup.
+                partGroup = readParts(partGroup);
 
                 LS_allegro_init(WIN_WIDTH, WIN_HEIGHT, WIN_TITLE_CONFIGURATOR);
 
-                printf("\nPath: %s\n", al_get_current_directory());                                                       //DEBUG
+                //printf("\nPath: %s\n", al_get_current_directory());
 
-                //Loading the image as a bitmap, checking it loaded properly and saving its size for future scaling.
+                //Loading the images as a bitmap, checking they loaded properly.
                 background = al_load_bitmap(BACKGROUND_IMAGE);
                 if (!background) {
                     printf("Failed to load background bitmap.\n");
@@ -175,20 +176,54 @@ int main (void) {
 
                 //Closing the graphic window
                 LS_allegro_exit();
-
                 break;
 
-                //OPTION 2
+            //OPTION 2
             case 2:
-                printf("\nNot completed yet\n");
+                printf("\nWIP\n");
                 //TODO option 2
-
+                /*
                 if (!optionDone) {
-                    printf("ERROR: Car needs to be configured before racing.");
+                    printf("\nERROR: Car needs to be configured before racing.");
                 }
                 else {
+                */
+                    SortedList damn;
+                    damn = SORTEDLIST_create();
+                    season = &damn;
+                    if (readSeason(season)) {
+                        printf("\nThere was an error getting the season info");
+                    }
+                    else {
+                        SORTEDLIST_goToHead(season);
+                        printf("%s", SORTEDLIST_get(season).name);
 
-                }
+                        printf("\nLoading Race ...");
+
+                        LS_allegro_init(WIN_WIDTH, WIN_HEIGHT, WIN_TITLE_RACE);
+
+                        //Infinite loop until ESC is pressed.
+                        while (!allegroExit) {
+
+                            //Checking if ESC or any arrow is being pressed.
+                            if (LS_allegro_key_pressed(ALLEGRO_KEY_ESCAPE)) {
+                                allegroExit = 1;
+                            }
+
+                            //Printing race info.
+                            printGP(darkMode, SORTEDLIST_get(season));
+
+                            //'Painting' the graphic screen.
+                            LS_allegro_clear_and_paint(getBackgroundColor(&darkMode));
+
+                        }
+
+                        //SORTEDLIST_get(season).completed = 1;
+                        //SORTEDLIST_next(season);
+                        LS_allegro_exit();
+                    }
+
+                //}
 
                 break;
 
@@ -213,6 +248,7 @@ int main (void) {
     } while (!exit);
 
     //TODO all frees
+    SORTEDLIST_destroy(season);
     free(partGroup);
 
     return 0;

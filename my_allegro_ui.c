@@ -9,6 +9,10 @@
 
 #include "my_allegro_ui.h"
 
+void printText (int size, int color, int xpos, int ypos, char * input, char * content) {
+
+    al_draw_textf (LS_allegro_get_font(size), LS_allegro_get_color(color), xpos, ypos,0, input, content);
+}
 
 void printConfig (ALLEGRO_BITMAP * background, int darkMode, ALLEGRO_BITMAP * parts[6], int partCategory, int partModel, GroupPart * partGroup) {
 
@@ -49,7 +53,7 @@ void printConfig (ALLEGRO_BITMAP * background, int darkMode, ALLEGRO_BITMAP * pa
                               WIN_HEIGHT/5 + 20 + part_height_scaled / 5 + part_height_scaled, WIN_WIDTH / 5 * 3.4 + 15 + part_width_scaled / 2, WIN_HEIGHT / 5 + 20 + part_height_scaled / 5 + part_height_scaled, LS_allegro_get_color(darkMode));
 
     //Printing text
-    printText (TITLE, darkMode, (WIN_WIDTH / 4) * 3, WIN_HEIGHT / 5 - 80, "%s", partGroup->parts[partCategory].name);
+    printText (FONT_TITLE, darkMode, (WIN_WIDTH / 4) * 3, WIN_HEIGHT / 5 - 80, "%s", partGroup->parts[partCategory].name);
     printText (SMALL, darkMode, (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5 - 20, "%s", partGroup->parts[partCategory].type[partModel].name);
 
     //al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5 - 20, 0, "%s", partGroup->parts[partCategory].type[partModel].name);
@@ -67,9 +71,17 @@ void printConfig (ALLEGRO_BITMAP * background, int darkMode, ALLEGRO_BITMAP * pa
     al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 140, 0, "%s%s", "ENGINE: ", partGroup->parts[5].type[partGroup->parts[5].selected].name);
 }
 
-void printText (int size, int color, int xpos, int ypos, char * input, char * content) {
+void printGP (int darkMode, Circuit gp) {
 
-    al_draw_textf (LS_allegro_get_font(size), LS_allegro_get_color(color), xpos, ypos,0, input, content);
+    printText (FONT_TITLE, darkMode, WIN_WIDTH / 5, WIN_HEIGHT / 5, "WELCOME TO THE %s", gp.name);
+
+    al_draw_textf(LS_allegro_get_font(FONT_TITLE), LS_allegro_get_color(darkMode), (WIN_WIDTH / 4), WIN_HEIGHT / 9 * 3, 0, "%s%d", "SPEED: ", gp.speed);
+    al_draw_textf(LS_allegro_get_font(FONT_TITLE), LS_allegro_get_color(darkMode), (WIN_WIDTH / 4), WIN_HEIGHT / 9 * 3 + 40, 0, "%s%d", "ACCELERATION: ", gp.acceleration);
+    al_draw_textf(LS_allegro_get_font(FONT_TITLE), LS_allegro_get_color(darkMode), (WIN_WIDTH / 4), WIN_HEIGHT / 9 * 3 + 80, 0, "%s%d", "CONSUMPTION: ", gp.consumption);
+    al_draw_textf(LS_allegro_get_font(FONT_TITLE), LS_allegro_get_color(darkMode), (WIN_WIDTH / 4), WIN_HEIGHT / 9 * 3 + 120, 0, "%s%d", "RELIABILITY: ", gp.reliability);
+
+    printText (FONT_TITLE, darkMode, WIN_WIDTH / 5, (WIN_HEIGHT / 4) * 3, "%s", "PRESS R TO START THE RACE");
+
 }
 
 int switchDarkMode (int * mode) {
