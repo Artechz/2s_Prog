@@ -91,6 +91,7 @@ int readSeason (SortedList * season) {
             fscanf(seasonFile, "%f%c", &temp.baseTime, &aux);
             fscanf(seasonFile, "%d%c", &temp.pitstopTime, &aux);
             fscanf(seasonFile, "%d%c", &(temp.pitstopQty), &aux);
+            temp.completed = 0;
 
             SORTEDLIST_sortedAdd(season, temp);
             printf("\niteraFIN_%d - %d - %s", i, temp.place, temp.name);

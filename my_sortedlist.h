@@ -40,9 +40,9 @@ typedef struct {
 /****************************************************************************
  *
  * @Objective:  Creates an empty sorted list.
- *			   If the list fails to create the phantom node, it will set
+ *			    If the list fails to create the phantom node, it will set
  *			    the error code to LIST_ERROR_MALLOC.
- * @Parameters: ---
+ * @Parameters:     ---
  * @Return:     An empty sorted list
  *
  ****************************************************************************/
@@ -50,14 +50,14 @@ SortedList SORTEDLIST_create ();
 
 /****************************************************************************
  *
- * @Objective: Inserts the specified element in this list to the position
+ * @Objective:  Inserts the specified element in this list to the position
  *			    defined by the sorting algorithm. Shifts the point of view
  *				element (if any) and any subsequent elements to the right.
- *			   If the list fails to create the new node to store the element,
+ *			    If the list fails to create the new node to store the element,
  *				it will set	the error code to LIST_ERROR_MALLOC.
  *
- * @Parameters: (in/out) list    = the sorted list where to add the new element
- *				(in)     element = the element to add to the list
+ * @Parameters:     (in/out) list    = the sorted list where to add the new element
+ *				    (in)     element = the element to add to the list
  * @Return:     ---
  *
  ****************************************************************************/
@@ -71,7 +71,7 @@ void 	SORTEDLIST_sortedAdd (SortedList * list, Element element);
  *				element of the list. That will also happen for an empty list.
  *				In that situation, this operation will set the error code to
  *			    LIST_ERROR_END.
- * @Parameters: (in/out) list = the sorted list where to remove the element
+ * @Parameters:     (in/out) list = the sorted list where to remove the element
  * @Return:     ---
  *
  ****************************************************************************/
@@ -79,14 +79,14 @@ void 	SORTEDLIST_remove (SortedList * list);
 
 /****************************************************************************
  *
- * @Objective: Returns the element currently at the point of view in this list.
- *			   This operation will fail if the POV is after the last valid
+ * @Objective:  Returns the element currently at the point of view in this list.
+ *			    This operation will fail if the POV is after the last valid
  *				element of the list. That will also happen for an empty list.
  *				In that situation, this operation will set the error code to
  *				LIST_ERROR_END.
- * @Parameters: (in/out) list = the sorted list where to get the element.
+ * @Parameters:     (in/out) list = the sorted list where to get the element.
  *								in/out because we need to set the error code.
- * @Return: ---
+ * @Return:     ---
  *
  ****************************************************************************/
 Element SORTEDLIST_get (SortedList * list);
@@ -94,9 +94,9 @@ Element SORTEDLIST_get (SortedList * list);
 
 /****************************************************************************
  *
- * @Objective: Returns true (!0) if this list contains no elements.
- * @Parameters: (in)     list = the sorted list to check.
- * @Return: true (!0) if this list contains no elements, false (0) otherwise.
+ * @Objective:  Returns true (!0) if this list contains no elements.
+ * @Parameters:     (in)     list = the sorted list to check.
+ * @Return:     true (!0) if this list contains no elements, false (0) otherwise.
  *
  ****************************************************************************/
 int 	SORTEDLIST_isEmpty (SortedList list);
@@ -104,9 +104,9 @@ int 	SORTEDLIST_isEmpty (SortedList list);
 
 /****************************************************************************
  *
- * @Objective: Moves the point of view to the first element in the list.
- * @Parameters: (in/out) list = the sorted list to move the POV.
- * @Return: ---
+ * @Objective:  Moves the point of view to the first element in the list.
+ * @Parameters:     (in/out) list = the sorted list to move the POV.
+ * @Return:     ---
  *
  ****************************************************************************/
 void 	SORTEDLIST_goToHead (SortedList * list);
@@ -114,12 +114,12 @@ void 	SORTEDLIST_goToHead (SortedList * list);
 
 /****************************************************************************
  *
- * @Objective: Moves the point of view to the next element in the list.
+ * @Objective:  Moves the point of view to the next element in the list.
  *				If the POV is after the last element in the list (or when
  *				the list is empty), this function will set the list's error
  *				to LIST_ERROR_END.
- * @Parameters: (in/out) list = the sorted list to move the POV.
- * @Return: ---
+ * @Parameters:     (in/out) list = the sorted list to move the POV.
+ * @Return:     ---
  *
  ****************************************************************************/
 void 	SORTEDLIST_next (SortedList * list);
@@ -127,10 +127,10 @@ void 	SORTEDLIST_next (SortedList * list);
 
 /****************************************************************************
  *
- * @Objective: Returns true (!0) if the POV is after the last element in the
+ * @Objective:  Returns true (!0) if the POV is after the last element in the
  *				list.
- * @Parameters: (in)     list = the sorted to check.
- * @Return: true (!0) if the POV is after the last element in the list
+ * @Parameters:     (in)     list = the sorted to check.
+ * @Return:     true (!0) if the POV is after the last element in the list
  *
  ****************************************************************************/
 int 	SORTEDLIST_isAtEnd (SortedList list);
@@ -141,8 +141,8 @@ int 	SORTEDLIST_isAtEnd (SortedList list);
  * @Objective: Removes all the elements from the list and frees any dynamic
  *				memory block the list was using. The list must be created
  *				again before usage.
- * @Parameters: (in/out) list = the sorted list to destroy.
- * @Return: ---
+ * @Parameters:     (in/out) list = the sorted list to destroy.
+ * @Return:     ---
  *
  ****************************************************************************/
 void 	SORTEDLIST_destroy (SortedList * list);
@@ -150,11 +150,11 @@ void 	SORTEDLIST_destroy (SortedList * list);
 
 /****************************************************************************
  *
- * @Objective: This function returns the error code provided by the last
+ * @Objective:  This function returns the error code provided by the last
  *				operation run. The operations that update the error code are:
  *				Create, Add, Remove and Get.
- * @Parameters: (in)     list = the sorted list to check.
- * @Return: an error code from the list of constants defined.
+ * @Parameters:     (in)     list = the sorted list to check.
+ * @Return:     An error code from the list of constants defined.
  *
  ****************************************************************************/
 int		SORTEDLIST_getErrorCode (SortedList list);

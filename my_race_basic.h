@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define MAXSTRING 26
 
@@ -77,14 +78,15 @@ typedef struct {
 } Season;
 
 
-/***********************************************TODO
+/***********************************************
  *
- * @Purpose: Asks the user a question, checks the answers for errors within a valid
- *           range of numbers and converts it to an int.
+ * @Purpose:    Asks the user a question, checks the
+ *              answers for errors within a valid range
+ *              of numbers and converts it to an int.
  * @Parameters:     in: question = text to print as a question.
  *                  in: min = minimum value for valid input range.
  *                  in: max = maximum value for valid input range.
- * @Return: Returns the atoi of the input if answer is valid.
+ * @Return:     Returns the value typed by the user.
  *
 ************************************************/
 int menuAsk (char question[MAXSTRING], int min, int max);
@@ -97,6 +99,20 @@ int menuAsk (char question[MAXSTRING], int min, int max);
  *
 ************************************************/
 void infoAsk (Driver * driver);
+
+/*
+/***********************************************TODO evaluate if needed
+ *
+ * @Purpose:    Asks the user a question, checks the
+ *              answers for errors within a valid range
+ *              of numbers and converts it to an int.
+ * @Parameters:     in: question = text to print as a question.
+ *                  in: min = minimum value for valid input range.
+ *                  in: max = maximum value for valid input range.
+ * @Return:     Returns the value typed by the user.
+ *
+************************************************/
+//void timeWait (float threshold);
 
 
 #endif //PROGPRACTICE2_MY_RACE_BASIC_H

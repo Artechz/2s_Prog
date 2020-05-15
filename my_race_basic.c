@@ -45,11 +45,11 @@ int menuAsk (char question[MAXSTRING], int min, int max) {
 }
 
 void infoAsk (Driver * driver) {
+
     printf("Driver Name? ");
     fgets(driver->driverName, MAXSTRING, stdin);
-    printf("as");
     driver->driverName[strlen(driver->driverName) - 1] = '\0';
-    printf("df");
+
     printf("Team Name? ");
     fgets(driver->teamName, MAXSTRING, stdin);
     driver->teamName[strlen(driver->teamName) - 1] = '\0';
@@ -65,3 +65,15 @@ void infoAsk (Driver * driver) {
     driver->tireManagement = menuAsk("Tire management? ", 0, 10);
 }
 
+/*
+void timeWait (float threshold) {
+    float timeInitial, timeMeasured, timeDelta = 0;
+
+    timeInitial = (float)clock();
+    while (timeDelta < threshold) {
+        timeMeasured = (float)clock();
+        timeDelta = ((timeMeasured - timeInitial) / (float)CLOCKS_PER_SEC);
+    }
+    printf("%.2f - %.2f s have passed.", threshold, timeDelta);
+}
+*/

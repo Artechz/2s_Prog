@@ -24,6 +24,8 @@ void printConfig (ALLEGRO_BITMAP * background, int darkMode, ALLEGRO_BITMAP * pa
     const int part_width_scaled = al_get_bitmap_width(parts[0]) / (WIN_WIDTH / 200);
     const int part_height_scaled = al_get_bitmap_height(parts[0]) / (WIN_WIDTH / 200);
 
+    int i , margin = 0;
+
     //Scales the boxes image to a size that fits the actual window.
     al_draw_scaled_bitmap (background, 0, 0, background_width, background_height, 0, 0, (WIN_WIDTH/5)*3, WIN_HEIGHT, 0);
     //Scaled the tires image so it's not too big for the arrows to have space.
@@ -63,12 +65,11 @@ void printConfig (ALLEGRO_BITMAP * background, int darkMode, ALLEGRO_BITMAP * pa
     al_draw_textf (LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), (WIN_WIDTH / 6) * 5, WIN_HEIGHT / 5 + 60, 0, "%s%d", "RELIABILITY: ", partGroup->parts[partCategory].type[partModel].reliability);
 
     al_draw_textf(LS_allegro_get_font(NORMAL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3, 0, "%s", "CURRENT CONFIGURATION");
-    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 40, 0, "%s%s", "TIRES: ", partGroup->parts[0].type[partGroup->parts[0].selected].name);
-    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 60, 0, "%s%s", "AERO FRONT: ", partGroup->parts[1].type[partGroup->parts[1].selected].name);
-    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 80, 0, "%s%s", "AERO MID: ", partGroup->parts[2].type[partGroup->parts[2].selected].name);
-    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 100, 0, "%s%s", "AERO REAR: ", partGroup->parts[3].type[partGroup->parts[3].selected].name);
-    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 120, 0, "%s%s", "FUEL: ", partGroup->parts[4].type[partGroup->parts[4].selected].name);
-    al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 140, 0, "%s%s", "ENGINE: ", partGroup->parts[5].type[partGroup->parts[5].selected].name);
+
+    for (i = 0; i < partGroup->numParts; i++) {
+        al_draw_textf(LS_allegro_get_font(SMALL), LS_allegro_get_color(darkMode), WIN_WIDTH / 5 * 3.2, WIN_HEIGHT / 5 * 3 + 40 + margin, 0, "%s%s%s", partGroup->parts[i].name, ": ", partGroup->parts[i].type[partGroup->parts[i].selected].name);
+        margin += 20;
+    }
 }
 
 void printGP (int darkMode, Circuit gp) {
@@ -81,6 +82,42 @@ void printGP (int darkMode, Circuit gp) {
     al_draw_textf(LS_allegro_get_font(FONT_TITLE), LS_allegro_get_color(darkMode), (WIN_WIDTH / 4), WIN_HEIGHT / 9 * 3 + 120, 0, "%s%d", "RELIABILITY: ", gp.reliability);
 
     printText (FONT_TITLE, darkMode, WIN_WIDTH / 5, (WIN_HEIGHT / 4) * 3, "%s", "PRESS R TO START THE RACE");
+
+    //'Painting' the graphic screen.
+    LS_allegro_clear_and_paint(getBackgroundColor(&darkMode));
+}
+
+void printTrafficLights(int darkMode, int on[5]) {
+
+    int i, j, x;
+
+    for (j = 0; j < 5; j++) {
+        x = WIN_WIDTH * (7 + 4 * j) /30;
+
+        al_draw_filled_rectangle((x - WIN_WIDTH/18), WIN_HEIGHT / 5, (x + WIN_WIDTH/18),
+                                 (WIN_HEIGHT / 5) * 4, LS_allegro_get_color(darkMode));
+        //drawing balls
+        for (i = 2; i < 4; i++) {
+            al_draw_filled_circle(x, ((WIN_HEIGHT / 9)*i + (WIN_HEIGHT / 40)*i) + WIN_HEIGHT/34, WIN_HEIGHT / 18,
+                                  LS_allegro_get_color(LIGHT_GRAY));
+        }
+        if (on[j]) {
+            for (i = 4; i < 6; i++) {
+                al_draw_filled_circle(x, ((WIN_HEIGHT / 9)*i + (WIN_HEIGHT / 40)*i) + WIN_HEIGHT/34, WIN_HEIGHT / 18,
+                                      LS_allegro_get_color(RED));
+            }
+        }
+        else {
+            for (i = 4; i < 6; i++) {
+                al_draw_filled_circle(x, ((WIN_HEIGHT / 9) * i + (WIN_HEIGHT / 40) * i) + WIN_HEIGHT / 34,
+                                      WIN_HEIGHT / 18,
+                                      LS_allegro_get_color(LIGHT_GRAY));
+            }
+        }
+    }
+
+    //'Painting' the graphic screen.
+    LS_allegro_clear_and_paint(getBackgroundColor(&darkMode));
 
 }
 
