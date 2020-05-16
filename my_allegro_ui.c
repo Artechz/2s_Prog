@@ -121,6 +121,46 @@ void printTrafficLights(int darkMode, int on[5]) {
 
 }
 
+void printRace (int darkMode, Driver * driver, Car * car, float timeElapsed) {
+
+    //Main part
+    al_draw_filled_rectangle( 0, 0, (WIN_WIDTH*3)/4, (WIN_HEIGHT*9)/10, LS_allegro_get_color(getBackgroundColor(&darkMode)));
+
+
+
+    //Right part
+    printText(FONT_TITLE, darkMode, (WIN_WIDTH*3)/4 + (WIN_WIDTH*1)/60, (WIN_HEIGHT*4)/100, "%s", "PILOT");
+    printText(NORMAL, darkMode, (WIN_WIDTH*3)/4 + (WIN_WIDTH*2)/60, (WIN_HEIGHT*10)/100, "%s", "NAME");
+    printText(NORMAL, YELLOW, (WIN_WIDTH*3)/4 + (WIN_WIDTH*3)/60, (WIN_HEIGHT*14)/100, "%s", driver->driverName);
+    printText(NORMAL, darkMode, (WIN_WIDTH*3)/4 + (WIN_WIDTH*2)/60, (WIN_HEIGHT*18)/100, "%s", "TEAM");
+    printText(NORMAL, YELLOW, (WIN_WIDTH*3)/4 + (WIN_WIDTH*3)/60, (WIN_HEIGHT*22)/100, "%s", driver->teamName);
+    printText(NORMAL, darkMode, (WIN_WIDTH*3)/4 + (WIN_WIDTH*2)/60, (WIN_HEIGHT*26)/100, "%s", "NUMBER");
+    al_draw_textf(LS_allegro_get_font(NORMAL), LS_allegro_get_color(YELLOW), (WIN_WIDTH*3)/4 + (WIN_WIDTH*3)/60, (WIN_HEIGHT*30)/100, 0, "%d", driver->number);
+
+    printText(FONT_TITLE, darkMode, (WIN_WIDTH*3)/4 + (WIN_WIDTH*1)/60, (WIN_HEIGHT*36)/100, "%s", "CAR");
+    printText(NORMAL, darkMode, (WIN_WIDTH*3)/4 + (WIN_WIDTH*2)/60, (WIN_HEIGHT*42)/100, "%s", "SPEED");
+    al_draw_textf(LS_allegro_get_font(NORMAL), LS_allegro_get_color(YELLOW), (WIN_WIDTH*3)/4 + (WIN_WIDTH*3)/60, (WIN_HEIGHT*46)/100, 0, "%d", car->speed);
+    printText(NORMAL, darkMode, (WIN_WIDTH*3)/4 + (WIN_WIDTH*2)/60, (WIN_HEIGHT*50)/100, "%s", "ACCELERATION");
+    al_draw_textf(LS_allegro_get_font(NORMAL), LS_allegro_get_color(YELLOW), (WIN_WIDTH*3)/4 + (WIN_WIDTH*3)/60, (WIN_HEIGHT*54)/100, 0, "%d", car->acceleration);
+    printText(NORMAL, darkMode, (WIN_WIDTH*3)/4 + (WIN_WIDTH*2)/60, (WIN_HEIGHT*58)/100, "%s", "CONSUMPTION");
+    al_draw_textf(LS_allegro_get_font(NORMAL), LS_allegro_get_color(YELLOW), (WIN_WIDTH*3)/4 + (WIN_WIDTH*3)/60, (WIN_HEIGHT*62)/100, 0, "%d", car->consumption);
+    printText(NORMAL, darkMode, (WIN_WIDTH*3)/4 + (WIN_WIDTH*2)/60, (WIN_HEIGHT*66)/100, "%s", "RELIABILITY");
+    al_draw_textf(LS_allegro_get_font(NORMAL), LS_allegro_get_color(YELLOW), (WIN_WIDTH*3)/4 + (WIN_WIDTH*3)/60, (WIN_HEIGHT*70)/100, 0, "%d", car->reliability);
+
+    al_draw_textf(LS_allegro_get_font(FONT_TITLE), LS_allegro_get_color(darkMode), (WIN_WIDTH*3)/4 + (WIN_WIDTH*1)/60, (WIN_HEIGHT*78)/100, 0, "%02d", (int)timeElapsed);
+
+    //Bottom part
+    al_draw_line((WIN_WIDTH*3)/4, 0, (WIN_WIDTH*3)/4, WIN_HEIGHT, LS_allegro_get_color(LIGHT_GRAY), WIN_WIDTH/150);
+    al_draw_line(0, (WIN_HEIGHT*9)/10, (WIN_WIDTH*3)/4, (WIN_HEIGHT*9)/10, LS_allegro_get_color(LIGHT_GRAY), WIN_WIDTH/150);
+
+    printText(NORMAL, darkMode, WIN_WIDTH/30, (WIN_HEIGHT*94)/100, "%s", "RADIO (R)");
+    printText(NORMAL, darkMode, (WIN_WIDTH*12)/20, (WIN_HEIGHT*94)/100, "%s", "PIT STOP (P)");
+
+
+    //'Painting' the graphic screen.
+    LS_allegro_clear_and_paint(getBackgroundColor(&darkMode));
+}
+
 int switchDarkMode (int * mode) {
     if (WHITE == *mode) {
         *mode = BLACK;

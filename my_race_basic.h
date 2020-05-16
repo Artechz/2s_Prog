@@ -17,8 +17,10 @@
 
 #define MAXSTRING 26
 
-#define PARTS_FILE "files/fitxerPeces.txt"
+#define PARTS_FILE "files/fitxerPeces.txt"      //TODO delete all this bc it has to be arguments
 #define SEASON_FILE "files/fitxerGPs.txt"
+#define PILOTS_FILE "files/fitxerCorredors.bin"
+#define BASE_FILE "files/fitxerBase.bin"
 
 #define BACKGROUND_IMAGE "files/boxes.png"
 #define TIRES_IMAGE "files/neumaticos.png"
@@ -28,16 +30,47 @@
 #define FUEL_IMAGE "files/gasolina.png"
 #define ENGINE_IMAGE "files/motor.png"
 
+#define RACERS_AMOUNT 7
+
+#define PS_NOTASKED 0
+#define PS_ASKED 1
+#define PS_ACCEPTED 2
+
+typedef struct {
+    char name[MAXSTRING];
+    int number;
+    char teamName[MAXSTRING];
+    int speed;
+    int acceleration;
+    int consumption;
+    int reliability;
+    int reflexes;
+    int physicalCondition;
+    int temperament;
+    int tireManagement;
+} Pilot;
+
+typedef struct {
+    int amount;
+    Pilot * who;
+} PilotContainer;
 
 typedef struct {
     char driverName[MAXSTRING];
     char teamName[MAXSTRING];
-    int driverNumber;
+    int number;
     int reflexes;
     int physicalCondition;
     int temperament;
     int tireManagement;
 } Driver;
+
+typedef struct {
+    int speed;
+    int acceleration;
+    int consumption;
+    int reliability;
+} Car;
 
 typedef struct {
     char name[MAXSTRING];
@@ -113,6 +146,17 @@ void infoAsk (Driver * driver);
  *
 ************************************************/
 //void timeWait (float threshold);
+
+/***********************************************TODO
+ *
+ * @Purpose:
+ * @Parameters:
+ * @Return:
+ *
+************************************************/
+void calculateRace (Car * car, Driver * driver, Pilot * pilots, Circuit temp);
+
+
 
 
 #endif //PROGPRACTICE2_MY_RACE_BASIC_H

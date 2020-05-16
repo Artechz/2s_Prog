@@ -21,7 +21,6 @@ SortedList SORTEDLIST_create () {
         // Everything was fine, so we indicate it.
         list.error = LIST_NO_ERROR;
         list.size = 0;
-        printf("\nSortedList created.");
     }
     else {
         // Could not get dynamic memory for the phantom node, so we indicate it.
@@ -59,7 +58,7 @@ void 	SORTEDLIST_sortedAdd (SortedList * list, Element element) {
     //Loop will stop when it finds the proper position for the new Element.
     while (!SORTEDLIST_isAtEnd(*list) && !found) {
         e = SORTEDLIST_get(list);
-        printf("holaquetal");
+
         //Skipping the position if number is greater than actual. If not then we've found it.
         if (element.place > e.place) {
             SORTEDLIST_next(list);
@@ -71,7 +70,7 @@ void 	SORTEDLIST_sortedAdd (SortedList * list, Element element) {
 
     //Adding the element to the list.
     LINKEDLIST_add(list, element);
-    printf("Circuit %s added at postion %d. New size: %d", element.name, element.place-1, list->size);
+    //printf(" !! Circuit %s added at position %d. New size: %d", element.name, element.place-1, list->size);
 }
 
 

@@ -15,7 +15,7 @@
 
 #define WIN_TITLE_CONFIGURATOR "LS Racing - Configurator"
 #define WIN_TITLE_RACE "LS Racing - Race"
-#define WIN_WIDTH 1000
+#define WIN_WIDTH 1100
 #define WIN_HEIGHT 600
 #define FONT_TITLE LARGE
 
@@ -58,35 +58,46 @@ void printConfig (ALLEGRO_BITMAP * background, int darkMode, ALLEGRO_BITMAP * pa
 ************************************************/
 void printGP (int darkMode, Circuit gp);
 
-/***********************************************TODO
+/***********************************************
  *
- * @Purpose:        Prints the traffic lights screen (second option screen).
+ * @Purpose:       Prints the traffic lights screen (second option screen).
  * @Parameters:     in: darkMode = true (!0) to show dark mode, false (0) otherwise.
- * @Return:         ---
+ *                  in: on[5] = indicates which traffic lights are on.
+ * @Return:        ---
  *
 ************************************************/
 void printTrafficLights (int darkMode, int on[5]);
 
 /***********************************************TODO
  *
- * @Purpose: Asks the user a question, checks the answers for errors within a valid
- *           range of numbers and converts it to an int.
+ * @Purpose:       Prints the traffic lights screen (second option screen).
+ * @Parameters:     in: darkMode = true (!0) to show dark mode, false (0) otherwise.
+ *                  in: on[5] = indicates which traffic lights are on.
+ * @Return:        ---
+ *
+************************************************/
+void printRace (int darkMode, Driver * driver, Car * car, float timeElapsed);
+
+/***********************************************TODO
+ *
+ * @Purpose:    Asks the user a question, checks the answers for errors within
+ *              a valid range of numbers and converts it to an int.
  * @Parameters:     in: question = text to print as a question.
  *                  in: min = minimum value for valid input range.
  *                  in: max = maximum value for valid input range.
- * @Return: Returns the atoi of the input if answer is valid.
+ * @Return:     Returns the atoi of the input if answer is valid.
  *
 ************************************************/
 int switchDarkMode (int * mode);
 
 /***********************************************TODO
  *
- * @Purpose: Asks the user a question, checks the answers for errors within a valid
- *           range of numbers and converts it to an int.
+ * @Purpose:    Asks the user a question, checks the answers for errors within
+ *              a valid range of numbers and converts it to an int.
  * @Parameters:     in: question = text to print as a question.
  *                  in: min = minimum value for valid input range.
  *                  in: max = maximum value for valid input range.
- * @Return: Returns the atoi of the input if answer is valid.
+ * @Return:     Returns the atoi of the input if answer is valid.
  *
 ************************************************/
 int getBackgroundColor (int * mode);

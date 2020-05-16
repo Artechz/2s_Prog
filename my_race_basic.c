@@ -54,7 +54,7 @@ void infoAsk (Driver * driver) {
     fgets(driver->teamName, MAXSTRING, stdin);
     driver->teamName[strlen(driver->teamName) - 1] = '\0';
 
-    driver->driverNumber = menuAsk("Drivers Number? ", 0, 99);
+    driver->number = menuAsk("Drivers Number? ", 0, 99);
 
     driver->reflexes = menuAsk("Reflexes? ", 0, 10);
 
@@ -77,3 +77,8 @@ void timeWait (float threshold) {
     printf("%.2f - %.2f s have passed.", threshold, timeDelta);
 }
 */
+
+void calculateRace (Car * car, Driver * driver, Pilot * pilots, Circuit temp) {
+
+}
+
