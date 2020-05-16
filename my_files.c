@@ -15,15 +15,13 @@ int readParts (GroupPart * partGroup, char * fileName) {
     char aux;
     int i, j, error = FILE_NO_ERROR;
 
-    if (NULL == partFile) {
+    if (FILE_ERROR == (error = checkFile(&partFile, fileName, "r"))) {
         printf("Failed to open parts file.\n");     //TODO remove
-        error = FILE_ERROR;          //TODO fer que serveixi fent return de error idk - convert func to int.
     }
     else {
         partGroup = (GroupPart *) malloc(sizeof(GroupPart));
 
         fscanf(partFile, "%d%c", &(partGroup->numParts), &aux);
-        if (aux != '\n') {printf("Failed to read aux.\n");}      //DEBUG
 
         partGroup->parts = (Part *) malloc(sizeof(Part) * partGroup->numParts);
 
@@ -33,43 +31,35 @@ int readParts (GroupPart * partGroup, char * fileName) {
 
             fscanf(partFile, "%d%c", &(partGroup->parts[i].numParts), &aux);
             partGroup->parts[i].type = (MiniPart *) malloc(sizeof(MiniPart) * partGroup->parts[i].numParts);
-
             partGroup->parts[i].selected = 0;
 
             for ( j = 0; j < partGroup->parts[i].numParts; j++) {
-
                 fgets(partGroup->parts[i].type[j].name, MAXSTRING, partFile);
                 partGroup->parts[i].type[j].name[strlen(partGroup->parts[i].type[j].name)-1] = '\0';
 
                 fscanf(partFile, "%d%c", &(partGroup->parts[i].type[j].speed), &aux);
-
                 fscanf(partFile, "%d%c", &(partGroup->parts[i].type[j].acceleration), &aux);
-
                 fscanf(partFile, "%d%c", &(partGroup->parts[i].type[j].consumption), &aux);
-
                 fscanf(partFile, "%d%c", &(partGroup->parts[i].type[j].reliability), &aux);
             }
         }
-        fclose(partFile);
     }
+    fclose(partFile);
     return error;
 }
 
 int readSeason (SortedList * season, char * fileName) {
-    printf("x");
-    FILE * seasonFile = fopen(fileName, "r");
 
+    FILE * seasonFile;
     char aux;
     int error = FILE_NO_ERROR, i, numCircuits;
-    printf("r");
-    if (NULL == seasonFile) {
+
+    if (FILE_ERROR == (error = checkFile(&seasonFile, fileName, "r"))) {
         printf("Failed to open season file.\n");    //TODO remove
-        error = FILE_ERROR;
     }
     else {
 
-        printf("\\%d/", SORTEDLIST_getErrorCode(*season));
-
+        //printf("\\%d/", SORTEDLIST_getErrorCode(*season));    //TODO remove
         fscanf(seasonFile, "%d%c", &numCircuits, &aux);
 
         for (i = 0; i < numCircuits; i++) {
@@ -88,52 +78,29 @@ int readSeason (SortedList * season, char * fileName) {
             temp.completed = 0;
 
             SORTEDLIST_sortedAdd(season, temp);
-            printf("\niteraFIN_%d - %d - %s", i, temp.place, temp.name);
+            //printf("\niteraFIN_%d - %d - %s", i, temp.place, temp.name);      //TODO remove
         }
-        error = 0;
-        fclose(seasonFile);
     }
-
+    fclose(seasonFile);
     return error;
 }
 
 int readPilots (Pilot * pilots, char * fileName, int * pilotQty) {
 
     FILE * pilotsFile;
-    char aux;
-    char * buffer;
-    int i, j, error = FILE_NO_ERROR;
+    int error = FILE_NO_ERROR;
 
     if (FILE_ERROR == (error = checkFile(&pilotsFile, fileName, "rb"))) {
         printf("Failed to open pilots file.\n"); //TODO remove
     }
     else {
-        fseek(pilotsFile, 0, SEEK_SET);
+        //Reading (Pilot)s until end of file.
         for (*pilotQty = 0; !(feof(pilotsFile)); (*pilotQty)++) {
-            //fseek(pilotsFile, -sizeof(Pilot), SEEK_CUR);
-            //Reallocating memory for the newfound pilot to 'fit' in the dynamic array before putting it in.
-            pilots = (Pilot *) realloc(pilots, sizeof(Pilot) * (*pilotQty+1));
-            fread(&pilots[*pilotQty], sizeof(Pilot), 1, pilotsFile);  //pilotQty is amount of Pilots so we use (*pilotQty -1) when using it for array index.
-            fseek(pilotsFile, sizeof(Pilot), SEEK_CUR);
-            printf("%ld - ", ftell(pilotsFile));
+            //Reallocating memory for the newly found pilot to 'fit' in the dynamic array before putting it in.
+            pilots = (Pilot *) realloc(pilots, sizeof(Pilot) * (*pilotQty +1)); //pilotQty is index for pilots so we use (*pilotQty +1) when using it for Pilot qty.
+            fread(&pilots[*pilotQty], sizeof(Pilot), 1, pilotsFile);
         }
-
-        if (pilots[*pilotQty].teamName == "\0") printf("it is");
-        printf("\nReached end of %s, read %d pilots.", fileName, *pilotQty);
-
-        for (i = 0; i < *pilotQty; i++) {
-            printf("\n!%s! - ", pilots[i].name);
-            printf("%d - ", pilots[i].number);
-            printf("%s - ", pilots[i].teamName);
-            printf("%d - ", pilots[i].speed);
-            printf("%d - ", pilots[i].acceleration);
-            printf("%d - ", pilots[i].consumption);
-            printf("%d - ", pilots[i].reliability);
-            printf("%d - ", pilots[i].reflexes);
-            printf("%d - ", pilots[i].physicalCondition);
-            printf("%d - ", pilots[i].temperament);
-            printf("%d - ", pilots[i].tireManagement);
-        }
+        *pilotQty -= 1;     //We've seen last pilot in fitxerCorredors.bin is random data which does not correspond to a Pilot definition.
     }
     fclose(pilotsFile);
     return error;
@@ -142,16 +109,14 @@ int readPilots (Pilot * pilots, char * fileName, int * pilotQty) {
 int readBase (int stats[4], char * fileName) {
 
     FILE * baseFile;
-    char aux;
-    char * buffer;
-    int i, j, error = FILE_NO_ERROR;
+    int error = FILE_NO_ERROR;
 
     if (FILE_ERROR == (error = checkFile(&baseFile, fileName, "rb"))) {
-        printf("Failed to open pilots file.\n"); //TODO remove
+        printf("Failed to open base file.\n"); //TODO remove
     }
     else {
         fread(stats, sizeof(int), 4, baseFile);
-        printf("\n%d ^ %d ^ %d ^ %d", stats[0], stats[1], stats[2], stats[3]);
+        //printf("\n%d ^ %d ^ %d ^ %d", stats[0], stats[1], stats[2], stats[3]);    //TODO remove
     }
     fclose(baseFile);
     return error;
@@ -162,18 +127,14 @@ int fileErrorManage (int fileError) {
         case FILE_ERROR:
             printf("\nError. An error ocurred while processing the files.");
             return 1;
-            break;
         case FILE_EMPTY:
             printf("\nError. One or more files are empty.");
             return 1;
-            break;
         case FILE_NO_ERROR:
             return 0;
-            break;
         default:
             printf("\nSOMETHING IS FUCKED");    //TODO remove
             return 1;
-            break;
     }
 }
 

@@ -34,10 +34,12 @@ int main (int argc, char * argv[]) {
     GroupPart * partGroup;
     SortedList * season;
 
-    printf("\n%s || %s || %s || %s ", argv[1], argv[2], argv[3], argv[4]);
+    //printf("\n%s || %s || %s || %s ", argv[1], argv[2], argv[3], argv[4]);    //TODO remove
+    printf("\nPath: %s\n", al_get_current_directory());
 
-    ALLEGRO_BITMAP * background = NULL;
+    ALLEGRO_BITMAP * backgroundImage = NULL;
     ALLEGRO_BITMAP * partImages[6];
+    ALLEGRO_BITMAP * carImage = NULL;
 
     pilots = (Pilot * ) malloc(sizeof(Pilot));  //will realloc when reading file
     driver = (Driver *) malloc(sizeof(Driver));
@@ -50,320 +52,299 @@ int main (int argc, char * argv[]) {
         //Reading the Racers file and putting all info into pilots while managing a possible error.
         if (!fileErrorManage(readPilots( pilots, argv[3], &pilotQty))) {
             //Reading the Parts file and putting all parts info into partGroup while managing a possible error.
-           if (!fileErrorManage(readParts(partGroup, argv[1]))) {
-               //Reading the GPs file and putting all GPs info into season while managing a possible error.
-               if(!fileErrorManage(readSeason(season, argv[2]))) {
-                   //Reading the Base file and putting all info into baseStats while managing a possible error.
-                   if(!fileErrorManage(readBase(baseStats, argv[4]))) {
-                       //All good, we continue to the menu - major loop.
-                       do {
+            if (!fileErrorManage(readParts(partGroup, argv[1]))) {
+                //Reading the GPs file and putting all GPs info into season while managing a possible error.
+                if(!fileErrorManage(readSeason(season, argv[2]))) {
+                    //Reading the Base file and putting all info into baseStats while managing a possible error.
+                    if(!fileErrorManage(readBase(baseStats, argv[4]))) {
+                        //All good, we continue to the menu - major loop.
+                        do {
 
-                           printf("\n\nWelcome to LS Racing\n\n");
-                           printf("\t 1. Configure Car\n");
-                           printf("\t 2. Race\n");
-                           printf("\t 3. See Standings\n");
-                           printf("\t 4. Save Season\n");
-                           printf("\t 5. Exit\n\n");
 
-                           optionSelected = menuAsk("Which option do you want to execute? ", 1, 5);
+                            printf("\n\nWelcome to LS Racing\n\n");
+                            printf("\t 1. Configure Car\n");
+                            printf("\t 2. Race\n");
+                            printf("\t 3. See Standings\n");
+                            printf("\t 4. Save Season\n");
+                            printf("\t 5. Exit\n\n");
 
-                           switch (optionSelected) {
+                            optionSelected = menuAsk("Which option do you want to execute? ", 1, 5);
 
-                               //OPTION 1
-                               case 1:
+                            switch (optionSelected) {
 
-                                   if (0 == optionDone) {
-                                       infoAsk(driver);
-                                       optionDone = 1;
-                                   }
+                                //OPTION 1
+                                case 1:
 
-                                   printf("\nLoading Configurator ...");
+                                    if (0 == optionDone) {
+                                        infoAsk(driver);
+                                        optionDone = 1;
+                                    }
 
-                                   //Starting Allegro, its modules and the graphic window.
-                                   LS_allegro_init(WIN_WIDTH, WIN_HEIGHT, WIN_TITLE_CONFIGURATOR);
+                                    printf("\nLoading Configurator ...");
 
-                                   //Loading the images as a bitmap, checking they loaded properly.
-                                   background = al_load_bitmap(BACKGROUND_IMAGE);
+                                    //Starting Allegro, its modules and the graphic window.
+                                    LS_allegro_init(WIN_WIDTH, WIN_HEIGHT, WIN_TITLE_CONFIGURATOR);
 
-                                   if (!background) {
-                                       printf("Failed to load background bitmap.\n");
-                                   }
-                                   else {
-                                       partImages[0] = al_load_bitmap(TIRES_IMAGE);
-                                       if (!partImages[0]) {
-                                           printf("Failed to load tires bitmap.\n");
-                                       }
-                                       else {
-                                           partImages[1] = al_load_bitmap(AEROFRONT_IMAGE);
-                                           if (!partImages[1]) {
-                                               printf("Failed to load aero front bitmap.\n");
-                                           }
-                                           else {
-                                               partImages[2] = al_load_bitmap(AEROMID_IMAGE);
-                                               if (!partImages[2]) {
-                                                   printf("Failed to load aero mid bitmap.\n");
-                                               }
-                                               else {
-                                                   partImages[3] = al_load_bitmap(AEROREAR_IMAGE);
-                                                   if (!partImages[3]) {
-                                                       printf("Failed to load aero rear bitmap.\n");
-                                                   }
-                                                   else {
-                                                       partImages[4] = al_load_bitmap(FUEL_IMAGE);
-                                                       if (!partImages[4]) {
-                                                           printf("Failed to load fuel bitmap.\n");
-                                                       }
-                                                       else {
-                                                           partImages[5] = al_load_bitmap(ENGINE_IMAGE);
-                                                           if (!partImages[5]) {
-                                                               printf("Failed to load engine bitmap.\n");
-                                                           }
-                                                       }
-                                                   }
-                                               }
-                                           }
-                                       }
-                                   }
+                                    //Loading the images as a bitmap, checking they loaded properly.
+                                    backgroundImage = al_load_bitmap(BACKGROUND_IMAGE);
 
-                                   //Infinite loop until ESC is pressed.
-                                   allegroExit = 0;
-                                   while (!allegroExit) {
+                                    if (!backgroundImage) {
+                                        printf("Failed to load backgroundImage bitmap.\n");
+                                    } else {
+                                        partImages[0] = al_load_bitmap(TIRES_IMAGE);
+                                        if (!partImages[0]) {
+                                            printf("Failed to load tires bitmap.\n");
+                                        } else {
+                                            partImages[1] = al_load_bitmap(AEROFRONT_IMAGE);
+                                            if (!partImages[1]) {
+                                                printf("Failed to load aero front bitmap.\n");
+                                            } else {
+                                                partImages[2] = al_load_bitmap(AEROMID_IMAGE);
+                                                if (!partImages[2]) {
+                                                    printf("Failed to load aero mid bitmap.\n");
+                                                } else {
+                                                    partImages[3] = al_load_bitmap(AEROREAR_IMAGE);
+                                                    if (!partImages[3]) {
+                                                        printf("Failed to load aero rear bitmap.\n");
+                                                    } else {
+                                                        partImages[4] = al_load_bitmap(FUEL_IMAGE);
+                                                        if (!partImages[4]) {
+                                                            printf("Failed to load fuel bitmap.\n");
+                                                        } else {
+                                                            partImages[5] = al_load_bitmap(ENGINE_IMAGE);
+                                                            if (!partImages[5]) {
+                                                                printf("Failed to load engine bitmap.\n");
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
 
-                                       //Checking if ESC or any arrow is being pressed.
-                                       if (LS_allegro_key_pressed(ALLEGRO_KEY_ESCAPE)) {
-                                           allegroExit = 1;
-                                       }
-                                       else {
-                                           if (LS_allegro_key_pressed(ALLEGRO_KEY_D)) {
-                                               switchDarkMode(&darkMode);
-                                           }
-                                           else {  //TODO put arrow thingy into my_race_basic
-                                               if (LS_allegro_key_pressed(ALLEGRO_KEY_LEFT)) {
-                                                   //going left
-                                                   if (partModel != 0) {
-                                                       partModel--;
-                                                   }
-                                                   else {
-                                                       partModel = partGroup->parts[partCategory].numParts-1;
-                                                   }
+                                    //Infinite loop until ESC is pressed.
+                                    allegroExit = 0;
+                                    while (!allegroExit) {
 
-                                                   partGroup->parts[partCategory].selected = partModel;
-                                               }
-                                               else {
-                                                   if (LS_allegro_key_pressed(ALLEGRO_KEY_RIGHT)) {
-                                                       //going right
-                                                       if (partModel != partGroup->parts[partCategory].numParts-1) {
-                                                           partModel++;
-                                                       }
-                                                       else {
-                                                           partModel = 0;
-                                                       }
+                                        //Checking if ESC or any arrow is being pressed.
+                                        if (LS_allegro_key_pressed(ALLEGRO_KEY_ESCAPE)) {
+                                            allegroExit = 1;
+                                        } else {
+                                            if (LS_allegro_key_pressed(ALLEGRO_KEY_D)) {
+                                                switchDarkMode(&darkMode);
+                                            } else {  //TODO put arrow thingy into my_race_basic
+                                                if (LS_allegro_key_pressed(ALLEGRO_KEY_LEFT)) {
+                                                    //going left
+                                                    if (partModel != 0) {
+                                                        partModel--;
+                                                    } else {
+                                                        partModel = partGroup->parts[partCategory].numParts - 1;
+                                                    }
 
-                                                       partGroup->parts[partCategory].selected = partModel;
-                                                   }
-                                                   else {
-                                                       if (LS_allegro_key_pressed(ALLEGRO_KEY_DOWN)) {
-                                                           //going down
-                                                           if (partCategory != partGroup->numParts-1) {
-                                                               partCategory++;
-                                                           }
-                                                           else {
-                                                               partCategory = 0;
-                                                           }
-                                                       }
-                                                       else {
-                                                           if (LS_allegro_key_pressed(ALLEGRO_KEY_UP)) {
-                                                               //going up
-                                                               if (partCategory != 0) {
-                                                                   partCategory--;
-                                                               }
-                                                               else {
-                                                                   partCategory = partGroup->numParts-1;
-                                                               }
-                                                           }
-                                                       }
-                                                       partModel =  partGroup->parts[partCategory].selected;
-                                                   }
-                                               }
-                                           }
-                                       }
+                                                    partGroup->parts[partCategory].selected = partModel;
+                                                } else {
+                                                    if (LS_allegro_key_pressed(ALLEGRO_KEY_RIGHT)) {
+                                                        //going right
+                                                        if (partModel != partGroup->parts[partCategory].numParts - 1) {
+                                                            partModel++;
+                                                        } else {
+                                                            partModel = 0;
+                                                        }
 
-                                       //Printing all the configuration screen elements.
-                                       printConfig (background, darkMode, partImages, partCategory, partModel, partGroup);
+                                                        partGroup->parts[partCategory].selected = partModel;
+                                                    } else {
+                                                        if (LS_allegro_key_pressed(ALLEGRO_KEY_DOWN)) {
+                                                            //going down
+                                                            if (partCategory != partGroup->numParts - 1) {
+                                                                partCategory++;
+                                                            } else {
+                                                                partCategory = 0;
+                                                            }
+                                                        } else {
+                                                            if (LS_allegro_key_pressed(ALLEGRO_KEY_UP)) {
+                                                                //going up
+                                                                if (partCategory != 0) {
+                                                                    partCategory--;
+                                                                } else {
+                                                                    partCategory = partGroup->numParts - 1;
+                                                                }
+                                                            }
+                                                        }
+                                                        partModel = partGroup->parts[partCategory].selected;
+                                                    }
+                                                }
+                                            }
+                                        }
 
-                                       //'Painting' the graphic screen.
-                                       LS_allegro_clear_and_paint(getBackgroundColor(&darkMode));
-                                   }
+                                        //Printing all the configuration screen elements.
+                                        printConfig(backgroundImage, darkMode, partImages, partCategory, partModel,
+                                                    partGroup);
 
-                                   //Closing the graphic window
-                                   LS_allegro_exit();
+                                        //'Painting' the graphic screen.
+                                        LS_allegro_clear_and_paint(getBackgroundColor(&darkMode));
+                                    }
 
-                                   car->speed = 0;
-                                   car->reliability = 0;
-                                   car->consumption = 0;
-                                   car->acceleration = 0;
-                                   for (i = 0; i < partGroup->numParts; i++) {
-                                       car->speed += partGroup->parts[i].type[partGroup->parts[i].selected].speed;
-                                       car->reliability += partGroup->parts[i].type[partGroup->parts[i].selected].reliability;
-                                       car->consumption += partGroup->parts[i].type[partGroup->parts[i].selected].consumption;
-                                       car->acceleration += partGroup->parts[i].type[partGroup->parts[i].selected].acceleration;
-                                   }
-                                   printf("\n%d - %d - %d - %d", car->speed, car->acceleration, car->consumption, car->reliability);
-                                   break;
+                                    //Closing the graphic window
+                                    LS_allegro_exit();
 
-                                   //OPTION 2
-                               case 2:
-                                   printf("\nWIP\n");
-                                   //TODO option 2
+                                    car->speed = 0;
+                                    car->reliability = 0;
+                                    car->consumption = 0;
+                                    car->acceleration = 0;
+                                    for (i = 0; i < partGroup->numParts; i++) {
+                                        car->speed += partGroup->parts[i].type[partGroup->parts[i].selected].speed;
+                                        car->reliability += partGroup->parts[i].type[partGroup->parts[i].selected].reliability;
+                                        car->consumption += partGroup->parts[i].type[partGroup->parts[i].selected].consumption;
+                                        car->acceleration += partGroup->parts[i].type[partGroup->parts[i].selected].acceleration;
+                                    }
+                                    //printf("\n%d - %d - %d - %d", car->speed, car->acceleration, car->consumption, car->reliability);  //TODO remove
+                                    break;
 
-                                   if (!optionDone) {
-                                       printf("\nERROR: Car needs to be configured before racing.");
-                                   }
-                                   else {
-                                       traffLightStatus = TL_NOT_SHOWN;
+                                    //OPTION 2
+                                case 2:
+                                    printf("\nWIP\n");
+                                    //TODO option 2
 
-                                       SORTEDLIST_goToHead(season);
-                                       Circuit temp = SORTEDLIST_get(season);
-                                       printf("%s", temp.name);                                    //DEBUG
+                                    if (!optionDone) {
+                                        printf("\nERROR: Car needs to be configured before racing.");
+                                    } else {
+                                        traffLightStatus = TL_NOT_SHOWN;
 
-                                       printf("\nLoading Race ...");
+                                        SORTEDLIST_goToHead(season);
+                                        Circuit temp = SORTEDLIST_get(season);
+                                        //printf("%s", temp.name);                                    //DEBUG TODO remove
+                                        carImage = al_load_bitmap(CAR_IMAGE);
+                                        if (!carImage) printf("Failed to load car bitmap.\n");
 
-                                       LS_allegro_init(WIN_WIDTH, WIN_HEIGHT, WIN_TITLE_RACE);
+                                        printf("\nLoading Race ...");
 
-                                       allegroExit = 0;
-                                       for (i = 0; i < 5; i++) { isTLOn[i] = 0;}
-                                       timeInitial = (float)clock();
-                                       timeElapsed = 0;
-                                       //Infinite loop until ESC is pressed.
-                                       while (!allegroExit) {
-                                           timeMeasured = (float)clock();
-                                           timeDelta = ((timeMeasured - timeInitial) / (float)CLOCKS_PER_SEC);
+                                        LS_allegro_init(WIN_WIDTH, WIN_HEIGHT, WIN_TITLE_RACE);
 
-                                           //Checking if ESC or any arrow is being pressed.
-                                           if (LS_allegro_key_pressed(ALLEGRO_KEY_ESCAPE)) {
-                                               allegroExit = 1;
-                                           }
-                                           else {
-                                               if (LS_allegro_key_pressed(ALLEGRO_KEY_D)) {
-                                                   switchDarkMode(&darkMode);
-                                               }
-                                           }
+                                        allegroExit = 0;
+                                        for (i = 0; i < 5; i++) { isTLOn[i] = 0; }
+                                        timeInitial = (float) clock();
+                                        timeElapsed = 0;
+                                        //Infinite loop until ESC is pressed.
+                                        while (!allegroExit) {
+                                            timeMeasured = (float) clock();
+                                            timeDelta = ((timeMeasured - timeInitial) / (float) CLOCKS_PER_SEC);
 
-                                           if (TL_NOT_SHOWN == traffLightStatus) { //gp info screen
-                                               if (LS_allegro_key_pressed(ALLEGRO_KEY_R)) {
-                                                   printf("\nR key pressed.");
-                                                   traffLightStatus = TL_SHOWING;
-                                               }
-                                               //Printing race - circuit info.
-                                               printGP(darkMode, SORTEDLIST_get(season));
-                                               timeInitial = (float)clock();
-                                           }
-                                           else {
-                                               if (TL_SHOWING == traffLightStatus) {   //traffic lights screen
-                                                   //Printing traffic lights screen.
-                                                   printTrafficLights(darkMode, isTLOn);
+                                            //Checking if ESC or any arrow is being pressed.
+                                            if (LS_allegro_key_pressed(ALLEGRO_KEY_ESCAPE)) {
+                                                allegroExit = 1;
+                                            } else {
+                                                if (LS_allegro_key_pressed(ALLEGRO_KEY_D)) {
+                                                    switchDarkMode(&darkMode);
+                                                }
+                                            }
 
-                                                   if (0 == isTLOn[0]) {
-                                                       if (timeDelta >= 1.0) {
-                                                           isTLOn[0] = 1;
-                                                           isTLOn[1] = 1;
-                                                           timeInitial = (float)clock();
-                                                       }
-                                                   }
-                                                   else {
-                                                       if (0 == isTLOn[2]) {
-                                                           if (timeDelta >= 1.0) {
-                                                               isTLOn[2] = 1;
-                                                               timeInitial = (float)clock();
-                                                           }
-                                                       }
-                                                       else {
-                                                           if (0 == isTLOn[3]) {
-                                                               if (timeDelta >= 1.0) {
-                                                                   isTLOn[3] = 1;
-                                                                   timeInitial = (float)clock();
-                                                               }
-                                                           }
-                                                           else {
-                                                               if (0 == isTLOn[4]) {
-                                                                   if (timeDelta >= 1.0) {
-                                                                       isTLOn[4] = 1;
-                                                                       timeInitial = (float)clock();
-                                                                   }
-                                                               }
-                                                               else {
-                                                                   if (timeDelta >= 0.5) {
-                                                                       traffLightStatus = TL_ALREADY_SHOWN;
-                                                                       timeElapsed = 0;
-                                                                   }
-                                                               }
-                                                           }
-                                                       }
-                                                   }
-                                               }
-                                               else {
-                                                   if (TL_ALREADY_SHOWN == traffLightStatus) { //race screen
-                                                       if (LS_allegro_key_pressed(ALLEGRO_KEY_R)) {
-                                                           printf("\nRadioed in.");                            //DEBUG
-                                                           pstopStatus = PS_ASKED;
-                                                       }
-                                                       else {
-                                                           if (LS_allegro_key_pressed(ALLEGRO_KEY_P)) {
-                                                               printf("\nPitStop requested.");                 //DEBUG
-                                                               if(PS_ASKED == pstopStatus) {
-                                                                   pstopStatus = PS_ACCEPTED;
-                                                                   printf("\nPitStop accepted.");              //DEBUG
-                                                               }
-                                                               else {
-                                                                   printf("\nPitStop NOT accepted.");          //DEBUG
-                                                               }
-                                                           }
-                                                       }
-                                                       //Adding to the elapsed time every 0.1 sec to improve precision.
-                                                       if (timeDelta >= 0.1) {
-                                                           timeElapsed += 0.1;
-                                                           timeInitial = (float)clock();
-                                                       }
+                                            if (TL_NOT_SHOWN == traffLightStatus) { //gp info screen
+                                                if (LS_allegro_key_pressed(ALLEGRO_KEY_R)) {
+                                                    printf("\nR key pressed.");
+                                                    traffLightStatus = TL_SHOWING;
+                                                }
+                                                //Printing race - circuit info.
+                                                printGP(darkMode, SORTEDLIST_get(season));
+                                                timeInitial = (float) clock();
+                                            } else {
+                                                if (TL_SHOWING == traffLightStatus) {   //traffic lights screen
+                                                    //Printing traffic lights screen.
+                                                    printTrafficLights(darkMode, isTLOn);
 
-                                                       calculateRace(car, driver, pilots, temp);
+                                                    if (0 == isTLOn[0]) {
+                                                        if (timeDelta >= 1.0) {
+                                                            isTLOn[0] = 1;
+                                                            isTLOn[1] = 1;
+                                                            timeInitial = (float) clock();
+                                                        }
+                                                    } else {
+                                                        if (0 == isTLOn[2]) {
+                                                            if (timeDelta >= 1.0) {
+                                                                isTLOn[2] = 1;
+                                                                timeInitial = (float) clock();
+                                                            }
+                                                        } else {
+                                                            if (0 == isTLOn[3]) {
+                                                                if (timeDelta >= 1.0) {
+                                                                    isTLOn[3] = 1;
+                                                                    timeInitial = (float) clock();
+                                                                }
+                                                            } else {
+                                                                if (0 == isTLOn[4]) {
+                                                                    if (timeDelta >= 1.0) {
+                                                                        isTLOn[4] = 1;
+                                                                        timeInitial = (float) clock();
+                                                                    }
+                                                                } else {
+                                                                    if (timeDelta >= 0.5) {
+                                                                        traffLightStatus = TL_ALREADY_SHOWN;
+                                                                        timeElapsed = 0;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                } else {
+                                                    if (TL_ALREADY_SHOWN == traffLightStatus) { //race screen
+                                                        if (LS_allegro_key_pressed(ALLEGRO_KEY_R)) {
+                                                            printf("\nRadioed in.");                            //DEBUG
+                                                            pstopStatus = PS_ASKED;
+                                                        } else {
+                                                            if (LS_allegro_key_pressed(ALLEGRO_KEY_P)) {
+                                                                printf("\nPitStop requested.");                 //DEBUG
+                                                                if (PS_ASKED == pstopStatus) {
+                                                                    pstopStatus = PS_ACCEPTED;
+                                                                    printf("\nPitStop accepted.");              //DEBUG
+                                                                } else {
+                                                                    printf("\nPitStop NOT accepted.");          //DEBUG
+                                                                }
+                                                            }
+                                                        }
+                                                        //Adding to the elapsed time every 0.1 sec to improve precision.
+                                                        if (timeDelta >= 0.1) {
+                                                            timeElapsed += 0.1;
+                                                            timeInitial = (float) clock();
+                                                        }
 
-                                                       //Printing race screen.
-                                                       printRace(darkMode, driver, car, timeElapsed);
-                                                   }
-                                               }
-                                           }
-                                       }
+                                                        calculateRace(car, driver, pilots, temp);
 
-                                       //SORTEDLIST_get(season).completed = 1;
-                                       //SORTEDLIST_next(season);
-                                       LS_allegro_exit();
+                                                        //Printing race screen.
+                                                        printRace(darkMode, driver, car, timeElapsed);
+                                                    }
+                                                }
+                                            }
+                                        }
 
-                                   }
+                                        //SORTEDLIST_get(season).completed = 1;
+                                        //SORTEDLIST_next(season);
+                                        LS_allegro_exit();
 
-                                   break;
+                                    }
 
-                                   //OPTION 3
-                               case 3:
-                                   printf("\nNot done yet\n");
-                                   //TODO option 3
-                                   break;
+                                    break;
 
-                                   //OPTION 4
-                               case 4:
-                                   printf("\nNot done yet\n");
-                                   //TODO option 4
-                                   break;
+                                    //OPTION 3
+                                case 3:
+                                    printf("\nNot done yet\n");
+                                    //TODO option 3
+                                    break;
 
-                               default:
-                                   printf("\nALGO HEM FET MALAMENT PERQUE AIXO NO HAURIA DE SORTIR MAI\n");
-                                   exit = 1;
-                                   break;
-                           }
+                                    //OPTION 4
+                                case 4:
+                                    printf("\nNot done yet\n");
+                                    //TODO option 4
+                                    break;
 
-                       } while (!exit);
-                   }
-               }
-           }
+                                default:
+                                    printf("\nALGO HEM FET MALAMENT PERQUE AIXO NO HAURIA DE SORTIR MAI\n");
+                                    exit = 1;
+                                    break;
+                            }
+
+                        } while (!exit);
+                    }
+                }
+            }
         }
     }
     else {

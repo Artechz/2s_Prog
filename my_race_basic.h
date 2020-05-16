@@ -29,6 +29,7 @@
 #define AEROREAR_IMAGE "files/aero_rear.png"
 #define FUEL_IMAGE "files/gasolina.png"
 #define ENGINE_IMAGE "files/motor.png"
+#define CAR_IMAGE "files/cotxe.png"
 
 #define RACERS_AMOUNT 7
 
