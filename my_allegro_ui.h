@@ -60,7 +60,7 @@ void printGP (int darkMode, Circuit gp);
 
 /***********************************************
  *
- * @Purpose:       Prints the traffic lights screen (second option screen).
+ * @Purpose:        Prints the traffic lights screen (second option screen).
  * @Parameters:     in: darkMode = true (!0) to show dark mode, false (0) otherwise.
  *                  in: on[5] = indicates which traffic lights are on.
  * @Return:        ---
@@ -70,45 +70,49 @@ void printTrafficLights (int darkMode, int on[5]);
 
 /***********************************************TODO
  *
- * @Purpose:       Prints the traffic lights screen (second option screen).
- * @Parameters:     in: darkMode = true (!0) to show dark mode, false (0) otherwise.
- *                  in: on[5] = indicates which traffic lights are on.
+ * @Purpose:    Show the user the race.
+ * @Parameters: (in/out): player = information about the players car.
+ *              (in/out): others = information about the car of the other drivers.
+ *              in: pilotQty = number of pilots
+ *              in: timeElapsed =
+ *              in: pstopRemainingTime =
+ *              in: pstopCounter =
+ *              in: pstopNeeded =
+ *              in: pstopStatus =
+ *              (in/out): carPos = Position of the car.
+ *              (in/out): carImage = Image of the car.
  * @Return:        ---
  *
 ************************************************/
 void printRace (int darkMode, Driver * driver, Car * car, Pilot * pilots, int pilotQty, float timeElapsed, float pstopRemainingTime, int pstopCounter, int pstopNeeded, int pstopStatus, int * carPos, ALLEGRO_BITMAP * carImage);
 
-/***********************************************TODO
+/***********************************************
  *
- * @Purpose:       Prints the traffic lights screen (second option screen).
- * @Parameters:     in: darkMode = true (!0) to show dark mode, false (0) otherwise.
- *                  in: on[5] = indicates which traffic lights are on.
+ * @Purpose:    Show the user the post-race menu.
+ * @Parameters: in: darkMode = Color of the background
+ *              (in/out): driver = Information about the driver
+ *              in: pilotQty = number of pilots.
+ *              (in/out): list = Sortedlist of the season.
  * @Return:        ---
  *
 ************************************************/
 void printFinish (int darkMode, Driver * driver, int pilotQty, SortedLD * list);
 
 
-/***********************************************TODO
+/***********************************************
  *
- * @Purpose:    Asks the user a question, checks the answers for errors within
- *              a valid range of numbers and converts it to an int.
- * @Parameters:     in: question = text to print as a question.
- *                  in: min = minimum value for valid input range.
- *                  in: max = maximum value for valid input range.
- * @Return:     Returns the atoi of the input if answer is valid.
+ * @Purpose:     	Switches the menu to dark mode if is in bright mode or viceversa.
+ * @Parameters:     (in/out): mode = integer asociated with the background color.
+ * @Return:          Returns the integer asociated with the new background color.
  *
 ************************************************/
 int switchDarkMode (int * mode);
 
-/***********************************************TODO
+/***********************************************
  *
- * @Purpose:    Asks the user a question, checks the answers for errors within
- *              a valid range of numbers and converts it to an int.
- * @Parameters:     in: question = text to print as a question.
- *                  in: min = minimum value for valid input range.
- *                  in: max = maximum value for valid input range.
- * @Return:     Returns the atoi of the input if answer is valid.
+ * @Purpose:        Gets the background color.
+ * @Parameters:     (in/out): mode = integer asociated with the background color.
+ * @Return:         Returns the integer asociated with the background color.
  *
 ************************************************/
 int getBackgroundColor (int * mode);

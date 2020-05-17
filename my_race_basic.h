@@ -134,11 +134,12 @@ typedef struct {
 ************************************************/
 int menuAsk (char question[MAXSTRING], int min, int max);
 
-/***********************************************TODO
+/***********************************************
  *
- * @Purpose:
- * @Parameters:
- * @Return:
+ * @Purpose:    Asks the user for the information about the pilot.
+ * @Parameters: (in/out): driver = place where is stored the
+ *              information introduced by the user.
+ * @Return:     ---
  *
 ************************************************/
 void infoAsk (Driver * driver);
@@ -157,29 +158,45 @@ void infoAsk (Driver * driver);
 ************************************************/
 //void timeWait (float threshold);
 
-/***********************************************TODO
+/***********************************************
  *
- * @Purpose:
- * @Parameters:
- * @Return:
+ * @Purpose:    Calculate the statistics of the player
+ * @Parameters: (in/out): car = information about the car.
+ *              (in/out): driver = information about the driver
+ *              (in/out): temp = information about the season.
+ *              out: playerTime = time the player spends to end the race.
+ * @Return:     ---
  *
 ************************************************/
 void calculatePlayer (Car * car, Driver * driver, Circuit temp, int * playerTime);
 
-/***********************************************TODO
+/***********************************************
  *
- * @Purpose:
- * @Parameters:
- * @Return:
+ * @Purpose:    Calculate the statistics of the other drivers.
+ * @Parameters: (in/out): others = information about the car of the other drivers
+ *              (in/out): pilot = information about the other drivers
+ *              (in/out): temp = information about the season.
+ * @Return:     ---
  *
 ************************************************/
 void calculateOthers (Car * others, Pilot * pilot, Circuit temp);
 
 /***********************************************TODO
  *
- * @Purpose:
- * @Parameters:
- * @Return:
+ * @Purpose:    Calculate the position of the cars.
+ * @Parameters: (in/out): player = information about the players car.
+ *              (in/out): others = information about the car of the other drivers.
+ *              in: pilotQty = number of pilots
+ *              out: carPos = position of the car.
+ *              in: timeElapsed =
+ *              in: playerElapsed =
+ *              in: playerTime =
+ *              in: pstopCounter =
+ *              in: pstopStatus =
+ *              in: pstopTimeElapsed =
+ *              (in/out): aux =
+ *              (in/out): temp = information about the season.
+ * @Return:     ---
  *
 ************************************************/
 void calculatePos (Car * player, Car * others, int pilotQty, int ** carPos, float timeElapsed, float playerElapsed, int playerTime, int pstopCounter, int pstopStatus, float pstopTimeElapsed, int * aux, Circuit temp);
