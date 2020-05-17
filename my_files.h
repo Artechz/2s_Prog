@@ -14,7 +14,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "my_race_basic.h"
-#include "my_sortedlist.h"
+#include "my_circuit_sortedlist.h"
+#include "my_driver_sortedlist.h"
 
 #define FILE_NO_ERROR 0
 #define FILE_ERROR 1    //TODO implement
@@ -37,13 +38,13 @@ int readParts (GroupPart * partGroup, char * fileName);
 
 /***********************************************
  *
- * @Purpose:    Reading the GPs file and loading the info into a SortedList.
+ * @Purpose:    Reading the GPs file and loading the info into a SortedListC.
  * @Parameters: (in/out): season = the sorted list where to load all the GP info.
  *              in: fileName = string indicating the location of the file to read.
  * @Return:     false (0) if there's no error, true (!0) otherwise.
  *
 ************************************************/
-int readSeason (SortedList * season, char * fileName);
+int readSeason (SortedListC * season, char * fileName);
 
 /***********************************************
  *
@@ -53,7 +54,7 @@ int readSeason (SortedList * season, char * fileName);
  * @Return:     false (0) if there's no error, true (!0) otherwise.
  *
 ************************************************/
-int readPilots (Pilot * pilots, char * fileName, int * pilotQty);
+int readPilots (Pilot ** pilots, char * fileName, int * pilotQty);
 
 /***********************************************
  *

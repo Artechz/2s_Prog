@@ -12,11 +12,11 @@
 
 #include "LS_allegro.h"
 #include "my_race_basic.h"
+#include "my_driver_sortedlist.h"
 
 #define WIN_TITLE_CONFIGURATOR "LS Racing - Configurator"
 #define WIN_TITLE_RACE "LS Racing - Race"
-#define WIN_WIDTH 1100
-#define WIN_HEIGHT 600
+
 #define FONT_TITLE LARGE
 
 /***********************************************
@@ -76,7 +76,18 @@ void printTrafficLights (int darkMode, int on[5]);
  * @Return:        ---
  *
 ************************************************/
-void printRace (int darkMode, Driver * driver, Car * car, float timeElapsed);
+void printRace (int darkMode, Driver * driver, Car * car, Pilot * pilots, int pilotQty, float timeElapsed, float pstopRemainingTime, int pstopCounter, int pstopNeeded, int pstopStatus, int * carPos, ALLEGRO_BITMAP * carImage);
+
+/***********************************************TODO
+ *
+ * @Purpose:       Prints the traffic lights screen (second option screen).
+ * @Parameters:     in: darkMode = true (!0) to show dark mode, false (0) otherwise.
+ *                  in: on[5] = indicates which traffic lights are on.
+ * @Return:        ---
+ *
+************************************************/
+void printFinish (int darkMode, Driver * driver, int pilotQty, SortedLD * list);
+
 
 /***********************************************TODO
  *

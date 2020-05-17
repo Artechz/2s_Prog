@@ -78,7 +78,85 @@ void timeWait (float threshold) {
 }
 */
 
-void calculateRace (Car * car, Driver * driver, Pilot * pilots, Circuit temp) {
+void calculatePlayer (Car * car, Driver * driver, Circuit temp, int * playerTime) {
 
+    int diff[4];
+    float calcTime = temp.baseTime;
+    int i;
+    //printf("-%.2f-", temp.baseTime);      //TODO remove
+    diff[0] = car->speed - temp.speed;
+    diff[1] = car->acceleration - temp.acceleration;
+    diff[2] = car->consumption - temp.consumption;
+    diff[3] = car->reliability - temp.reliability;
+    for (i = 0; i < 4; i++) {
+        calcTime += abs(diff[i]);
+    }
+
+    if (diff[3] < 0) {  //pitStop substracting or adding if - or +
+        car->pstopQty = temp.pitstopQty + 1;
+    }
+    else {
+        if (diff[3] > 0) {  //if greater than 0 means car has more than appropiate = not less.
+            car->pstopQty = temp.pitstopQty - 1;
+        }
+        else {
+            car->pstopQty = temp.pitstopQty;
+        }
+    }
+
+    calcTime += (car->pstopQty * temp.pitstopTime);
+    calcTime -= ((driver->reflexes + driver->physicalCondition + driver->temperament + driver->tireManagement)/4)/2;
+
+    *playerTime = (int)(calcTime - (car->pstopQty * temp.pitstopTime));
+    car->time = (int)calcTime;
+    printf("\nmytime: %d - %.2f", car->time, calcTime);       //TODO REMOVE
+    //printf("\nOthers: ");                                     //TODO REMOVe
 }
 
+void calculateOthers (Car * car, Pilot * pilot, Circuit temp) {
+
+    int diff[4];
+    float calcTime = temp.baseTime;
+    int i;
+
+    diff[0] = car->speed - temp.speed;
+    diff[1] = car->acceleration - temp.acceleration;
+    diff[2] = car->consumption - temp.consumption;
+    diff[3] = car->reliability - temp.reliability;
+    for (i = 0; i < 4; i++) {
+        calcTime += abs(diff[i]);
+    }
+    if (diff[3] < 0) {  //pitStop substracting or adding if - or +
+        car->pstopQty = temp.pitstopQty + 1;
+    }
+    else {
+        if (diff[3] > 0) {  //if greater than 0 means car has more than appropiate = not less.
+            car->pstopQty = temp.pitstopQty - 1;
+        }
+        else {
+            car->pstopQty = temp.pitstopQty;
+        }
+    }
+    calcTime += (car->pstopQty * temp.pitstopTime);
+    calcTime -= ((pilot->reflexes + pilot->physicalCondition + pilot->temperament + pilot->tireManagement) / 4) / 2;
+
+    car->time = (int)calcTime;
+    //printf("%d - %d ! ", car->time, calcTime);        //TODO remove
+}
+
+void calculatePos (Car * player, Car * others, int pilotQty, int ** carPos, float timeElapsed, float playerElapsed, int playerTime, int pstopCounter, int pstopStatus, float pstopTimeElapsed, int * aux, Circuit temp) {
+
+    const int distance = abs(WIN_WIDTH*3/30 - (WIN_WIDTH*14)/20);
+    int i;
+    for (i = 0; i < pilotQty; i++) {
+        if (others[i].time > timeElapsed) {
+            (*carPos)[i] = (int)(((float)distance / (float)others[i].time ) * timeElapsed);
+        }
+    }
+
+    if (!(PS_NOTACCEPTED == pstopStatus || PS_ACCEPTED == pstopStatus) && (*aux) <= 3710) {
+        (*carPos)[pilotQty] = (int)((distance / playerTime) * playerElapsed);
+        (*aux)++;
+        //printf("\n%d ", distance/(distance/playerTime));
+    }
+}

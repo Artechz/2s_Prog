@@ -31,11 +31,17 @@
 #define ENGINE_IMAGE "files/motor.png"
 #define CAR_IMAGE "files/cotxe.png"
 
-#define RACERS_AMOUNT 7
+#define WIN_WIDTH 1100
+#define WIN_HEIGHT 600
 
 #define PS_NOTASKED 0
 #define PS_ASKED 1
 #define PS_ACCEPTED 2
+#define PS_NOTACCEPTED 3
+
+#define RACE_INPROGRESS 0
+#define RACE_FINISHED 1
+
 
 typedef struct {
     char name[MAXSTRING];
@@ -52,11 +58,6 @@ typedef struct {
 } Pilot;
 
 typedef struct {
-    int amount;
-    Pilot * who;
-} PilotContainer;
-
-typedef struct {
     char driverName[MAXSTRING];
     char teamName[MAXSTRING];
     int number;
@@ -67,10 +68,17 @@ typedef struct {
 } Driver;
 
 typedef struct {
+    int number;
+    float position;
+} Car_UI;   //TODO chekc if used
+
+typedef struct {
     int speed;
     int acceleration;
     int consumption;
     int reliability;
+    int pstopQty;
+    int time;
 } Car;
 
 typedef struct {
@@ -107,9 +115,10 @@ typedef struct {
 } Circuit;
 
 typedef struct {
-    int numGPs;
-    Circuit * circuits;
-} Season;
+    int totalPoints;
+    int time;
+    char name[MAXSTRING];
+} User;
 
 
 /***********************************************
@@ -155,9 +164,25 @@ void infoAsk (Driver * driver);
  * @Return:
  *
 ************************************************/
-void calculateRace (Car * car, Driver * driver, Pilot * pilots, Circuit temp);
+void calculatePlayer (Car * car, Driver * driver, Circuit temp, int * playerTime);
 
+/***********************************************TODO
+ *
+ * @Purpose:
+ * @Parameters:
+ * @Return:
+ *
+************************************************/
+void calculateOthers (Car * others, Pilot * pilot, Circuit temp);
 
+/***********************************************TODO
+ *
+ * @Purpose:
+ * @Parameters:
+ * @Return:
+ *
+************************************************/
+void calculatePos (Car * player, Car * others, int pilotQty, int ** carPos, float timeElapsed, float playerElapsed, int playerTime, int pstopCounter, int pstopStatus, float pstopTimeElapsed, int * aux, Circuit temp);
 
 
 #endif //PROGPRACTICE2_MY_RACE_BASIC_H

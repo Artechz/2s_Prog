@@ -19,7 +19,6 @@ int readParts (GroupPart * partGroup, char * fileName) {
         printf("Failed to open parts file.\n");     //TODO remove
     }
     else {
-        partGroup = (GroupPart *) malloc(sizeof(GroupPart));
 
         fscanf(partFile, "%d%c", &(partGroup->numParts), &aux);
 
@@ -48,7 +47,7 @@ int readParts (GroupPart * partGroup, char * fileName) {
     return error;
 }
 
-int readSeason (SortedList * season, char * fileName) {
+int readSeason (SortedListC * season, char * fileName) {
 
     FILE * seasonFile;
     char aux;
@@ -76,7 +75,7 @@ int readSeason (SortedList * season, char * fileName) {
             fscanf(seasonFile, "%d%c", &temp.pitstopTime, &aux);
             fscanf(seasonFile, "%d%c", &(temp.pitstopQty), &aux);
             temp.completed = 0;
-
+            temp.baseTime = temp.baseTime*60; //going from minutes to seconds
             SORTEDLIST_sortedAdd(season, temp);
             //printf("\niteraFIN_%d - %d - %s", i, temp.place, temp.name);      //TODO remove
         }
@@ -85,7 +84,7 @@ int readSeason (SortedList * season, char * fileName) {
     return error;
 }
 
-int readPilots (Pilot * pilots, char * fileName, int * pilotQty) {
+int readPilots (Pilot ** pilots, char * fileName, int * pilotQty) {
 
     FILE * pilotsFile;
     int error = FILE_NO_ERROR;
@@ -95,10 +94,14 @@ int readPilots (Pilot * pilots, char * fileName, int * pilotQty) {
     }
     else {
         //Reading (Pilot)s until end of file.
+
+        //Pilot * temp;
+        //temp = (Pilot *) malloc(sizeof(Pilot));
+
         for (*pilotQty = 0; !(feof(pilotsFile)); (*pilotQty)++) {
             //Reallocating memory for the newly found pilot to 'fit' in the dynamic array before putting it in.
-            pilots = (Pilot *) realloc(pilots, sizeof(Pilot) * (*pilotQty +1)); //pilotQty is index for pilots so we use (*pilotQty +1) when using it for Pilot qty.
-            fread(&pilots[*pilotQty], sizeof(Pilot), 1, pilotsFile);
+            (*pilots) = (Pilot *) realloc((*pilots), sizeof(Pilot) * (*pilotQty +1)); //pilotQty is index for pilots so we use (*pilotQty +1) when using it for Pilot qty.
+            fread(&(*pilots)[*pilotQty], sizeof(Pilot), 1, pilotsFile);
         }
         *pilotQty -= 1;     //We've seen last pilot in fitxerCorredors.bin is random data which does not correspond to a Pilot definition.
     }

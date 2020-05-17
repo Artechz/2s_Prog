@@ -7,12 +7,12 @@
  *
 ***********************************************/
 
-#include "my_sortedlist.h"
+#include "my_driver_sortedlist.h"
 
-SortedList SORTEDLIST_create () {
-    SortedList list;
+SortedLD SortedL_create () {
+    SortedLD list;
     // The list's head now is the phantom node.
-    list.head = (Node*) malloc(sizeof(Node));
+    list.head = (NodeD*) malloc(sizeof(NodeD));
     if (NULL != list.head) {
         // There is no one after the phantom node, so next is NULL.
         list.head->next = NULL;
@@ -31,12 +31,12 @@ SortedList SORTEDLIST_create () {
 }
 
 
-void LINKEDLIST_add (SortedList * list, Element element) {
-    Node * new_node = (Node*) malloc(sizeof(Node));
+void LinkedLISTD_add (SortedLD * list, ElD ElD) {
+    NodeD * new_node = (NodeD*) malloc(sizeof(NodeD));
 
     if (new_node != NULL) {
-        //Set the element field in the new node.
-        new_node->element = element;
+        //Set the ElD field in the new node.
+        new_node->element = ElD;
         //Set the next field in the new node.
         new_node->next = list->previous->next;
         //Link the new node to the list.
@@ -48,47 +48,71 @@ void LINKEDLIST_add (SortedList * list, Element element) {
 }
 
 
-void 	SORTEDLIST_sortedAdd (SortedList * list, Element element) {
+void 	SortedL_sortedAdd (SortedLD * list, ElD element) {
     int found = 0;
-    Element e;
+    ElD e;
 
     //POV to head to make sure we check all the positions starting from the beginning.
-    SORTEDLIST_goToHead(list);
+    SortedL_goToHead(list);
 
-    //Loop will stop when it finds the proper position for the new Element.
-    while (!SORTEDLIST_isAtEnd(*list) && !found) {
-        e = SORTEDLIST_get(list);
+    //Loop will stop when it finds the proper position for the new ElD.
+    while (!SortedL_isAtEnd(*list) && !found) {
+        e = SortedL_get(list);
 
         //Skipping the position if number is greater than actual. If not then we've found it.
-        if (element.place > e.place) {
-            SORTEDLIST_next(list);
+        if (element.time > e.time) {
+            SortedL_next(list);
         }
         else {
             found = 1;
         }
     }
 
-    //Adding the element to the list.
-    LINKEDLIST_add(list, element);
-    //printf(" !! Circuit %s added at position %d. New size: %d", element.name, element.place-1, list->size);
+    //Adding the ElD to the list.
+    LinkedLISTD_add(list, element);
+    //printf(" !! Circuit %s added at position %d. New size: %d", ElD.name, ElD.place-1, list->size);
 }
 
+void 	SortedL_sortedAddScore (SortedLD * list, ElD element) {
+    int found = 0;
+    ElD e;
 
-void 	SORTEDLIST_remove (SortedList * list)  {
-    Node * aux = NULL;
+    //POV to head to make sure we check all the positions starting from the beginning.
+    SortedL_goToHead(list);
+
+    //Loop will stop when it finds the proper position for the new ElD.
+    while (!SortedL_isAtEnd(*list) && !found) {
+        e = SortedL_get(list);
+
+        //Skipping the position if number is greater than actual. If not then we've found it.
+        if (element.totalPoints > e.totalPoints) {
+            SortedL_next(list);
+        }
+        else {
+            found = 1;
+        }
+    }
+
+    //Adding the ElD to the list.
+    LinkedLISTD_add(list, element);
+    //printf(" !! Circuit %s added at position %d. New size: %d", ElD.name, ElD.place-1, list->size);
+}
+
+void 	SortedL_remove (SortedLD * list)  {
+    NodeD * aux = NULL;
 
     //Checking the previous pointer doesn't point to the last node.
-    if (SORTEDLIST_isAtEnd (*list)) {
+    if (SortedL_isAtEnd (*list)) {
         list->error = LIST_ERROR_END;
     }
     else {
-        //Setting an auxiliary pointer to the element we want to remove.
+        //Setting an auxiliary pointer to the ElD we want to remove.
         aux = list->previous->next;
 
         //Removing POV
         list->previous->next = list->previous->next->next;
 
-        //Removing the element.
+        //Removing the ElD.
         free(aux);
 
         // If there are no errors, set error code to NO_ERROR.
@@ -98,15 +122,15 @@ void 	SORTEDLIST_remove (SortedList * list)  {
 }
 
 
-Element SORTEDLIST_get (SortedList * list) {
-    Element element;
+ElD SortedL_get (SortedLD * list) {
+    ElD element;
 
     // Checking the previous pointer doesn't point to the last node in the list
-    if (SORTEDLIST_isAtEnd (*list)) {
+    if (SortedL_isAtEnd (*list)) {
         list->error = LIST_ERROR_END;
     }
     else {
-        //Returning the element stored in the POV.
+        //Returning the ElD stored in the POV.
         element = list->previous->next->element;
 
         // If there are no errors, set error code to NO_ERROR.
@@ -117,25 +141,25 @@ Element SORTEDLIST_get (SortedList * list) {
 }
 
 
-int 	SORTEDLIST_isEmpty (SortedList list)  {
+int 	SortedL_isEmpty (SortedLD list)  {
     //Checking if list is empty by seeing if there's someone after the phantom node.
     return NULL == list.head->next;
 }
 
 
-void 	SORTEDLIST_goToHead (SortedList * list) {
-    //Moving POV to first element.
+void 	SortedL_goToHead (SortedLD * list) {
+    //Moving POV to first ElD.
     list->previous = list->head;
 }
 
 
-void 	SORTEDLIST_next (SortedList * list) {
+void 	SortedL_next (SortedLD * list) {
     // Checking the previous pointer doesn't point to the last node in the list
-    if (SORTEDLIST_isAtEnd (*list)) {
+    if (SortedL_isAtEnd (*list)) {
         list->error = LIST_ERROR_END;
     }
     else {
-        // Move the POV to the next element.
+        // Move the POV to the next ElD.
         list->previous = list->previous->next;
 
         // If there are no errors, set error code to NO_ERROR.
@@ -144,14 +168,14 @@ void 	SORTEDLIST_next (SortedList * list) {
 }
 
 
-int 	SORTEDLIST_isAtEnd (SortedList list) {
+int 	SortedL_isAtEnd (SortedLD list) {
     //Checking if at the end by seeing if there's any node after POV.
     return NULL == list.previous->next;
 }
 
 
-void 	SORTEDLIST_destroy (SortedList * list) {
-    Node * aux;
+void 	SortedL_destroy (SortedLD * list) {
+    NodeD * aux;
     // While there are still NODEs in the list.
     while (NULL != list->head) {
         // Take the first node.
@@ -168,6 +192,6 @@ void 	SORTEDLIST_destroy (SortedList * list) {
 }
 
 
-int		SORTEDLIST_getErrorCode (SortedList list) {
+int		SortedL_getErrorCode (SortedLD list) {
     return list.error;
 }

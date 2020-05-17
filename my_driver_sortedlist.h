@@ -7,12 +7,12 @@
  *
 ***********************************************/
 
-#ifndef PROGPRACTICE2_MY_SORTEDLIST_H
-#define PROGPRACTICE2_MY_SORTEDLIST_H
+#ifndef PROGPRACTICE2_MY_CIRCUIT_SortedL_H
+#define PROGPRACTICE2_MY_CIRCUIT_SortedL_H
 
 // Libraries
 #include <stdlib.h>				// To use dynamic memory.
-#include "my_race_basic.h"			// Student module to let the Element be a Student
+#include "my_race_basic.h"			// Student module to let the ElD be a Student
 
 // Constants to manage the list's error codes.
 #define LIST_NO_ERROR 0
@@ -22,19 +22,20 @@
 #define LIST_ERROR_END 4		// Error, the POV is at the end.
 
 // Data types
-typedef Circuit Element;
 
-typedef struct _Node {
-    Element element;
-    struct _Node * next;
-} Node;
+typedef User ElD;
+
+typedef struct _NodeD {
+    ElD element;
+    struct _NodeD * next;
+} NodeD;
 
 typedef struct {
     int error;			// Error code to keep track of failing operations;
-    Node * head;	 	// Head/First element or Phantom node;
-    Node * previous; 	// Previous node before the point of view;
+    NodeD * head;	 	// Head/First ElD or Phantom node;
+    NodeD * previous; 	// Previous node before the point of view;
     int size;
-} SortedList;
+} SortedLD;
 
 // Procedures & Functions
 /****************************************************************************
@@ -46,106 +47,121 @@ typedef struct {
  * @Return:     An empty sorted list
  *
  ****************************************************************************/
-SortedList SORTEDLIST_create ();
+SortedLD SortedL_create ();
 
 /****************************************************************************
  *
- * @Objective:  Inserts the specified element in this list to the position
+ * @Objective:  Inserts the specified ElD in this list to the position
  *			    defined by the sorting algorithm. Shifts the point of view
- *				element (if any) and any subsequent elements to the right.
- *			    If the list fails to create the new node to store the element,
+ *				ElD (if any) and any subsequent ElDs to the right.
+ *			    If the list fails to create the new node to store the ElD,
  *				it will set	the error code to LIST_ERROR_MALLOC.
  *
- * @Parameters:     (in/out) list    = the sorted list where to add the new element
- *				    (in)     element = the element to add to the list
+ * @Parameters:     (in/out) list    = the sorted list where to add the new ElD
+ *				    (in)     ElD = the ElD to add to the list
  * @Return:     ---
  *
  ****************************************************************************/
-void 	SORTEDLIST_sortedAdd (SortedList * list, Element element);
+void 	SortedL_sortedAdd (SortedLD * list, ElD element);
 
 /****************************************************************************
  *
- * @Objective: Removes the element currently at the point of view in this
- *				list. Shifts any subsequent elements to the left.
+ * @Objective:  Inserts the specified ElD in this list to the position
+ *			    defined by the sorting algorithm. Shifts the point of view
+ *				ElD (if any) and any subsequent ElDs to the right.
+ *			    If the list fails to create the new node to store the ElD,
+ *				it will set	the error code to LIST_ERROR_MALLOC.
+ *
+ * @Parameters:     (in/out) list    = the sorted list where to add the new ElD
+ *				    (in)     ElD = the ElD to add to the list
+ * @Return:     ---
+ *
+ ****************************************************************************/
+void 	SortedL_sortedAddScore (SortedLD * list, ElD element);
+
+/****************************************************************************
+ *
+ * @Objective: Removes the ElD currently at the point of view in this
+ *				list. Shifts any subsequent ElDs to the left.
  *			   This operation will fail if the POV is after the last valid
- *				element of the list. That will also happen for an empty list.
+ *				ElD of the list. That will also happen for an empty list.
  *				In that situation, this operation will set the error code to
  *			    LIST_ERROR_END.
- * @Parameters:     (in/out) list = the sorted list where to remove the element
+ * @Parameters:     (in/out) list = the sorted list where to remove the ElD
  * @Return:     ---
  *
  ****************************************************************************/
-void 	SORTEDLIST_remove (SortedList * list);
+void 	SortedL_remove (SortedLD * list);
 
 /****************************************************************************
  *
- * @Objective:  Returns the element currently at the point of view in this list.
+ * @Objective:  Returns the ElD currently at the point of view in this list.
  *			    This operation will fail if the POV is after the last valid
- *				element of the list. That will also happen for an empty list.
+ *				ElD of the list. That will also happen for an empty list.
  *				In that situation, this operation will set the error code to
  *				LIST_ERROR_END.
- * @Parameters:     (in/out) list = the sorted list where to get the element.
+ * @Parameters:     (in/out) list = the sorted list where to get the ElD.
  *								in/out because we need to set the error code.
  * @Return:     ---
  *
  ****************************************************************************/
-Element SORTEDLIST_get (SortedList * list);
+ElD SortedL_get (SortedLD * list);
 
 
 /****************************************************************************
  *
- * @Objective:  Returns true (!0) if this list contains no elements.
+ * @Objective:  Returns true (!0) if this list contains no ElDs.
  * @Parameters:     (in)     list = the sorted list to check.
- * @Return:     true (!0) if this list contains no elements, false (0) otherwise.
+ * @Return:     true (!0) if this list contains no ElDs, false (0) otherwise.
  *
  ****************************************************************************/
-int 	SORTEDLIST_isEmpty (SortedList list);
+int 	SortedL_isEmpty (SortedLD list);
 
 
 /****************************************************************************
  *
- * @Objective:  Moves the point of view to the first element in the list.
+ * @Objective:  Moves the point of view to the first ElD in the list.
  * @Parameters:     (in/out) list = the sorted list to move the POV.
  * @Return:     ---
  *
  ****************************************************************************/
-void 	SORTEDLIST_goToHead (SortedList * list);
+void 	SortedL_goToHead (SortedLD * list);
 
 
 /****************************************************************************
  *
- * @Objective:  Moves the point of view to the next element in the list.
- *				If the POV is after the last element in the list (or when
+ * @Objective:  Moves the point of view to the next ElD in the list.
+ *				If the POV is after the last ElD in the list (or when
  *				the list is empty), this function will set the list's error
  *				to LIST_ERROR_END.
  * @Parameters:     (in/out) list = the sorted list to move the POV.
  * @Return:     ---
  *
  ****************************************************************************/
-void 	SORTEDLIST_next (SortedList * list);
+void 	SortedL_next (SortedLD * list);
 
 
 /****************************************************************************
  *
- * @Objective:  Returns true (!0) if the POV is after the last element in the
+ * @Objective:  Returns true (!0) if the POV is after the last ElD in the
  *				list.
  * @Parameters:     (in)     list = the sorted to check.
- * @Return:     true (!0) if the POV is after the last element in the list
+ * @Return:     true (!0) if the POV is after the last ElD in the list
  *
  ****************************************************************************/
-int 	SORTEDLIST_isAtEnd (SortedList list);
+int 	SortedL_isAtEnd (SortedLD list);
 
 
 /****************************************************************************
  *
- * @Objective: Removes all the elements from the list and frees any dynamic
+ * @Objective: Removes all the ElDs from the list and frees any dynamic
  *				memory block the list was using. The list must be created
  *				again before usage.
  * @Parameters:     (in/out) list = the sorted list to destroy.
  * @Return:     ---
  *
  ****************************************************************************/
-void 	SORTEDLIST_destroy (SortedList * list);
+void 	SortedL_destroy (SortedLD * list);
 
 
 /****************************************************************************
@@ -157,6 +173,6 @@ void 	SORTEDLIST_destroy (SortedList * list);
  * @Return:     An error code from the list of constants defined.
  *
  ****************************************************************************/
-int		SORTEDLIST_getErrorCode (SortedList list);
+int		SortedL_getErrorCode (SortedLD list);
 
-#endif //PROGPRACTICE2_MY_SORTEDLIST_H
+#endif //PROGPRACTICE2_MY_CIRCUIT_SortedL_H
