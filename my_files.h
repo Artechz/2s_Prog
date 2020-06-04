@@ -29,7 +29,7 @@
 
 /***********************************************
  *
- * @Purpose:    Reading the Pat¡rts file and loading the info into a GroupPart structure.
+ * @Purpose:    Reading the Parts file and loading the info into a GroupPart structure.
  * @Parameters: (in/out): partGroup = the struct where to load all the parts info.
  *              in: fileName = string indicating the location of the file to read.
  * @Return:     false (0) if there's no error, true (!0) otherwise.
@@ -66,20 +66,22 @@ int readPilots (Pilot ** pilots, char * fileName, int * pilotQty);
 ************************************************/
 int readBase (int stats[4], char * fileName);
 
-/***********************************************TODO
+/***********************************************
  *
- * @Purpose:
- * @Parameters:
- * @Return:
+ * @Purpose:    Check if we have an error, and which is it.
+ * @Parameters: in: filError = Int indicating which error we have
+ * @Return:     false (0) if there's no error, true(!0) otherwise.
  *
 ************************************************/
 int fileErrorManage (int fileError);
 
-/***********************************************TODO
+/***********************************************
  *
- * @Purpose:
- * @Parameters:
- * @Return:
+ * @Purpose:    Check if there was an error when opening the file or if this one is empty.
+ * @Parameters: (in/out): file = file we want to check
+ *              in: path = path of the file to open.
+ *              in: mode = how to open that file.
+ * @Return:     false (0) if no error, true(!0) otherwise.
  *
 ************************************************/
 int checkFile (FILE ** file, char * path, char * mode);

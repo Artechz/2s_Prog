@@ -60,7 +60,7 @@ void printGP (int darkMode, Circuit gp);
 
 /***********************************************
  *
- * @Purpose:       Prints the traffic lights screen (second option screen).
+ * @Purpose:        Prints the traffic lights screen (second option screen).
  * @Parameters:     in: darkMode = true (!0) to show dark mode, false (0) otherwise.
  *                  in: on[5] = indicates which traffic lights are on.
  * @Return:        ---
@@ -110,26 +110,20 @@ void printFinish (int darkMode, Driver * driver, int pilotQty, SortedLD * list);
 ************************************************/
 void printStandings (int darkMode, SortedLD * list);
 
-/***********************************************TODO
+/***********************************************
  *
- * @Purpose:    Asks the user a question, checks the answers for errors within
- *              a valid range of numbers and converts it to an int.
- * @Parameters:     in: question = text to print as a question.
- *                  in: min = minimum value for valid input range.
- *                  in: max = maximum value for valid input range.
- * @Return:     Returns the atoi of the input if answer is valid.
+ * @Purpose:     	Switches the menu to dark mode if is in bright mode or viceversa.
+ * @Parameters:     (in/out): mode = integer asociated with the background color.
+ * @Return:          Returns the integer asociated with the new background color.
  *
 ************************************************/
 int switchDarkMode (int * mode);
 
-/***********************************************TODO
+/***********************************************
  *
- * @Purpose:    Asks the user a question, checks the answers for errors within
- *              a valid range of numbers and converts it to an int.
- * @Parameters:     in: question = text to print as a question.
- *                  in: min = minimum value for valid input range.
- *                  in: max = maximum value for valid input range.
- * @Return:     Returns the atoi of the input if answer is valid.
+ * @Purpose:        Gets the background color.
+ * @Parameters:     (in/out): mode = integer asociated with the background color.
+ * @Return:         Returns the integer asociated with the background color.
  *
 ************************************************/
 int getBackgroundColor (int * mode);
