@@ -1,6 +1,6 @@
 /***********************************************
  *
- * @Purpose: //TODO
+ * @Purpose: Manage all GUI related functions and various definitions.
  * @Author: Arnau Sanz and Josep Segarra.
  * @Creation date: 27/03/2020 (DD/MM/YYYY)
  * @Date of last modification: 09/05/2020
@@ -186,7 +186,8 @@ void printFinish (int darkMode, Driver * driver, int pilotQty, SortedLD * list) 
 
     int i;
     SortedL_goToHead(list);
-    for (i = 0; i <= pilotQty && !(0 == strcmp(SortedL_get(list).name, driver->driverName)); i++) {
+    for (i = 0; i <= pilotQty && 0 != strcmp(SortedL_get(list).name, driver->driverName); i++) {
+        printf("\ni: %d - match: %d -> %s (%d)vs %s", i, strcmp(SortedL_get(list).name, driver->driverName), SortedL_get(list).name, SortedL_getErrorCode(*list), driver->driverName);
         SortedL_next(list);
     }
 
@@ -195,6 +196,13 @@ void printFinish (int darkMode, Driver * driver, int pilotQty, SortedLD * list) 
 
     //'Painting' the graphic screen.
     LS_allegro_clear_and_paint(getBackgroundColor(&darkMode));
+}
+
+void printStandings (int darkmode, SortedLD * list) {
+
+    int margin;
+
+    printText(FONT_TITLE, darkMode, (WIN_WIDTH*3)/4 + (WIN_WIDTH*1)/60, (WIN_HEIGHT*4)/100, "%s", "PILOT");
 }
 
 int switchDarkMode (int * mode) {

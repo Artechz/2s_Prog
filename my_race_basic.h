@@ -17,10 +17,12 @@
 
 #define MAXSTRING 26
 
+/*
 #define PARTS_FILE "files/fitxerPeces.txt"      //TODO delete all this bc it has to be arguments
 #define SEASON_FILE "files/fitxerGPs.txt"
 #define PILOTS_FILE "files/fitxerCorredors.bin"
 #define BASE_FILE "files/fitxerBase.bin"
+*/
 
 #define BACKGROUND_IMAGE "files/boxes.png"
 #define TIRES_IMAGE "files/neumaticos.png"
@@ -42,6 +44,8 @@
 #define RACE_INPROGRESS 0
 #define RACE_FINISHED 1
 
+#define TRUE 1
+#define FALSE 0
 
 typedef struct {
     char name[MAXSTRING];
@@ -182,7 +186,7 @@ void calculateOthers (Car * others, Pilot * pilot, Circuit temp);
  * @Return:
  *
 ************************************************/
-void calculatePos (Car * player, Car * others, int pilotQty, int ** carPos, float timeElapsed, float playerElapsed, int playerTime, int pstopCounter, int pstopStatus, float pstopTimeElapsed, int * aux, Circuit temp);
+void calculatePos (Car * player, Car * others, int pilotQty, int ** carPos, float timeElapsed, float playerElapsed, int playerTime, int pstopStatus, int * aux);
 
 
 #endif //PROGPRACTICE2_MY_RACE_BASIC_H

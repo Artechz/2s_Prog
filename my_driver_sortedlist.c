@@ -85,7 +85,7 @@ void 	SortedL_sortedAddScore (SortedLD * list, ElD element) {
         e = SortedL_get(list);
 
         //Skipping the position if number is greater than actual. If not then we've found it.
-        if (element.totalPoints > e.totalPoints) {
+        if (element.totalPoints < e.totalPoints) {
             SortedL_next(list);
         }
         else {

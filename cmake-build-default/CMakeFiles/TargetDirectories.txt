@@ -1,0 +1,3 @@
+C:/Users/arni0/CLionProjects/2s_Prog/cmake-build-default/CMakeFiles/ProgPractice2.dir
+C:/Users/arni0/CLionProjects/2s_Prog/cmake-build-default/CMakeFiles/edit_cache.dir
+C:/Users/arni0/CLionProjects/2s_Prog/cmake-build-default/CMakeFiles/rebuild_cache.dir

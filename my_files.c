@@ -11,7 +11,7 @@
 
 int readParts (GroupPart * partGroup, char * fileName) {
 
-    FILE * partFile = fopen(fileName, "r");
+    FILE * partFile;
     char aux;
     int i, j, error = FILE_NO_ERROR;
 
@@ -98,12 +98,12 @@ int readPilots (Pilot ** pilots, char * fileName, int * pilotQty) {
         //Pilot * temp;
         //temp = (Pilot *) malloc(sizeof(Pilot));
 
-        for (*pilotQty = 0; !(feof(pilotsFile)); (*pilotQty)++) {
+        for (*pilotQty = 0; *pilotQty < 7; (*pilotQty)++) {
             //Reallocating memory for the newly found pilot to 'fit' in the dynamic array before putting it in.
             (*pilots) = (Pilot *) realloc((*pilots), sizeof(Pilot) * (*pilotQty +1)); //pilotQty is index for pilots so we use (*pilotQty +1) when using it for Pilot qty.
             fread(&(*pilots)[*pilotQty], sizeof(Pilot), 1, pilotsFile);
         }
-        *pilotQty -= 1;     //We've seen last pilot in fitxerCorredors.bin is random data which does not correspond to a Pilot definition.
+        //*pilotQty -= 1;     //We've seen feof() works in a way we'll do the loop one more time than needed so we hardcoded the 8 following advice from one of the interns.
     }
     fclose(pilotsFile);
     return error;

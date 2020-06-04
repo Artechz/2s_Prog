@@ -24,7 +24,7 @@
 int main (int argc, char * argv[]) {
 
     int  exit = 0, allegroExit = 0, optionDone = 0, optionSelected = 0, darkMode = WHITE, i;
-    int partCategory = 0, partModel = 0, traffLightStatus, isTLOn[5], pstopStatus, pilotQty, pstopCounter, raceStatus, playerTime;
+    int partCategory = 0, partModel = 0, traffLightStatus, isTLOn[5], pstopStatus, pilotQty, pstopCounter, raceStatus, playerTime, pstopPenaltyCounter;
     float timeInitial, timeMeasured, timeDelta, timeElapsed, pstopDeltaTime, playerElapsed;
 
     //PilotContainer * pilots;
@@ -65,13 +65,14 @@ int main (int argc, char * argv[]) {
             if (!fileErrorManage(readParts(partGroup, argv[1]))) {
                 //Reading the GPs file and putting all GPs info into season while managing a possible error.
                 if(!fileErrorManage(readSeason(season, argv[2]))) {
+                    SORTEDLIST_goToHead(season);
                     SortedLD standings[season->size];
                     for (i = 0; i < season->size; i++) {
                         standings[i] = SortedL_create();
                     }
                     //Reading the Base file and putting all info into baseStats while managing a possible error.
                     if(!fileErrorManage(readBase(baseStats, argv[4]))) {
-                        //Adding Base stats to all pilots (player is done below when settin up car in option 1).
+                        //Adding Base stats to all pilots (player is done below when setting up car in option 1).
                         for (i = 0; i < pilotQty; i++) {
                             otherCars[i].speed = baseStats[0];
                             otherCars[i].acceleration = baseStats[1];
@@ -91,7 +92,7 @@ int main (int argc, char * argv[]) {
                             optionSelected = menuAsk("Which option do you want to execute? ", 1, 5);
                             switch (optionSelected) {
 
-                                //OPTION 1
+                                //region OPTION 1
                                 case 1:
 
                                     if (!optionDone) {
@@ -195,11 +196,10 @@ int main (int argc, char * argv[]) {
                                     }
                                     //printf("\n%d - %d - %d - %d", playerCar->speed, playerCar->acceleration, playerCar->consumption, playerCar->reliability);     //TODO remove
                                     break;
+                                //endregion
 
-                                //OPTION 2
+                                //region OPTION 2
                                 case 2:
-                                    printf("\nWIP\n");
-                                    //TODO option 2
 
                                     if (!optionDone) {
                                         printf("\nERROR: Car needs to be configured before racing.");
@@ -209,10 +209,10 @@ int main (int argc, char * argv[]) {
                                         traffLightStatus = TL_NOT_SHOWN;
                                         pstopStatus = PS_NOTASKED;
                                         pstopCounter = 0;
+                                        pstopPenaltyCounter = 0;
                                         pstopDeltaTime = 0;
                                         playerElapsed = 0;
-
-                                        SORTEDLIST_goToHead(season);
+                                        *aux = 0;
                                         Circuit tempGP = SORTEDLIST_get(season);
                                         carImage = al_load_bitmap(CAR_IMAGE);
                                         if (!carImage) printf("Failed to load playerCar bitmap.\n");
@@ -268,31 +268,31 @@ int main (int argc, char * argv[]) {
                                                     //Printing traffic lights screen.
                                                     printTrafficLights(darkMode, isTLOn);
 
-                                                    if (0 == isTLOn[0]) {
+                                                    if (FALSE == isTLOn[0]) {
                                                         if (timeDelta >= 1.0) {
-                                                            isTLOn[0] = 1;
-                                                            isTLOn[1] = 1;
+                                                            isTLOn[0] = TRUE;
+                                                            isTLOn[1] = TRUE;
                                                             timeInitial = (float)clock();
                                                         }
                                                     }
                                                     else {
-                                                        if (0 == isTLOn[2]) {
+                                                        if (FALSE == isTLOn[2]) {
                                                             if (timeDelta >= 1.0) {
-                                                                isTLOn[2] = 1;
+                                                                isTLOn[2] = TRUE;
                                                                 timeInitial = (float)clock();
                                                             }
                                                         }
                                                         else {
-                                                            if (0 == isTLOn[3]) {
+                                                            if (FALSE == isTLOn[3]) {
                                                                 if (timeDelta >= 1.0) {
-                                                                    isTLOn[3] = 1;
+                                                                    isTLOn[3] = TRUE;
                                                                     timeInitial = (float)clock();
                                                                 }
                                                             }
                                                             else {
-                                                                if (0 == isTLOn[4]) {
+                                                                if (FALSE == isTLOn[4]) {
                                                                     if (timeDelta >= 1.0) {
-                                                                        isTLOn[4] = 1;
+                                                                        isTLOn[4] = TRUE;
                                                                         timeInitial = (float)clock();
                                                                     }
                                                                 }
@@ -326,56 +326,71 @@ int main (int argc, char * argv[]) {
                                                                         if (PS_NOTASKED == pstopStatus) {
                                                                             printf("\nPitStop NOT accepted.");          //DEBUG //TODO remove
                                                                             pstopStatus = PS_NOTACCEPTED;
+                                                                            pstopPenaltyCounter++;
                                                                         }
                                                                     }
                                                                 }
                                                             }
                                                         }
-
                                                         if (pstopDeltaTime > tempGP.pitstopTime) {
                                                             pstopStatus = PS_NOTASKED;
                                                             printf("\nPitStop ended.");
                                                             pstopDeltaTime = 0;
                                                         }
                                                         //Adding to the elapsed time every 0.05 sec to improve precision.
-                                                        if (timeDelta >= 0.05) {
-                                                            timeElapsed += 0.05;
+                                                        if (timeDelta >= 0.05f) {
+                                                            timeElapsed += 0.05f;
                                                             if (PS_ACCEPTED == pstopStatus || PS_NOTACCEPTED == pstopStatus) {
-                                                                pstopDeltaTime += 0.05; //If in a time penalty, counting the time it's on stop.
+                                                                pstopDeltaTime += 0.05f; //If in a time penalty, counting the time it's on stop.
                                                             }
                                                             else {
-                                                                playerElapsed += 0.05;
+                                                                playerElapsed += 0.05f;
                                                             }
                                                             timeInitial = (float)clock();
                                                         }
 
                                                         if (RACE_INPROGRESS == raceStatus) {
-                                                            if (playerElapsed >= playerCar->time || (*aux) > 3710) {
+                                                            if (playerElapsed >= playerCar->time || 1 == (*aux)) {
+
                                                                 printf("\n%d", playerCar->time);
                                                                 raceStatus = RACE_FINISHED;
                                                                 printf("\n0 ");
+
                                                                 if (pstopCounter < playerCar->pstopQty) {
                                                                     //Adding the penalty if one or more pitsotps were missed.
-                                                                    playerCar->time += (playerCar->pstopQty - pstopCounter) * tempGP.pitstopTime;
+                                                                    playerCar->time += (playerCar->pstopQty - pstopCounter) * tempGP.pitstopTime + (pstopPenaltyCounter * 5 * tempGP.pitstopTime);
                                                                 }
+
                                                                 printf("1 ");
                                                                 SortedLD temporary = SortedL_create();
+                                                                SortedL_goToHead(&temporary);
+
                                                                 for (i = 0; i < pilotQty; i++) {
                                                                     users[i].time = otherCars[i].time;
                                                                     strcpy(users[i].name, pilots[i].name);
-                                                                    SortedL_sortedAdd( &temporary, users[i]);
+                                                                    printf(" %s - %s - ", users[i].name, pilots[i].name);
+                                                                    SortedL_sortedAdd(&temporary, users[i]);
                                                                 }
+
                                                                 printf("2 ");
                                                                 users[pilotQty].time = playerCar->time;
                                                                 strcpy(users[pilotQty].name, driver->driverName);
                                                                 SortedL_sortedAdd(&temporary, users[pilotQty]);
                                                                 printf("3 ");
                                                                 SortedL_goToHead(&temporary);
+
+                                                                while (!SortedL_isAtEnd(temporary)) {
+                                                                        printf("!%s!", SortedL_get(&temporary).name);
+                                                                        SortedL_next(&temporary);
+                                                                }
+                                                                SortedL_goToHead(&temporary);
+
                                                                 for (i = 0; i <= pilotQty && !SortedL_isAtEnd(temporary); i++) {
                                                                     int score;
                                                                     printf("3.01 ");
                                                                     User tempuser = SortedL_get(&temporary);
                                                                     printf("3.1 ");
+
                                                                     switch (i) {
                                                                         case 0:
                                                                             score = 25;
@@ -406,14 +421,24 @@ int main (int argc, char * argv[]) {
                                                                     tempuser.totalPoints = score;
                                                                     printf("3.3 ");
                                                                     SortedL_sortedAddScore(&(standings[tempGP.place-1]), tempuser);
-                                                                    printf("3.4.%d ", i);
+                                                                    printf("3.4..%d ", i);
+                                                                    SortedL_next(&temporary);
                                                                 }
+
+                                                                SortedL_goToHead(&(standings[tempGP.place-1]));
+
+                                                                while (!SortedL_isAtEnd(standings[tempGP.place-1])) {
+                                                                    printf("!%s!", SortedL_get(&(standings[tempGP.place-1])).name);
+                                                                    SortedL_next(&(standings[tempGP.place-1]));
+                                                                }
+                                                                SortedL_goToHead(&(standings[tempGP.place-1]));
+
                                                                 printf("4 ");
                                                                 SortedL_destroy(&temporary);
                                                                 printf("5 ");
                                                             }
                                                             else {
-                                                                calculatePos(playerCar, otherCars, pilotQty, &carPos, timeElapsed, playerElapsed, playerTime, pstopCounter, pstopStatus, pstopDeltaTime, aux, tempGP);
+                                                                calculatePos(playerCar, otherCars, pilotQty, &carPos, timeElapsed, playerElapsed, playerTime, pstopStatus, aux);
 
                                                                 //Printing race screen.
                                                                 printRace(darkMode, driver, playerCar, pilots, pilotQty, timeElapsed, tempGP.pitstopTime - pstopDeltaTime,
@@ -434,18 +459,46 @@ int main (int argc, char * argv[]) {
                                     }
 
                                     break;
+                                //endregion
 
-                                    //OPTION 3
+                                //region OPTION 3
                                 case 3:
                                     printf("\nNot done yet\n");
                                     //TODO option 3
+
+                                    int completed = FALSE;
+
+                                    for (i = 0; i < season->size; i++) {
+                                        if (SORTEDLIST_get(season).completed) completed = TRUE;
+
+                                        if (SORTEDLIST_isAtEnd(*season)) {
+                                            SORTEDLIST_goToHead(season);
+                                        }
+                                        else {
+                                            SORTEDLIST_next(season);
+                                        }
+                                    }
+
+                                    if (FALSE == completed) {
+                                        //no gp has been completed
+                                        printf("\nThe season hasn't started yet.\n");
+                                    }
+                                    else {
+                                        //one or more gps have been completed
+                                        SortedL_get(&standings[SORTEDLIST_get(season).place - 1]);
+                                        printStandings();
+                                    }
+
                                     break;
 
-                                    //OPTION 4
+                                //endregion
+
+                                //region OPTION 4
                                 case 4:
                                     printf("\nNot done yet\n");
                                     //TODO option 4
                                     break;
+                                //endregion
 
                                 default:
                                     printf("\nALGO HEM FET MALAMENT PERQUE AIXO NO HAURIA DE SORTIR MAI\n");

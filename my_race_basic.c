@@ -144,7 +144,7 @@ void calculateOthers (Car * car, Pilot * pilot, Circuit temp) {
     //printf("%d - %d ! ", car->time, calcTime);        //TODO remove
 }
 
-void calculatePos (Car * player, Car * others, int pilotQty, int ** carPos, float timeElapsed, float playerElapsed, int playerTime, int pstopCounter, int pstopStatus, float pstopTimeElapsed, int * aux, Circuit temp) {
+void calculatePos (Car * player, Car * others, int pilotQty, int ** carPos, float timeElapsed, float playerElapsed, int playerTime, int pstopStatus, int * aux) {
 
     const int distance = abs(WIN_WIDTH*3/30 - (WIN_WIDTH*14)/20);
     int i;
@@ -154,9 +154,12 @@ void calculatePos (Car * player, Car * others, int pilotQty, int ** carPos, floa
         }
     }
 
-    if (!(PS_NOTACCEPTED == pstopStatus || PS_ACCEPTED == pstopStatus) && (*aux) <= 3710) {
+    if (!(PS_NOTACCEPTED == pstopStatus || PS_ACCEPTED == pstopStatus) && 0 == (*aux)) {
         (*carPos)[pilotQty] = (int)((distance / playerTime) * playerElapsed);
-        (*aux)++;
+        printf("\n %d", (*carPos)[pilotQty]);
+        if ((*carPos)[pilotQty] >= distance) {
+            (*aux) = 1;
+        }
         //printf("\n%d ", distance/(distance/playerTime));
     }
 }
