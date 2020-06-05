@@ -87,11 +87,25 @@ void 	SORTEDLIST_remove (SortedListC * list);
  *				LIST_ERROR_END.
  * @Parameters:     (in/out) list = the sorted list where to get the element.
  *								in/out because we need to set the error code.
- * @Return:     ---
+ * @Return:     Element
  *
  ****************************************************************************/
 Element SORTEDLIST_get (SortedListC * list);
 
+/****************************************************************************
+ *
+ * @Objective:  Returns the pointer to the element currently at the point of
+ *              view in this list.
+ *			    This operation will fail if the POV is after the last valid
+ *				element of the list. That will also happen for an empty list.
+ *				In that situation, this operation will set the error code to
+ *				LIST_ERROR_END.
+ * @Parameters:     (in/out) list = the sorted list where to get the element.
+ *								in/out because we need to set the error code.
+ * @Return:     Element *
+ *
+ ****************************************************************************/
+Element * SORTEDLIST_getPointer (SortedListC * list);
 
 /****************************************************************************
  *

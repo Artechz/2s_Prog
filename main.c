@@ -89,7 +89,7 @@ int main (int argc, char * argv[]) {
                             printf("\t 4. Save Season\n");
                             printf("\t 5. Exit\n\n");
 
-                            optionSelected = menuAsk("Which option do you want to execute? ", 1, 5);
+                            optionSelected = menuAsk("Which option do you want to execute? ", 1, 5);  //TODO change max from 5 to 4
                             switch (optionSelected) {
 
                                 //region OPTION 1
@@ -121,7 +121,7 @@ int main (int argc, char * argv[]) {
                                             allegroExit = 1;
                                         }
                                         else {
-                                            if (LS_allegro_key_pressed(ALLEGRO_KEY_D)) {
+                                            if (LS_allegro_key_pressed(ALLEGRO_KEY_H)) {
                                                 switchDarkMode(&darkMode);
                                             }
                                             else {
@@ -242,7 +242,7 @@ int main (int argc, char * argv[]) {
                                                 allegroExit = 1;
                                             }
                                             else {
-                                                if (LS_allegro_key_pressed(ALLEGRO_KEY_D)) {
+                                                if (LS_allegro_key_pressed(ALLEGRO_KEY_H)) {
                                                     switchDarkMode(&darkMode);
                                                 }
                                                 else {
@@ -309,24 +309,31 @@ int main (int argc, char * argv[]) {
                                                 else {
                                                     if (TL_ALREADY_SHOWN == traffLightStatus) { //race screen
                                                         if (LS_allegro_key_pressed(ALLEGRO_KEY_R) && PS_NOTASKED == pstopStatus) {
-                                                            printf("\nRadioed in. ");                            //DEBUG //TODO remove
                                                             pstopStatus = PS_ASKED;
-                                                            printf("Code: %d", *aux);
+#ifdef LSRACER_LOG
+                                                            printf("\nRadioed in. ");                                   //LOG
+                                                            printf("Code: %d", *aux);                                   //LOG
+#endif
                                                         }
                                                         else {
                                                             if (LS_allegro_key_pressed(ALLEGRO_KEY_P)) {
                                                                 if (pstopCounter < tempGP.pitstopQty) {
-                                                                    printf("\nPitStop requested.");                 //DEBUG //TODO remove
+#ifdef LSRACER_LOG
+                                                                    printf("\nPitStop requested.");                     //LOG
+#endif
                                                                     if (PS_ASKED == pstopStatus) {
                                                                         pstopStatus = PS_ACCEPTED;
-                                                                        printf("\nPitStop accepted.");              //DEBUG //TODO remove
-                                                                        pstopCounter++;
+#ifdef LSRACER_LOG
+                                                                        printf("\nPitStop accepted.");                  //LOG
+#endif
                                                                     }
                                                                     else {
                                                                         if (PS_NOTASKED == pstopStatus) {
-                                                                            printf("\nPitStop NOT accepted.");          //DEBUG //TODO remove
                                                                             pstopStatus = PS_NOTACCEPTED;
                                                                             pstopPenaltyCounter++;
+#ifdef LSRACER_LOG
+                                                                            printf("\nPitStop NOT accepted.");          //LOG
+#endif
                                                                         }
                                                                     }
                                                                 }
@@ -352,16 +359,15 @@ int main (int argc, char * argv[]) {
                                                         if (RACE_INPROGRESS == raceStatus) {
                                                             if (playerElapsed >= playerCar->time || 1 == (*aux)) {
 
-                                                                printf("\n%d", playerCar->time);
                                                                 raceStatus = RACE_FINISHED;
-                                                                printf("\n0 ");
-
+#ifdef LSRACER_LOG
+                                                                printf("\n%d", playerCar->time);                        //LOG
+#endif
                                                                 if (pstopCounter < playerCar->pstopQty) {
-                                                                    //Adding the penalty if one or more pitsotps were missed.
+                                                                    //Adding the penalty if one or more pit-stops were missed.
                                                                     playerCar->time += (playerCar->pstopQty - pstopCounter) * tempGP.pitstopTime + (pstopPenaltyCounter * 5 * tempGP.pitstopTime);
                                                                 }
 
-                                                                printf("1 ");
                                                                 SortedLD temporary = SortedL_create();
                                                                 SortedL_goToHead(&temporary);
 
@@ -372,24 +378,14 @@ int main (int argc, char * argv[]) {
                                                                     SortedL_sortedAdd(&temporary, users[i]);
                                                                 }
 
-                                                                printf("2 ");
                                                                 users[pilotQty].time = playerCar->time;
                                                                 strcpy(users[pilotQty].name, driver->driverName);
                                                                 SortedL_sortedAdd(&temporary, users[pilotQty]);
-                                                                printf("3 ");
-                                                                SortedL_goToHead(&temporary);
-
-                                                                while (!SortedL_isAtEnd(temporary)) {
-                                                                        printf("!%s!", SortedL_get(&temporary).name);
-                                                                        SortedL_next(&temporary);
-                                                                }
                                                                 SortedL_goToHead(&temporary);
 
                                                                 for (i = 0; i <= pilotQty && !SortedL_isAtEnd(temporary); i++) {
                                                                     int score;
-                                                                    printf("3.01 ");
                                                                     User tempuser = SortedL_get(&temporary);
-                                                                    printf("3.1 ");
 
                                                                     switch (i) {
                                                                         case 0:
@@ -417,25 +413,14 @@ int main (int argc, char * argv[]) {
                                                                             score = 3;
                                                                             break;
                                                                     }
-                                                                    printf("3.2 ");
+
                                                                     tempuser.totalPoints = score;
-                                                                    printf("3.3 ");
                                                                     SortedL_sortedAddScore(&(standings[tempGP.place-1]), tempuser);
-                                                                    printf("3.4..%d ", i);
                                                                     SortedL_next(&temporary);
                                                                 }
 
                                                                 SortedL_goToHead(&(standings[tempGP.place-1]));
-
-                                                                while (!SortedL_isAtEnd(standings[tempGP.place-1])) {
-                                                                    printf("!%s!", SortedL_get(&(standings[tempGP.place-1])).name);
-                                                                    SortedL_next(&(standings[tempGP.place-1]));
-                                                                }
-                                                                SortedL_goToHead(&(standings[tempGP.place-1]));
-
-                                                                printf("4 ");
                                                                 SortedL_destroy(&temporary);
-                                                                printf("5 ");
                                                             }
                                                             else {
                                                                 calculatePos(playerCar, otherCars, pilotQty, &carPos, timeElapsed, playerElapsed, playerTime, pstopStatus, aux);
@@ -452,8 +437,10 @@ int main (int argc, char * argv[]) {
                                                 }
                                             }
                                         }
-                                        if (RACE_FINISHED == raceStatus) SORTEDLIST_next(season);
-                                        //SORTEDLIST_get(season).completed = 1;
+                                        if (RACE_FINISHED == raceStatus) {
+                                            SORTEDLIST_getPointer(season)->completed = TRUE;
+                                            SORTEDLIST_next(season);
+                                        }
                                         //SORTEDLIST_next(season);
                                         LS_allegro_exit();
                                     }
@@ -463,7 +450,7 @@ int main (int argc, char * argv[]) {
 
                                 //region OPTION 3
                                 case 3:
-                                    printf("\nNot done yet\n");
+                                    printf("\nNot done yet\n");                                                         //TODO remove
                                     //TODO option 3
 
                                     int completed = FALSE;
@@ -485,8 +472,27 @@ int main (int argc, char * argv[]) {
                                     }
                                     else {
                                         //one or more gps have been completed
-                                        SortedL_get(&standings[SORTEDLIST_get(season).place - 1]);
-                                        printStandings();
+                                        //SortedL_get(&standings[SORTEDLIST_get(season).place - 1]);
+
+                                        if (LS_allegro_key_pressed(ALLEGRO_KEY_ESCAPE)) {
+                                            allegroExit = 1;
+                                        }
+                                        else {
+                                            if (LS_allegro_key_pressed(ALLEGRO_KEY_H)) {
+                                                switchDarkMode(&darkMode);
+                                            }
+                                            else {
+                                                if (LS_allegro_key_pressed(ALLEGRO_KEY_A)) {
+                                                    //go left - one less                        //TODO think how do i go around?? about maybe using bidir list here? or looping around every time? second option better I think. problem for tomorrow's Nau
+                                                }
+                                                else {
+                                                    //go right - one more
+                                                }
+                                            }
+
+                                        }
+
+                                        printStandings(darkMode, &standings[SORTEDLIST_get(season).place - 1]);
                                     }
 
                                     break;

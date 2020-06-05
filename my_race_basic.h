@@ -17,13 +17,6 @@
 
 #define MAXSTRING 26
 
-/*
-#define PARTS_FILE "files/fitxerPeces.txt"      //TODO delete all this bc it has to be arguments
-#define SEASON_FILE "files/fitxerGPs.txt"
-#define PILOTS_FILE "files/fitxerCorredors.bin"
-#define BASE_FILE "files/fitxerBase.bin"
-*/
-
 #define BACKGROUND_IMAGE "files/boxes.png"
 #define TIRES_IMAGE "files/neumaticos.png"
 #define AEROFRONT_IMAGE "files/aero_front.png"
@@ -46,6 +39,8 @@
 
 #define TRUE 1
 #define FALSE 0
+
+#define LSRACER_LOG 1
 
 typedef struct {
     char name[MAXSTRING];
@@ -70,11 +65,6 @@ typedef struct {
     int temperament;
     int tireManagement;
 } Driver;
-
-typedef struct {
-    int number;
-    float position;
-} Car_UI;   //TODO chekc if used
 
 typedef struct {
     int speed;
@@ -115,7 +105,7 @@ typedef struct {
     float baseTime;
     int pitstopTime;
     int pitstopQty;
-    int completed;  //TODO probs sobra
+    int completed;
 } Circuit;
 
 typedef struct {
@@ -141,8 +131,8 @@ int menuAsk (char question[MAXSTRING], int min, int max);
 /***********************************************
  *
  * @Purpose:    Asks the user for the information about the pilot.
- * @Parameters: (in/out): driver = place where is stored the
- *              information introduced by the user.
+ * @Parameters:     in: driver = place where the information introduced
+ *                  by the user is stored.
  * @Return:     ---
  *
 ************************************************/
@@ -167,7 +157,7 @@ void infoAsk (Driver * driver);
  * @Purpose:    Calculate the statistics of the player
  * @Parameters: (in/out): car = information about the car.
  *              (in/out): driver = information about the driver
- *              (in/out): temp = information about the season.
+ *              in: temp = information about the gp.
  *              out: playerTime = time the player spends to end the race.
  * @Return:     ---
  *
@@ -179,27 +169,27 @@ void calculatePlayer (Car * car, Driver * driver, Circuit temp, int * playerTime
  * @Purpose:    Calculate the statistics of the other drivers.
  * @Parameters: (in/out): others = information about the car of the other drivers
  *              (in/out): pilot = information about the other drivers
- *              (in/out): temp = information about the season.
+ *              in: temp = information about the gp.
  * @Return:     ---
  *
 ************************************************/
 void calculateOthers (Car * others, Pilot * pilot, Circuit temp);
 
-/***********************************************TODO
+/***********************************************
  *
  * @Purpose:    Calculate the position of the cars.
  * @Parameters: (in/out): player = information about the players car.
  *              (in/out): others = information about the car of the other drivers.
  *              in: pilotQty = number of pilots
- *              out: carPos = position of the car.
- *              in: timeElapsed =
- *              in: playerElapsed =
- *              in: playerTime =
- *              in: pstopCounter =
- *              in: pstopStatus =
- *              in: pstopTimeElapsed =
- *              (in/out): aux =
- *              (in/out): temp = information about the season.
+ *              (in/out): carPos = position of the car.
+ *              in: timeElapsed = number of seconds that have passed since the race has started.
+ *              in: playerElapsed = time the player has been moving (excludes pit stops time).
+ *              in: playerTime = time the player needs to finish.
+ *              in: pstopCounter = number of pit stops done by player.
+ *              in: pstopNeeded = number of pit stops required by the circuit.
+ *              in: pstopStatus = indicates if player is doing a pit stop or not.
+ *              (in/out): aux = auxiliary value related to player relative position to the screen margins.
+ *              in: temp = information about the gp.
  * @Return:     ---
  *
 ************************************************/

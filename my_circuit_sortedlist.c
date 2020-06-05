@@ -116,6 +116,23 @@ Element SORTEDLIST_get (SortedListC * list) {
     return element;
 }
 
+Element* SORTEDLIST_getPointer (SortedListC * list) {
+    Element * element;
+
+    // Checking the previous pointer doesn't point to the last node in the list
+    if (SORTEDLIST_isAtEnd (*list)) {
+        list->error = LIST_ERROR_END;
+    }
+    else {
+        //Returning the element stored in the POV.
+        element = &(list->previous->next->element);
+
+        // If there are no errors, set error code to NO_ERROR.
+        list->error = LIST_NO_ERROR;
+    }
+
+    return element;
+}
 
 int 	SORTEDLIST_isEmpty (SortedListC list)  {
     //Checking if list is empty by seeing if there's someone after the phantom node.
