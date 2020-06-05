@@ -1,6 +1,8 @@
 /***********************************************
  *
- * @Purpose: //TODO
+ * @Purpose: This module carries all the different structs that we created in order to organize all the data
+ *           of the project, it also contains the functions that ask the user to enter some information and
+ *           check if it is correct.
  * @Author: Arnau Sanz and Josep Segarra.
  * @Creation date: 27/03/2020 (DD/MM/YYYY)
  * @Date of last modification: 28/03/2020
