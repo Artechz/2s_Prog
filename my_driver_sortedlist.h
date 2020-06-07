@@ -62,7 +62,7 @@ SortedLD SortedL_create ();
  * @Return:     ---
  *
  ****************************************************************************/
-void 	SortedL_sortedAdd (SortedLD * list, ElD element);
+void 	SortedL_sortedAddTime (SortedLD * list, ElD element);
 
 /****************************************************************************
  *

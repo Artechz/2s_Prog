@@ -68,6 +68,15 @@ int readBase (int stats[4], char * fileName);
 
 /***********************************************
  *
+ * @Purpose:    Writing the GPs file and reading the info from the standings Sorted list.
+ * @Parameters: in: standings = the sorted list where to load all the GP info.
+ * @Return      ---
+ *
+************************************************/
+void writeSeason (SortedListC * season, SortedLD * standings, int pilotQty, int gpQty);
+
+/***********************************************
+ *
  * @Purpose:    Check if we have an error, and which is it.
  * @Parameters: in: filError = Int indicating which error we have
  * @Return:     false (0) if there's no error, true(!0) otherwise.

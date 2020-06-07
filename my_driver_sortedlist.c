@@ -49,7 +49,7 @@ void LinkedLISTD_add (SortedLD * list, ElD ElD) {
 }
 
 
-void 	SortedL_sortedAdd (SortedLD * list, ElD element) {
+void 	SortedL_sortedAddTime (SortedLD * list, ElD element) {
     int found = 0;
     ElD e;
 

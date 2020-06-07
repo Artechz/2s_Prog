@@ -125,6 +125,29 @@ int readBase (int stats[4], char * fileName) {
     return error;
 }
 
+void writeSeason (SortedListC * season, SortedLD * standings, int pilotQty, int gpQty) {
+
+    FILE * file = fopen("files/log.txt", "r");
+    int i, j;
+
+    SORTEDLIST_goToHead(season);
+    SortedL_goToHead(standings);
+
+    for (i = 0; i < gpQty; i++) {
+
+        fprintf(file, "%s ranking\n", SORTEDLIST_get(season).name);
+
+        for (j = 0; j < pilotQty; j++) {
+            User temp = SortedL_get(&standings[SORTEDLIST_get(season).place -1]);
+
+            fprintf(file, "%d. %s with %d seconds. Points: %d\n", j+1, temp.name, temp.time, temp.totalPoints);
+            SortedL_next(&standings[SORTEDLIST_get(season).place -1]);
+        }
+        SORTEDLIST_next(season);
+    }
+
+}
+
 int fileErrorManage (int fileError) {
     switch (fileError) {
         case FILE_ERROR:
@@ -145,25 +168,10 @@ int checkFile (FILE ** file, char * path, char * mode) {
     int error = FILE_NO_ERROR;
     if (NULL == (*file = fopen(path, mode))) {
         error = FILE_ERROR;
-    }
-    else {
+    } else {
         if (feof(*file)) {
             error = FILE_EMPTY;
         }
     }
     return error;
 }
-
-/*
- *  quantity -> GPs INT
- *  GP block:
- *      place in season (to sort) INT
- *      name of GP  STRING
- *      appropriate speed INT
- *      appropriate acceleration INT
- *      appropriate consumption INT
- *      appropriate reliability INT
- *      base time FLOAT
- *      pit-stop time INT
- *      quantity pit-stops INT
- */
