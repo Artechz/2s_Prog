@@ -486,17 +486,7 @@ int main (int argc, char * argv[]) {
                                     if (SORTEDLIST_isAtEnd(*season)) {
                                         SORTEDLIST_goToHead(season);
                                     }
-                                    /*for (i = 0; i < season->size - 1; i++) {
-                                        printf("\n------------------\n%s: %d", SORTEDLIST_get(season).name, SORTEDLIST_get(season).place);
-                                        printf("\nisAtEnd: %d", SORTEDLIST_isAtEnd(*season));
-                                        if (SORTEDLIST_isAtEnd(*season)) {
-                                            SORTEDLIST_goToHead(season);
-                                        } else {
-                                            SORTEDLIST_next(season);
-                                        }
-                                        printf("\n%s: %d\n-------------------\n", SORTEDLIST_get(season).name, SORTEDLIST_get(season).place);
-                                    }
-                                    */
+
                                     printf("\n/////////////////\n%s: %d\n/////////////////\n", SORTEDLIST_get(season).name, SORTEDLIST_get(season).place);
 
                                     if (FALSE == completed) {
@@ -532,14 +522,7 @@ int main (int argc, char * argv[]) {
                                                         if (LS_allegro_key_pressed(ALLEGRO_KEY_D)) {
                                                             //go right - one more
                                                             if (season->previous->next->next->element.completed) {
-                                                                if (SORTEDLIST_isAtEnd(*season)) {
-                                                                    SORTEDLIST_goToHead(season);
-                                                                } else {
-                                                                    SORTEDLIST_next(season);
-                                                                }
-                                                            }
-                                                            else {
-                                                                SORTEDLIST_goToHead(season);
+                                                                SORTEDLIST_next(season);
                                                             }
                                                         }
                                                     }
