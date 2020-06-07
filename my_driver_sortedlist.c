@@ -1,6 +1,7 @@
 /***********************************************
  *
- * @Purpose: //TODO
+ * @Purpose: Module with all the functions and structures needed to be able to implement a sortedlist for the drivers,
+ *           and be capable of storing the information of the drivers in an ordered list.
  * @Author: Arnau Sanz and Josep Segarra.
  * @Creation date: 12/05/2020 (DD/MM/YYYY)
  * @Date of last modification: 12/05/2020
