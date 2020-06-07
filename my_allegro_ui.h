@@ -108,7 +108,7 @@ void printFinish (int darkMode, Driver * driver, int pilotQty, SortedLD * list);
  * @Return:        ---
  *
 ************************************************/
-void printStandings (int darkMode, SortedLD * list);
+void printStandings (int darkMode, SortedLD * list, char * gpName);
 
 /***********************************************
  *

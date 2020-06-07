@@ -21,9 +21,11 @@
 
 #define NEEDED_ARGS 5
 
+//#undef LSRACER_LOG
+
 int main (int argc, char * argv[]) {
 
-    int  exit = 0, allegroExit = 0, optionDone = 0, optionSelected = 0, darkMode = WHITE, i;
+    int  exit = 0, allegroExit = 0, optionDone = 0, optionSelected = 0, darkMode = WHITE, i, completed;
     int partCategory = 0, partModel = 0, traffLightStatus, isTLOn[5], pstopStatus, pilotQty, pstopCounter, raceStatus, playerTime, pstopPenaltyCounter;
     float timeInitial, timeMeasured, timeDelta, timeElapsed, pstopDeltaTime, playerElapsed;
 
@@ -38,8 +40,6 @@ int main (int argc, char * argv[]) {
     int * carPos;
     int * aux;
     int  baseStats[4]; //From Base.bin file: Speed, Acceleration, Consumption, and Reliability. Respectively
-
-    //printf("\n%s || %s || %s || %s ", argv[1], argv[2], argv[3], argv[4]);
 
     ALLEGRO_BITMAP * background = NULL;
     ALLEGRO_BITMAP * partImages[6];
@@ -213,6 +213,15 @@ int main (int argc, char * argv[]) {
                                         pstopDeltaTime = 0;
                                         playerElapsed = 0;
                                         *aux = 0;
+
+                                        for (i = 0; i < season->size; i++) {
+                                            if (!(SORTEDLIST_get(season).completed))
+                                                break;
+                                            SORTEDLIST_next(season);
+                                        }
+
+                                        printf("\nList pos Op 2: %d", SORTEDLIST_get(season).place);
+
                                         Circuit tempGP = SORTEDLIST_get(season);
                                         carImage = al_load_bitmap(CAR_IMAGE);
                                         if (!carImage) printf("Failed to load playerCar bitmap.\n");
@@ -341,8 +350,11 @@ int main (int argc, char * argv[]) {
                                                         }
                                                         if (pstopDeltaTime > tempGP.pitstopTime) {
                                                             pstopStatus = PS_NOTASKED;
-                                                            printf("\nPitStop ended.");
+                                                            pstopCounter++;
                                                             pstopDeltaTime = 0;
+#ifdef LSRACER_LOG
+                                                            printf("\nPitStop ended.");
+#endif
                                                         }
                                                         //Adding to the elapsed time every 0.05 sec to improve precision.
                                                         if (timeDelta >= 0.05f) {
@@ -374,6 +386,7 @@ int main (int argc, char * argv[]) {
                                                                 for (i = 0; i < pilotQty; i++) {
                                                                     users[i].time = otherCars[i].time;
                                                                     strcpy(users[i].name, pilots[i].name);
+                                                                    users[i].totalPoints =
                                                                     printf(" %s - %s - ", users[i].name, pilots[i].name);
                                                                     SortedL_sortedAdd(&temporary, users[i]);
                                                                 }
@@ -414,7 +427,7 @@ int main (int argc, char * argv[]) {
                                                                             break;
                                                                     }
 
-                                                                    tempuser.totalPoints = score;
+                                                                    tempuser.totalPoints += score;
                                                                     SortedL_sortedAddScore(&(standings[tempGP.place-1]), tempuser);
                                                                     SortedL_next(&temporary);
                                                                 }
@@ -439,9 +452,9 @@ int main (int argc, char * argv[]) {
                                         }
                                         if (RACE_FINISHED == raceStatus) {
                                             SORTEDLIST_getPointer(season)->completed = TRUE;
-                                            SORTEDLIST_next(season);
+                                            //SORTEDLIST_next(season);
                                         }
-                                        //SORTEDLIST_next(season);
+
                                         LS_allegro_exit();
                                     }
 
@@ -450,21 +463,41 @@ int main (int argc, char * argv[]) {
 
                                 //region OPTION 3
                                 case 3:
-                                    printf("\nNot done yet\n");                                                         //TODO remove
                                     //TODO option 3
-
-                                    int completed = FALSE;
+#ifdef LSRACER_LOG
+                                    printf("\nInside option 3.");
+#endif
+                                    completed = FALSE;
 
                                     for (i = 0; i < season->size; i++) {
-                                        if (SORTEDLIST_get(season).completed) completed = TRUE;
-
+                                        if (SORTEDLIST_get(season).completed) {
+                                            completed = TRUE;
+                                            break;
+                                        }
+                                        //printf("!%s!", SortedL_get(&standings[SORTEDLIST_get(season).place]).name);
                                         if (SORTEDLIST_isAtEnd(*season)) {
                                             SORTEDLIST_goToHead(season);
                                         }
                                         else {
                                             SORTEDLIST_next(season);
                                         }
+                                        printf("-%d", i);
                                     }
+                                    if (SORTEDLIST_isAtEnd(*season)) {
+                                        SORTEDLIST_goToHead(season);
+                                    }
+                                    /*for (i = 0; i < season->size - 1; i++) {
+                                        printf("\n------------------\n%s: %d", SORTEDLIST_get(season).name, SORTEDLIST_get(season).place);
+                                        printf("\nisAtEnd: %d", SORTEDLIST_isAtEnd(*season));
+                                        if (SORTEDLIST_isAtEnd(*season)) {
+                                            SORTEDLIST_goToHead(season);
+                                        } else {
+                                            SORTEDLIST_next(season);
+                                        }
+                                        printf("\n%s: %d\n-------------------\n", SORTEDLIST_get(season).name, SORTEDLIST_get(season).place);
+                                    }
+                                    */
+                                    printf("\n/////////////////\n%s: %d\n/////////////////\n", SORTEDLIST_get(season).name, SORTEDLIST_get(season).place);
 
                                     if (FALSE == completed) {
                                         //no gp has been completed
@@ -472,31 +505,53 @@ int main (int argc, char * argv[]) {
                                     }
                                     else {
                                         //one or more gps have been completed
-                                        //SortedL_get(&standings[SORTEDLIST_get(season).place - 1]);
+                                        LS_allegro_init(WIN_WIDTH, WIN_HEIGHT, WIN_TITLE_RACE);
 
-                                        if (LS_allegro_key_pressed(ALLEGRO_KEY_ESCAPE)) {
-                                            allegroExit = 1;
-                                        }
-                                        else {
-                                            if (LS_allegro_key_pressed(ALLEGRO_KEY_H)) {
-                                                switchDarkMode(&darkMode);
-                                            }
-                                            else {
-                                                if (LS_allegro_key_pressed(ALLEGRO_KEY_A)) {
-                                                    //go left - one less                        //TODO think how do i go around?? about maybe using bidir list here? or looping around every time? second option better I think. problem for tomorrow's Nau
+                                        allegroExit = 0;
+
+                                        //Infinite loop until ESC is pressed.
+                                        while (!allegroExit) {
+                                            if (LS_allegro_key_pressed(ALLEGRO_KEY_ESCAPE)) {
+                                                allegroExit = 1;
+                                            } else {
+                                                if (LS_allegro_key_pressed(ALLEGRO_KEY_H)) {
+                                                    switchDarkMode(&darkMode);
+                                                } else {
+                                                    if (LS_allegro_key_pressed(ALLEGRO_KEY_A)) {
+                                                        //go left - one less (going through all list except one so it ends at the one before the pov)
+                                                        if (season->previous->element.completed) {
+                                                            for (i = 0; i < season->size; i++) {
+                                                                if (SORTEDLIST_isAtEnd(*season)) {
+                                                                    SORTEDLIST_goToHead(season);
+                                                                } else {
+                                                                    SORTEDLIST_next(season);
+                                                                }
+                                                            }
+                                                        }
+                                                    } else {
+                                                        if (LS_allegro_key_pressed(ALLEGRO_KEY_D)) {
+                                                            //go right - one more
+                                                            if (season->previous->next->next->element.completed) {
+                                                                if (SORTEDLIST_isAtEnd(*season)) {
+                                                                    SORTEDLIST_goToHead(season);
+                                                                } else {
+                                                                    SORTEDLIST_next(season);
+                                                                }
+                                                            }
+                                                            else {
+                                                                SORTEDLIST_goToHead(season);
+                                                            }
+                                                        }
+                                                    }
                                                 }
-                                                else {
-                                                    //go right - one more
-                                                }
                                             }
-
+                                            printf("\n------------------\n%s: %d\n------------------\n", SORTEDLIST_get(season).name, SORTEDLIST_get(season).place);
+                                            printStandings(darkMode, &(standings[SORTEDLIST_get(season).place - 1]),
+                                                           SORTEDLIST_get(season).name);
                                         }
-
-                                        printStandings(darkMode, &standings[SORTEDLIST_get(season).place - 1]);
+                                        LS_allegro_exit();
                                     }
-
                                     break;
-
                                 //endregion
 
                                 //region OPTION 4

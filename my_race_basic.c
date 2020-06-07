@@ -65,19 +65,6 @@ void infoAsk (Driver * driver) {
     driver->tireManagement = menuAsk("Tire management? ", 0, 10);
 }
 
-/*
-void timeWait (float threshold) {
-    float timeInitial, timeMeasured, timeDelta = 0;
-
-    timeInitial = (float)clock();
-    while (timeDelta < threshold) {
-        timeMeasured = (float)clock();
-        timeDelta = ((timeMeasured - timeInitial) / (float)CLOCKS_PER_SEC);
-    }
-    printf("%.2f - %.2f s have passed.", threshold, timeDelta);
-}
-*/
-
 void calculatePlayer (Car * car, Driver * driver, Circuit temp, int * playerTime) {
 
     int diff[4];
@@ -141,7 +128,6 @@ void calculateOthers (Car * car, Pilot * pilot, Circuit temp) {
     calcTime -= ((pilot->reflexes + pilot->physicalCondition + pilot->temperament + pilot->tireManagement) / 4) / 2;
 
     car->time = (int)calcTime;
-    //printf("%d - %d ! ", car->time, calcTime);        //TODO remove
 }
 
 void calculatePos (Car * player, Car * others, int pilotQty, int ** carPos, float timeElapsed, float playerElapsed, int playerTime, int pstopStatus, int * aux) {
@@ -156,7 +142,6 @@ void calculatePos (Car * player, Car * others, int pilotQty, int ** carPos, floa
 
     if (!(PS_NOTACCEPTED == pstopStatus || PS_ACCEPTED == pstopStatus) && 0 == (*aux)) {
         (*carPos)[pilotQty] = (int)((distance / playerTime) * playerElapsed);
-        printf("\n %d", (*carPos)[pilotQty]);
         if ((*carPos)[pilotQty] >= distance) {
             (*aux) = 1;
         }

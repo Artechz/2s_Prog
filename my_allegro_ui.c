@@ -198,11 +198,45 @@ void printFinish (int darkMode, Driver * driver, int pilotQty, SortedLD * list) 
     LS_allegro_clear_and_paint(getBackgroundColor(&darkMode));
 }
 
-void printStandings (int darkmode, SortedLD * list) {
+void printStandings (int darkMode, SortedLD * list, char * gpName) {
+    int margin, i = 0;
+    int color;
+    SortedL_goToHead(list);
 
-    int margin;
+#ifdef LSRACER_LOG
+    printf("\nStandings: ");
+    printf("- %s -", SortedL_get(list).name);
+#endif
+    //ranking title
+    al_draw_textf(LS_allegro_get_font(FONT_TITLE), LS_allegro_get_color(darkMode), (WIN_WIDTH / 5), WIN_HEIGHT / 8, 0, "%s %s", gpName, "RANKING");
 
-    printText(FONT_TITLE, darkMode, (WIN_WIDTH*3)/4 + (WIN_WIDTH*1)/60, (WIN_HEIGHT*4)/100, "%s", "PILOT");
+    //printing the pilots on the ranking
+    for (margin = 0; margin < (WIN_HEIGHT/15)*9; margin += WIN_HEIGHT/15) {
+        i++;
+        //changing color depending on them being one of the 3 first or not.
+        switch (i) {
+            case 1:
+                color = YELLOW;
+                break;
+            case 2:
+                color = LIGHT_GRAY;
+                break;
+            case 3:
+                color = GARNET;
+                break;
+            default:
+                color = darkMode;
+                break;
+        }
+
+        al_draw_textf(LS_allegro_get_font(FONT_TITLE), LS_allegro_get_color(color), (WIN_WIDTH / 4), WIN_HEIGHT / 5 + margin, 0, "%d. %s (%d S) - %d POINTS", i, SortedL_get(list).name, SortedL_get(list).time, SortedL_get(list).totalPoints);
+        SortedL_next(list);
+
+        if (3 == i) margin += WIN_HEIGHT/15;
+    }
+
+    //'Painting' the graphic screen.
+    LS_allegro_clear_and_paint(getBackgroundColor(&darkMode));
 }
 
 int switchDarkMode (int * mode) {
