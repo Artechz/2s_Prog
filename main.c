@@ -396,8 +396,9 @@ int main (int argc, char * argv[]) {
                                                                 SortedL_goToHead(&temporary);
 
                                                                 for (i = 0; i <= pilotQty && !SortedL_isAtEnd(temporary); i++) {
-                                                                    int score;
+                                                                    int score = 0;
                                                                     User tempuser = SortedL_get(&temporary);
+                                                                    tempuser.totalPoints = 0;
 
                                                                     switch (i) {
                                                                         case 0:
@@ -570,7 +571,6 @@ int main (int argc, char * argv[]) {
 
                                 //region OPTION 4
                                 case 4:
-                                    //TODO option 4
 
                                     writeSeason(season, standings, pilotQty, season->size);
 
