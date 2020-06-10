@@ -578,7 +578,6 @@ int main (int argc, char * argv[]) {
                                 //endregion
 
                                 default:
-                                    printf("\nALGO HEM FET MALAMENT PERQUE AIXO NO HAURIA DE SORTIR MAI\n");
                                     exit = 1;
                                     break;
                             }
