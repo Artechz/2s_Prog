@@ -595,7 +595,6 @@ int main (int argc, char * argv[]) {
         printf("\nError. The program should have 4 arguments.");
     }
 
-    //TODO all frees
     SORTEDLIST_destroy(season);
     free(partGroup);
     free(playerCar);
